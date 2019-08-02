@@ -8,7 +8,7 @@ use Vinelab\NeoEloquent\Query\Grammars\CypherGrammar;
 
 class EloquentBuilderTest extends TestCase {
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -19,7 +19,7 @@ class EloquentBuilderTest extends TestCase {
         $this->builder = new Builder($this->query);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         M::close();
 
@@ -688,7 +688,7 @@ class EloquentBuilderTest extends TestCase {
         return $query;
     }
 
-    public function getMockBuilder($classname = null)
+    public function getMockBuilder($classname = null): \PHPUnit\Framework\MockObject\MockBuilder
     {
         $query = M::mock('Vinelab\NeoEloquent\Query\Builder');
         $query->shouldReceive('from')->andReturn('foo_table');

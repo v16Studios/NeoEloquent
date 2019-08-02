@@ -27,7 +27,7 @@ class WizDel extends Model {
 
 class SimpleCRUDTest extends TestCase {
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -36,7 +36,7 @@ class SimpleCRUDTest extends TestCase {
         Wiz::setConnectionResolver($resolver);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         M::close();
 

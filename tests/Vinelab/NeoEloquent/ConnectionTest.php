@@ -4,7 +4,7 @@ use Mockery as M;
 
 class ConnectionTest extends TestCase {
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -15,7 +15,7 @@ class ConnectionTest extends TestCase {
         );
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $query = 'MATCH (n:User) WHERE n.username = {username} DELETE n RETURN count(n)';
 
@@ -50,7 +50,7 @@ class ConnectionTest extends TestCase {
         $c = $this->getConnectionWithConfig('neo4j');
 
         $this->assertEquals($c->getConfig('port'), 7474);
-        $this->assertEquals($c->getConfig('host'), 'localhost');
+        $this->assertEquals($c->getConfig('host'), 'instance0');
     }
 
     public function testDriverName()
@@ -71,7 +71,7 @@ class ConnectionTest extends TestCase {
     {
         $c = $this->getConnectionWithConfig('default');
         
-        $this->assertEquals('localhost', $c->getHost());
+        $this->assertEquals('instance0', $c->getHost());
     }
 
     public function testGettingDefaultPort()
@@ -81,7 +81,7 @@ class ConnectionTest extends TestCase {
         $port=  $c->getPort();
 
         $this->assertEquals(7474, $port);
-        $this->assertInternalType('int', $port);
+        $this->assertIsInt($port);
     }
 
     public function testGettingQueryCypherGrammar()
