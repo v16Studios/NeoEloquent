@@ -8,7 +8,7 @@ use Vinelab\NeoEloquent\Eloquent\Model;
 
 class QueryingRelationsTest extends TestCase {
 
-    public function tearDown(): void
+    public function tearDown()
     {
         M::close();
 

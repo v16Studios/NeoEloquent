@@ -20,7 +20,7 @@ class Table extends NeoEloquent {
 
 class ModelTest extends TestCase {
 
-    public function tearDown(): void
+    public function tearDown()
     {
         M::close();
 

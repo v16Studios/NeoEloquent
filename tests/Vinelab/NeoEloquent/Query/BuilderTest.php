@@ -8,7 +8,7 @@ use Vinelab\NeoEloquent\Tests\TestCase;
 
 class QueryBuilderTest extends TestCase {
 
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 
@@ -22,7 +22,7 @@ class QueryBuilderTest extends TestCase {
         $this->builder = new Builder($this->connection, $this->grammar, $this->processor);
     }
 
-    public function tearDown(): void
+    public function tearDown()
     {
         M::close();
 

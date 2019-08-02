@@ -30,7 +30,7 @@ class Role extends Model {
 
 class BelongsToManyRelationTest extends TestCase {
 
-    public function tearDown(): void
+    public function tearDown()
     {
         M::close();
 
@@ -43,7 +43,7 @@ class BelongsToManyRelationTest extends TestCase {
         parent::tearDown();
     }
 
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 

@@ -25,14 +25,14 @@ class Author extends Model {
 
 class HasManyRelationTest extends TestCase {
 
-    public function tearDown(): void
+    public function tearDown()
     {
         M::close();
 
         parent::tearDown();
     }
 
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 

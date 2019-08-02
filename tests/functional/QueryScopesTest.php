@@ -28,7 +28,7 @@ class Misfit extends Model {
 
 class QueryScopesTest extends TestCase {
 
-    public function tearDown(): void
+    public function tearDown()
     {
         M::close();
 
@@ -38,7 +38,7 @@ class QueryScopesTest extends TestCase {
         parent::tearDown();
     }
 
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 

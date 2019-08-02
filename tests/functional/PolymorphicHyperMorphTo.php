@@ -6,14 +6,14 @@ use Vinelab\NeoEloquent\Eloquent\Model;
 
 class PolymorphicHyperMorphToTest extends TestCase {
 
-    public function tearDown(): void
+    public function tearDown()
     {
         M::close();
 
         parent::tearDown();
     }
 
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 

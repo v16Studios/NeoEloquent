@@ -8,14 +8,14 @@ use Vinelab\NeoEloquent\Eloquent\Relations\BelongsTo;
 
 class BelongsToTest extends TestCase  {
 
-    public function tearDown(): void
+    public function tearDown()
     {
         M::close();
 
         parent::tearDown();
     }
 
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 

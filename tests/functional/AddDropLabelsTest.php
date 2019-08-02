@@ -31,7 +31,7 @@ class Foo extends Model {
 
 class AddDropLabelsTest extends TestCase {
 
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 
@@ -40,7 +40,7 @@ class AddDropLabelsTest extends TestCase {
         Labelwiz::setConnectionResolver($resolver);
     }
 
-    public function tearDown(): void
+    public function tearDown()
     {
         M::close();
 

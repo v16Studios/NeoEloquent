@@ -7,7 +7,7 @@ use Vinelab\NeoEloquent\Eloquent\SoftDeletes;
 
 class ModelEventsTest extends TestCase {
 
-    public function tearDown(): void
+    public function tearDown()
     {
         M::close();
 

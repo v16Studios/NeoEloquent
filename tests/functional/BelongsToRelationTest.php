@@ -23,7 +23,7 @@ class Location extends Model {
 
 class BelongsToRelationTest extends TestCase {
 
-    public function tearDown(): void
+    public function tearDown()
     {
         M::close();
 
@@ -36,7 +36,7 @@ class BelongsToRelationTest extends TestCase {
         parent::tearDown();
     }
 
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 
