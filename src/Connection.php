@@ -7,8 +7,11 @@ use Everyman\Neo4j\Query\ResultSet;
 use Vinelab\NeoEloquent\Query\Builder;
 use Vinelab\NeoEloquent\QueryException;
 use Vinelab\NeoEloquent\Query\Processors\Processor;
-use Everyman\Neo4j\Client as NeoClient;
-use Everyman\Neo4j\Cypher\Query as CypherQuery;
+//use Everyman\Neo4j\Client as NeoClient;
+//use Everyman\Neo4j\Cypher\Query as CypherQuery;
+use Neo4jBridge\Bridge\Client as NeoClient;
+use Neo4jBridge\Bridge\CypherQuery;
+use Neo4jBridge\Neo4jBridge as Bridge;
 use Illuminate\Database\Connection as IlluminateConnection;
 use Illuminate\Database\Schema\Grammars\Grammar as IlluminateSchemaGrammar;
 
@@ -82,8 +85,14 @@ class Connection extends IlluminateConnection {
      */
     public function createConnection()
     {
-        $client = new NeoClient($this->getHost(), $this->getPort());
-        $client->getTransport()->useHttps($this->getSsl())->setAuth($this->getUsername(), $this->getPassword());
+        $bridge = new Bridge([
+            'host' => $this->getHost(),
+            'user' => $this->getUsername(),
+            'password' => $this->getPassword()
+        ]);
+        $client = new NeoClient($bridge);
+        //$client = new NeoClient($this->getHost(), $this->getPort());
+        //$client->getTransport()->useHttps($this->getSsl())->setAuth($this->getUsername(), $this->getPassword());
         return $client;
     }
 
