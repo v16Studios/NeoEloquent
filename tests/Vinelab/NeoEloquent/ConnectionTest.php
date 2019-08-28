@@ -1,6 +1,9 @@
 <?php namespace Vinelab\NeoEloquent\Tests;
 
 use Mockery as M;
+use Neo4jBridge\Bridge\Client;
+use Neo4jBridge\Bridge\Transaction;
+use Neo4jBridge\Bridge\ResultSet;
 
 class ConnectionTest extends TestCase {
 
@@ -42,7 +45,7 @@ class ConnectionTest extends TestCase {
 
         $client = $c->getClient();
 
-        $this->assertInstanceOf('Everyman\Neo4j\Client', $client);
+        $this->assertInstanceOf(Client::class, $client);
     }
 
     public function testGettingConfigParam()
@@ -64,7 +67,7 @@ class ConnectionTest extends TestCase {
     {
         $c = $this->getConnectionWithConfig('neo4j');
 
-        $this->assertInstanceOf('Everyman\Neo4j\Client', $c->getClient());
+        $this->assertInstanceOf(Client::class, $c->getClient());
     }
 
     public function testGettingDefaultHost()
@@ -208,7 +211,7 @@ class ConnectionTest extends TestCase {
 
         $query = $c->getCypherQuery('MATCH (u:`User`) RETURN * LIMIT 10', array());
 
-        $this->assertInstanceOf('Everyman\Neo4j\Cypher\Query', $query);
+        $this->assertInstanceOf(Query::class, $query);
     }
 
     public function testCheckingIfBindingIsABinding()
@@ -232,7 +235,7 @@ class ConnectionTest extends TestCase {
 
         $connection = $c->createConnection();
 
-        $this->assertInstanceOf('Everyman\Neo4j\Client', $connection);
+        $this->assertInstanceOf(Client::class, $connection);
     }
 
     public function testSelectWithBindings()
@@ -253,7 +256,7 @@ class ConnectionTest extends TestCase {
 
         $this->assertEquals($log['query'], $query);
         $this->assertEquals($log['bindings'], $bindings);
-        $this->assertInstanceOf('Everyman\Neo4j\Query\ResultSet', $results);
+        $this->assertInstanceOf(ResultSet::class, $results);
 
         // This is how we get the first row of the result (first [0])
         // and then we get the Node instance (the 2nd [0])
@@ -295,7 +298,7 @@ class ConnectionTest extends TestCase {
 
         $this->assertEquals($log[1]['query'], $query);
         $this->assertEquals($log[1]['bindings'], $bindings);
-        $this->assertInstanceOf('Everyman\Neo4j\Query\ResultSet', $results);
+        $this->assertInstanceOf(ResultSet::class, $results);
 
         $selected = $results[0][0]->getProperties();
 
@@ -323,7 +326,7 @@ class ConnectionTest extends TestCase {
 
         $results = $c->affectingStatement($query, $bindings);
 
-        $this->assertInstanceOf('Everyman\Neo4j\Query\ResultSet', $results);
+        $this->assertInstanceOf(ResultSet::class, $results);
 
         foreach($results as $result)
         {
@@ -337,7 +340,7 @@ class ConnectionTest extends TestCase {
 
         $results = $cypher->getResultSet();
 
-        $this->assertInstanceOf('Everyman\Neo4j\Query\ResultSet', $results);
+        $this->assertInstanceOf(ResultSet::class, $results);
 
         $user = null;
 
@@ -370,7 +373,7 @@ class ConnectionTest extends TestCase {
 
         $results = $c->affectingStatement($query, $bindings);
 
-        $this->assertInstanceOf('Everyman\Neo4j\Query\ResultSet', $results);
+        $this->assertInstanceOf(ResultSet::class, $results);
 
         foreach($results as $result)
         {
@@ -459,9 +462,9 @@ class ConnectionTest extends TestCase {
 
     public function testTransactionMethodRunsSuccessfully()
     {
-        $client = M::mock('Everyman\Neo4j\Client');
+        $client = M::mock(Client::class);
         $client->shouldReceive('beginTransaction')->once()
-            ->andReturn(M::mock('Everyman\Neo4j\Transaction')->makePartial());
+            ->andReturn(M::mock(Transaction::class)->makePartial());
 
         $connection  = $this->getMockConnection();
         $connection->setClient($client);
@@ -472,9 +475,9 @@ class ConnectionTest extends TestCase {
 
     public function testTransactionMethodRollsbackAndThrows()
     {
-        $neo = M::mock('Everyman\Neo4j\Client');
+        $neo = M::mock(Client::class);
         $neo->shouldReceive('beginTransaction')->once()
-            ->andReturn(M::mock('Everyman\Neo4j\Transaction')->makePartial());
+            ->andReturn(M::mock(Transaction::class)->makePartial());
 
         $connection = $this->getMockConnection();
         $connection->setClient($neo);
