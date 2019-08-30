@@ -20,14 +20,14 @@ class Connection extends IlluminateConnection {
     /**
      * The Neo4j active client connection
      *
-     * @var \Everyman\Neo4j\Client
+     * @var \Neo4jBridge\Bridge\Client
      */
     protected $neo;
 
     /**
      * The Neo4j database transaction
      *
-     * @var \Everyman\Neo4j\Transaction
+     * @var \Neo4jBridge\Bridge\Transaction
      */
     protected $transaction;
 

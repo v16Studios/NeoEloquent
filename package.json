@@ -1,0 +1,30 @@
+{
+  "name": "neoeloquent",
+  "version": "1.0.0",
+  "description": "NeoEloquent with a wrapper for the official Neo4j node driver",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ulobby/NeoEloquent.git"
+  },
+  "keywords": [
+    "Neo4j",
+    "Laravel"
+  ],
+  "author": "Simon Thordal",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ulobby/NeoEloquent/issues"
+  },
+  "homepage": "https://github.com/ulobby/NeoEloquent#readme",
+  "dependencies": {
+    "@nesk/rialto": "^1.3.0",
+    "neo4j-driver": "^1.7.5"
+  }
+}
