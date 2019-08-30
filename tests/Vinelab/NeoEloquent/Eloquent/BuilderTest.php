@@ -6,6 +6,11 @@ use Vinelab\NeoEloquent\Tests\TestCase;
 use Vinelab\NeoEloquent\Eloquent\Builder;
 use Vinelab\NeoEloquent\Query\Grammars\CypherGrammar;
 
+use Neo4jBridge\Bridge\Client;
+use Neo4jBridge\Bridge\Transaction;
+use Neo4jBridge\Bridge\ResultSet;
+use Neo4jBridge\Bridge\CypherQuery as Query;
+
 class EloquentBuilderTest extends TestCase {
 
     public function setUp()
@@ -352,7 +357,7 @@ class EloquentBuilderTest extends TestCase {
 
     public function testFindingById()
     {
-        $resultSet = M::mock('Everyman\Neo4j\Query\ResultSet');
+        $resultSet = M::mock(ResultSet::class);
         $resultSet->shouldReceive('getColumns')->withNoArgs()->andReturn(array('id', 'name', 'age'));
 
         $this->query->shouldReceive('where')->once()->with('id(n)', '=', 1);
@@ -366,14 +371,14 @@ class EloquentBuilderTest extends TestCase {
         $this->model->shouldReceive('getTable')->once()->andReturn('Model');
         $this->model->shouldReceive('getConnectionName')->once()->andReturn('default');
 
-        $collection = new \Illuminate\Support\Collection(array(M::mock('Everyman\Neo4j\Query\ResultSet')));
+        $collection = new \Illuminate\Support\Collection(array(M::mock(ResultSet::class)));
         $this->model->shouldReceive('newCollection')->once()->andReturn($collection);
 
         $this->builder->setModel($this->model);
 
         $result = $this->builder->find(1);
 
-        $this->assertInstanceOf('Everyman\Neo4j\Query\ResultSet', $result);
+        $this->assertInstanceOf(ResultSet::class, $result);
     }
 
     public function testFindingByIdWithProperties()
@@ -588,7 +593,7 @@ class EloquentBuilderTest extends TestCase {
      *             [ [name => something, username => here] ]
      *             or specify the attributes straight in the array
      * @param  array $properties The expected properties (columns)
-     * @return  \Everyman\Neo4j\Query\ResultSet
+     * @return  ResultSet
      */
     public function createNodeResultSet($data = array(), $properties = array())
     {
@@ -615,7 +620,7 @@ class EloquentBuilderTest extends TestCase {
         );
 
         // create the result set
-        return new \Everyman\Neo4j\Query\ResultSet($c->getClient(), $result);
+        return new ResultSet($result['data'], $result['columns']);
     }
 
     /**
@@ -623,12 +628,12 @@ class EloquentBuilderTest extends TestCase {
      *
      * @param  integer $index The index of the node in the row
      * @param  array   $data
-     * @return  \Everyman\Neo4j\Query\Row
+     * @return  Row
      */
     public function createRowWithNodeAtIndex($index, array $data)
     {
         // create the result Node containing the properties and their values
-        $node = M::mock('Everyman\Neo4j\Node');
+        $node = M::mock(Node::class);
 
         // the Node id is never returned with the properties so in case
         // that is one of the data properties we need to remove it
@@ -643,7 +648,7 @@ class EloquentBuilderTest extends TestCase {
         $node->shouldReceive('getProperties')->once()->andReturn($data);
 
         // create the result row that should contain the Node
-        $row = M::mock('Everyman\Neo4j\Query\Row');
+        $row = M::mock(Row::class);
         $row->shouldReceive('offsetGet')->andReturn($node);
 
         return $row;
@@ -651,7 +656,7 @@ class EloquentBuilderTest extends TestCase {
 
     public function createRowWithPropertiesAtIndex($index, array $properties)
     {
-        $row = M::mock('Everyman\Neo4j\Query\Row');
+        $row = M::mock(Row::class);
         // $row->shouldReceive('offsetGet')->with($index)->andReturn($properties);
 
         foreach($properties as $key => $value)

@@ -4,6 +4,7 @@ use Mockery as M;
 use Neo4jBridge\Bridge\Client;
 use Neo4jBridge\Bridge\Transaction;
 use Neo4jBridge\Bridge\ResultSet;
+use Neo4jBridge\Bridge\CypherQuery as Query;
 
 class ConnectionTest extends TestCase {
 

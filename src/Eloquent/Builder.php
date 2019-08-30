@@ -1,10 +1,10 @@
 <?php namespace Vinelab\NeoEloquent\Eloquent;
 
 use Closure;
-use Everyman\Neo4j\Node;
-use Everyman\Neo4j\Query\Row;
+use Neo4jBridge\Bridge\Node;
+use Neo4jBridge\Bridge\Row;
 use Vinelab\NeoEloquent\Helpers;
-use Everyman\Neo4j\Query\ResultSet;
+use Neo4jBridge\Bridge\ResultSet;
 use Vinelab\NeoEloquent\Eloquent\Model;
 use Vinelab\NeoEloquent\QueryException;
 use Vinelab\NeoEloquent\Eloquent\Relations\HasOne;
