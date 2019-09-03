@@ -264,7 +264,7 @@ class ConnectionTest extends TestCase {
         // and then ask it to return its properties
         $selected = $results[0][0]->getProperties();
 
-        $this->assertEquals($this->user, $selected, 'The fetched User must be the same as the one we just created');
+        $this->assertArraySubset($this->user, $selected, 'The fetched User must be the same as the one we just created');
     }
 
     /**
@@ -285,14 +285,12 @@ class ConnectionTest extends TestCase {
 
         $node = $results[0][0];
         $id = $node->getId();
-
         $bindings = array(
             array('id' => $id)
         );
 
         // Select the Node containing the User record by its id
         $query = 'MATCH (n:`User`) WHERE id(n) = {idn} RETURN * LIMIT 1';
-
         $results = $c->select($query, $bindings);
 
         $log = $c->getQueryLog();
@@ -300,7 +298,6 @@ class ConnectionTest extends TestCase {
         $this->assertEquals($log[1]['query'], $query);
         $this->assertEquals($log[1]['bindings'], $bindings);
         $this->assertInstanceOf(ResultSet::class, $results);
-
         $selected = $results[0][0]->getProperties();
 
         $this->assertEquals($this->user, $selected);
