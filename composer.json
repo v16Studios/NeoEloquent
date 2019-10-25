@@ -37,7 +37,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/ulobby/rialto-neo4j-driver.git"
+            "url": "https://github.com/ulobby/rialto-neo4j-driver"
         }
     ],
     "autoload": {
