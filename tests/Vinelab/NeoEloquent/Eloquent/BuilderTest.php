@@ -4,14 +4,9 @@ namespace Vinelab\NeoEloquent\Tests\Eloquent;
 
 use Illuminate\Support\Collection;
 use Mockery as M;
-use Vinelab\NeoEloquent\Eloquent\Builder;
-use Vinelab\NeoEloquent\Query\Grammars\CypherGrammar;
-
-use Neo4jBridge\Bridge\Client;
-use Neo4jBridge\Bridge\Transaction;
-use Neo4jBridge\Bridge\ResultSet;
 use Neo4jBridge\Bridge\CypherQuery as Query;
-
+use Neo4jBridge\Bridge\ResultSet;
+use Vinelab\NeoEloquent\Eloquent\Builder;
 use Vinelab\NeoEloquent\Tests\TestCase;
 
 class EloquentBuilderTest extends TestCase
@@ -370,8 +365,7 @@ class EloquentBuilderTest extends TestCase
     public function testFindingById()
     {
         $resultSet = M::mock(ResultSet::class);
-        $resultSet->shouldReceive('getColumns')->withNoArgs()->andReturn(array('id', 'name', 'age'));
-
+        $resultSet->shouldReceive('getColumns')->withNoArgs()->andReturn(['id', 'name', 'age']);
 
         $this->query->shouldReceive('where')->once()->with('id(n)', '=', 1);
         $this->query->shouldReceive('from')->once()->with('Model')->andReturn(['Model']);
@@ -384,8 +378,7 @@ class EloquentBuilderTest extends TestCase
         $this->model->shouldReceive('getTable')->once()->andReturn('Model');
         $this->model->shouldReceive('getConnectionName')->once()->andReturn('default');
 
-
-        $collection = new \Illuminate\Support\Collection(array(M::mock(ResultSet::class)));
+        $collection = new \Illuminate\Support\Collection([M::mock(ResultSet::class)]);
 
         $this->model->shouldReceive('newCollection')->once()->andReturn($collection);
 
@@ -599,11 +592,12 @@ class EloquentBuilderTest extends TestCase
     /**
      * Create a new ResultSet out of an array of properties and values.
      *
-     * @param  array $data The values you want returned could be of the form
-     *             [ [name => something, username => here] ]
-     *             or specify the attributes straight in the array
-     * @param  array $properties The expected properties (columns)
-     * @return  ResultSet
+     * @param array $data       The values you want returned could be of the form
+     *                          [ [name => something, username => here] ]
+     *                          or specify the attributes straight in the array
+     * @param array $properties The expected properties (columns)
+     *
+     * @return ResultSet
      */
     public function createNodeResultSet($data = [], $properties = [])
     {
@@ -632,9 +626,10 @@ class EloquentBuilderTest extends TestCase
     /**
      * Get a row with a Node inside of it having $data as properties.
      *
-     * @param  integer $index The index of the node in the row
-     * @param  array   $data
-     * @return  Row
+     * @param int   $index The index of the node in the row
+     * @param array $data
+     *
+     * @return Row
      */
     public function createRowWithNodeAtIndex($index, array $data)
     {

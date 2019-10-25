@@ -132,9 +132,9 @@ class Builder extends IlluminateQueryBuilder
 
             $node->setProperty($key, $value);
         }
-        
+
         // set the labels
-        $node->addLabels(array_map(array($this, 'makeLabel'), $this->from));
+        $node->addLabels(array_map([$this, 'makeLabel'], $this->from));
         // save the node
         $node->save();
 

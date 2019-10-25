@@ -2,23 +2,17 @@
 
 namespace Vinelab\NeoEloquent\Eloquent;
 
-
-use Closure;
-use Neo4jBridge\Bridge\Node;
-use Neo4jBridge\Bridge\Row;
-use Vinelab\NeoEloquent\Helpers;
-use Neo4jBridge\Bridge\ResultSet;
-use Vinelab\NeoEloquent\Eloquent\Model;
-use Vinelab\NeoEloquent\QueryException;
-use Vinelab\NeoEloquent\Eloquent\Relations\HasOne;
-use Vinelab\NeoEloquent\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Collection;
-use Vinelab\NeoEloquent\Eloquent\Relations\OneRelation;
 use Illuminate\Database\Eloquent\Builder as IlluminateBuilder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Arr;
+use Neo4jBridge\Bridge\Node;
+use Neo4jBridge\Bridge\ResultSet;
+use Neo4jBridge\Bridge\Row;
 use Vinelab\NeoEloquent\Helpers;
+use Vinelab\NeoEloquent\Helpers;
+use Vinelab\NeoEloquent\QueryException;
 use Vinelab\NeoEloquent\QueryException;
 
 class Builder extends IlluminateBuilder

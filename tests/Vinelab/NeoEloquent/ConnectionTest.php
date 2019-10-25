@@ -1,14 +1,12 @@
 <?php
 
-
 namespace Vinelab\NeoEloquent\Tests;
 
 use Mockery as M;
 use Neo4jBridge\Bridge\Client;
-use Neo4jBridge\Bridge\Transaction;
-use Neo4jBridge\Bridge\ResultSet;
 use Neo4jBridge\Bridge\CypherQuery as Query;
-
+use Neo4jBridge\Bridge\ResultSet;
+use Neo4jBridge\Bridge\Transaction;
 
 class ConnectionTest extends TestCase
 {
@@ -289,10 +287,9 @@ class ConnectionTest extends TestCase
         $node = $results[0][0];
         $id = $node->getId();
 
-        $bindings = array(
-            array('id' => $id)
-        );
-
+        $bindings = [
+            ['id' => $id],
+        ];
 
         // Select the Node containing the User record by its id
         $query = 'MATCH (n:`User`) WHERE id(n) = {idn} RETURN * LIMIT 1';
