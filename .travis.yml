@@ -5,14 +5,7 @@ before_script:
 - npm install
 - travis_retry composer self-update
 - travis_retry composer install --prefer-source --no-interaction
-script: vendor/bin/phpunit
-notifications:
-  slack:
-    secure: RUGzdDgmVfytH9PItjMFUK+S9SN9WyJvoxXlUjiIjMv4tpdplUzMIIlZ7SRWKf9xL5nunrrMsSmGIL4bbqcePjl6R7LqjUVHx05+gbGrUwZoFv/4bRmYgna8lZbEnWmHsnuKG3Pd8001kOWcddBwC8rM5eS/NR13wsB3CVCV1vt8HDkTBul/TLLx2XuW7DeeUL90Mebh+N/VNydSjZ5MEoTWuA6Ppna0E4NVCBfrVFKgNWSVN/2NDzD9CZ87u7bD4l173ioKTU8/KTkVgcYxfZMiNHac1DWHArOxEvFOi5gfv5va32hoUDFqdGggMcS+JlDqfPGTLTPqj/7NyP7LtfSxk3fm+xP/w0TOl9BkkNLg36QggVMYl3epqYygr2g1unLNEtLAV/hLmAaC5vYk+sjirxHOAK6pVAQc76NLhwc6MTdDi4mlPq/a2XHoYtNJ11og19PpA4SZ6AdqDRug+/+K9ObHZ4sFkKejfSSLAcRCopuF6TPh4FpeCVT+9GJyPcvwNPE5GZcebV1h3ckB4RqxOqW3gtfp0HiexYSX5KQrDAs6d/ftmP9tG9Q3rNXdrZwSD0Tcfro1CMZZBo0WKXwwVBSQzgWvlIWx4cPQtVnNL+YiIL4auBDF4INrzi/vp7DNFRjpJLROHngnZ6Q2kiBTltFN4UUmHKBFDKt+Bnc=
-before_install:  # disable auth for neo4j and restart it...
-#  - sudo sed -i 's/#dbms.security.auth_enabled=false/dbms.security.auth_enabled=false/g' /etc/neo4j/neo4j.conf
-#  - sudo systemctl restart neo4j
-- source vendor/ulobby/rialto-neo4j-driver/tests/setup/setup_cluster.sh
+- source ./vendor/ulobby/rialto-neo4j-driver/tests/setup/setup_cluster.sh
 - echo "127.0.0.2 instance0" | sudo tee -a /etc/hosts
 - echo "127.0.0.3 instance1" | sudo tee -a /etc/hosts
 - echo "127.0.0.4 instance2" | sudo tee -a /etc/hosts
@@ -22,3 +15,10 @@ before_install:  # disable auth for neo4j and restart it...
 - setup_cluster 1
 - setup_cluster 2
 - sleep 15
+script: vendor/bin/phpunit
+notifications:
+  slack:
+    secure: RUGzdDgmVfytH9PItjMFUK+S9SN9WyJvoxXlUjiIjMv4tpdplUzMIIlZ7SRWKf9xL5nunrrMsSmGIL4bbqcePjl6R7LqjUVHx05+gbGrUwZoFv/4bRmYgna8lZbEnWmHsnuKG3Pd8001kOWcddBwC8rM5eS/NR13wsB3CVCV1vt8HDkTBul/TLLx2XuW7DeeUL90Mebh+N/VNydSjZ5MEoTWuA6Ppna0E4NVCBfrVFKgNWSVN/2NDzD9CZ87u7bD4l173ioKTU8/KTkVgcYxfZMiNHac1DWHArOxEvFOi5gfv5va32hoUDFqdGggMcS+JlDqfPGTLTPqj/7NyP7LtfSxk3fm+xP/w0TOl9BkkNLg36QggVMYl3epqYygr2g1unLNEtLAV/hLmAaC5vYk+sjirxHOAK6pVAQc76NLhwc6MTdDi4mlPq/a2XHoYtNJ11og19PpA4SZ6AdqDRug+/+K9ObHZ4sFkKejfSSLAcRCopuF6TPh4FpeCVT+9GJyPcvwNPE5GZcebV1h3ckB4RqxOqW3gtfp0HiexYSX5KQrDAs6d/ftmP9tG9Q3rNXdrZwSD0Tcfro1CMZZBo0WKXwwVBSQzgWvlIWx4cPQtVnNL+YiIL4auBDF4INrzi/vp7DNFRjpJLROHngnZ6Q2kiBTltFN4UUmHKBFDKt+Bnc=
+before_install:  # disable auth for neo4j and restart it...
+#  - sudo sed -i 's/#dbms.security.auth_enabled=false/dbms.security.auth_enabled=false/g' /etc/neo4j/neo4j.conf
+#  - sudo systemctl restart neo4j
