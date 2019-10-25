@@ -15,7 +15,7 @@ before_script:
 - setup_cluster 0
 - setup_cluster 1
 - setup_cluster 2
-- sleep 30
+- sleep 90
 - cd ../../../../../
 script: vendor/bin/phpunit
 notifications:
