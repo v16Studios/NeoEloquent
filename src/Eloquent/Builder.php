@@ -4,15 +4,12 @@ namespace Vinelab\NeoEloquent\Eloquent;
 
 use Illuminate\Database\Eloquent\Builder as IlluminateBuilder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Arr;
 use Neo4jBridge\Bridge\Node;
 use Neo4jBridge\Bridge\ResultSet;
 use Neo4jBridge\Bridge\Row;
 use Vinelab\NeoEloquent\Helpers;
-use Vinelab\NeoEloquent\Helpers;
-use Vinelab\NeoEloquent\QueryException;
 use Vinelab\NeoEloquent\QueryException;
 
 class Builder extends IlluminateBuilder
