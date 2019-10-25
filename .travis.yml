@@ -11,6 +11,7 @@ before_script:
 - echo "127.0.0.4 instance2" | sudo tee -a /etc/hosts
 - docker network create --driver=bridge cluster
 - export NEO_PATH="$HOME/ulobby/neo4j_docker"
+- cd ./vendor/ulobby/rialto-neo4j-driver/tests/setup/
 - setup_cluster 0
 - setup_cluster 1
 - setup_cluster 2
