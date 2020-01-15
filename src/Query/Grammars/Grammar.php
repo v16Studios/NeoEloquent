@@ -115,7 +115,7 @@ class Grammar extends IlluminateGrammar
         // We will only wrap the value unless it has parentheses
         // in it which is the case where we're matching a node by id, or an *
         // and last whether this is a pre-formatted key.
-        if (preg_match('/[(|)]/', $value) || $value == '*' || strpos($value, '.') !== false) {
+        if (preg_match('/[(|)]/', $value) || strpos($value, '.') !== false) {
             return $value;
         }
 
