@@ -28,7 +28,7 @@ class CypherGrammar extends Grammar
     public function compileSelect(Builder $query)
     {
         if (is_null($query->columns)) {
-            $query->columns = ['*'];
+            $query->columns = [$query->modelAsNode()];
         }
 
         return trim($this->concatenate($this->compileComponents($query)));
