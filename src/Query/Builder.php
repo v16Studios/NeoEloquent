@@ -3,6 +3,7 @@
 namespace Vinelab\NeoEloquent\Query;
 
 use Closure;
+use Countable;
 use DateTime;
 use Carbon\Carbon;
 use BadMethodCallException;
@@ -19,7 +20,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Vinelab\NeoEloquent\Traits\ResultTrait;
 
-class Builder
+class Builder implements Countable
 {
     use ResultTrait;
 
