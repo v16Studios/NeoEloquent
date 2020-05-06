@@ -3,6 +3,8 @@
 namespace Vinelab\NeoEloquent\Tests;
 
 use Mockery as M;
+use Graphaware\Bolt\Driver as Client;
+use Graphaware\Bolt\Result\Result;
 
 class ConnectionTest extends TestCase
 {
@@ -38,8 +40,7 @@ class ConnectionTest extends TestCase
         $c = $this->getConnectionWithConfig('neo4j');
 
         $client = $c->getClient();
-
-        $this->assertInstanceOf('Neoxygen\NeoClient\Client', $client);
+        $this->assertInstanceOf(Client::class, $client);
     }
 
     public function testGettingConfigParam()
@@ -62,7 +63,7 @@ class ConnectionTest extends TestCase
     {
         $c = $this->getConnectionWithConfig('neo4j');
 
-        $this->assertInstanceOf('Neoxygen\NeoClient\Client', $c->getClient());
+        $this->assertInstanceOf(Client::class, $c->getClient());
     }
 
     public function testGettingDefaultHost()
@@ -233,7 +234,7 @@ class ConnectionTest extends TestCase
 
         $connection = $c->createConnection();
 
-        $this->assertInstanceOf('Neoxygen\NeoClient\Client', $connection);
+        $this->assertInstanceOf(Client::class, $connection);
     }
 
     public function testSelectWithBindings()
@@ -337,7 +338,7 @@ class ConnectionTest extends TestCase
 
         $results = $this->client->sendCypherQuery($cypher['statement'], $cypher['parameters'])->getResult();
 
-        $this->assertInstanceOf('Neoxygen\NeoClient\Formatter\Result', $results);
+        $this->assertInstanceOf(Result::class, $results);
 
         $user = null;
 
@@ -365,8 +366,7 @@ class ConnectionTest extends TestCase
         );
 
         $results = $c->affectingStatement($query, $bindings);
-
-        $this->assertInstanceOf('Neoxygen\NeoClient\Formatter\Result', $results);
+        $this->assertInstanceOf(Result::class, $results);
 
         foreach ($results as $result) {
             $count = $result[0];
@@ -454,9 +454,9 @@ class ConnectionTest extends TestCase
 
     public function testTransactionMethodRunsSuccessfully()
     {
-        $client = M::mock('Neoxygen\NeoClient\Client');
+        $client = M::mock(Client::class);
         $client->shouldReceive('createTransaction')->once()
-            ->andReturn($transaction = M::mock('Neoxygen\NeoClient\Transaction\Transaction'));
+            ->andReturn($transaction = M::mock(Result::class));
 
         $transaction->shouldReceive('commit')
             ->shouldReceive('rollback')->andReturn('foo');
@@ -470,9 +470,9 @@ class ConnectionTest extends TestCase
 
     public function testTransactionMethodRollsbackAndThrows()
     {
-        $neo = M::mock('Neoxygen\NeoClient\Client');
+        $neo = M::mock(Client::class);
         $neo->shouldReceive('createTransaction')->once()
-            ->andReturn($transaction = M::mock('Neoxygen\NeoClient\Transaction\Transaction'));
+            ->andReturn($transaction = M::mock(Result::class));
 
         $transaction->shouldReceive('rollback');
 
