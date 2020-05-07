@@ -22,7 +22,8 @@
         "illuminate/support": "~6.0.0",
         "illuminate/pagination": "~6.0.0",
         "nesbot/carbon": "~2.0",
-        "graphaware/neo4j-bolt": "dev-feature/causal-cluster-support"
+        "graphaware/neo4j-bolt": "dev-feature/causal-cluster-support",
+        "laravel/helpers": "^1.2"
     },
     "require-dev": {
         "phpunit/phpunit": "~6.0",
