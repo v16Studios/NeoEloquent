@@ -15,13 +15,13 @@
     ],
     "require": {
         "php": ">=7.0.0",
-        "illuminate/container": "~5.8.0",
-        "illuminate/contracts": "~5.8.0",
-        "illuminate/database": "~5.8.0",
-        "illuminate/events": "~5.8.0",
-        "illuminate/support": "~5.8.0",
-        "illuminate/pagination": "~5.8.0",
-        "nesbot/carbon": "^1.26.3 || ^2.0",
+        "illuminate/container": "~6.0.0",
+        "illuminate/contracts": "~6.0.0",
+        "illuminate/database": "~6.0.0",
+        "illuminate/events": "~6.0.0",
+        "illuminate/support": "~6.0.0",
+        "illuminate/pagination": "~6.0.0",
+        "nesbot/carbon": "~2.0",
         "graphaware/neo4j-bolt": "dev-feature/causal-cluster-support"
     },
     "require-dev": {
