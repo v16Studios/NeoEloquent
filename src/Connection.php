@@ -328,10 +328,11 @@ class Connection implements ConnectionInterface
      *
      * @param string $query
      * @param array  $bindings
-     *
+     * @param  bool  $useReadPdo
+     * 
      * @return mixed
      */
-    public function selectOne($query, $bindings = [])
+    public function selectOne($query, $bindings = [], $useReadPdo = true)
     {
         $records = $this->select($query, $bindings);
 
@@ -576,10 +577,11 @@ class Connection implements ConnectionInterface
      *
      * @param string $query
      * @param array  $bindings
-     *
+     * @param  bool  $useReadPdo
+     * 
      * @return array
      */
-    public function select($query, $bindings = array())
+    public function select($query, $bindings = array(), $useReadPdo = true)
     {
         return $this->run($query, $bindings, function (self $me, $query, array $bindings) {
             if ($me->pretending()) {

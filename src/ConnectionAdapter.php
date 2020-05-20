@@ -106,9 +106,11 @@ class ConnectionAdapter extends BaseConnection implements ConnectionInterface
 	 *
 	 * @param  string  $query
 	 * @param  array   $bindings
+	 * @param  bool    $useReadPdo
+	 * 
 	 * @return mixed
 	 */
-	public function selectOne($query, $bindings = array())
+	public function selectOne($query, $bindings = array(), $useReadPdo = true)
 	{
         return $this->neoeloquent->selectOne($query, $bindings);
 	}
@@ -118,6 +120,7 @@ class ConnectionAdapter extends BaseConnection implements ConnectionInterface
 	 *
 	 * @param  string  $query
 	 * @param  array   $bindings
+	 * 
 	 * @return array
 	 */
 	public function selectFromWriteConnection($query, $bindings = array())
@@ -128,9 +131,10 @@ class ConnectionAdapter extends BaseConnection implements ConnectionInterface
 	/**
 	 * Run a select statement against the database.
 	 *
-	 * @param  string  $query
-	 * @param  array  $bindings
-	 * @param  bool  $useReadPdo
+	 * @param  string  	$query
+	 * @param  array  	$bindings
+	 * @param  bool  	$useReadPdo
+	 * 
 	 * @return array
 	 */
 	public function select($query, $bindings = array(), $useReadPdo = true)
