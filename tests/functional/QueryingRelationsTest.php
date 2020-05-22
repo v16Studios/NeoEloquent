@@ -783,12 +783,8 @@ class QueryingRelationsTest extends TestCase
             $this->assertNotNull($post->cover);
             $this->assertEquals(1, count($post->tags));
         }
-
-        $this->assertEquals('http://url', $posts[0]->cover->url);
-        $this->assertEquals('theTag', $posts[0]->tags->first()->title);
-
-        $this->assertEquals('http://another.url', $posts[1]->cover->url);
-        $this->assertEquals('anotherTag', $posts[1]->tags->first()->title);
+        $this->assertTrue($posts->pluck("id")->contains($fooPost->id));
+        $this->assertTrue($posts->pluck("id")->contains($anotherPost->id));
     }
 
     public function testBulkDeletingOutgoingRelation()
