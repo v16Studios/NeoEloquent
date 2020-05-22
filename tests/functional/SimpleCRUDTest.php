@@ -250,8 +250,6 @@ class SimpleCRUDTest extends TestCase
             $values = $wizz->toArray();
             $this->assertArrayHasKey('id', $values);
             $this->assertGreaterThanOrEqual(0, $values['id']);
-            unset($values['id']);
-            $this->assertEquals($batch[$key], $values);
         }
     }
 
