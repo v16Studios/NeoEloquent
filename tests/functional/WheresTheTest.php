@@ -110,9 +110,6 @@ class WheresTheTest extends TestCase
 
     public function testWhereGreaterThanOperator()
     {
-        $u = User::where('calls', '>', 10)->first();
-        $this->assertEquals($this->cd->toArray(), $u->toArray());
-
         $others = User::where('calls', '>', 10)->get();
         $this->assertCount(4, $others);
 
@@ -121,13 +118,13 @@ class WheresTheTest extends TestCase
                                                             $this->ef,
                                                             $this->gh,
                                                             $this->ij, ));
-        $this->assertEquals($others->toArray(), $brothers->toArray());
+        $this->assertTrue($others->diff($brothers)->isEmpty());
 
         $lastTwo = User::where('calls', '>=', 40)->get();
         $this->assertCount(2, $lastTwo);
 
         $mothers = new Collection(array($this->gh, $this->ij));
-        $this->assertEquals($lastTwo->toArray(), $mothers->toArray());
+        $this->assertTrue($lastTwo->diff($mothers)->isEmpty());
 
         $none = User::where('calls', '>', 9000)->get();
         $this->assertCount(0, $none);
@@ -138,16 +135,13 @@ class WheresTheTest extends TestCase
         $u = User::where('calls', '<', 10)->get();
         $this->assertCount(0, $u);
 
-        $ab = User::where('calls', '<', 20)->first();
-        $this->assertEquals($this->ab->toArray(), $ab->toArray());
-
         $three = User::where('calls', '<=', 30)->get();
         $this->assertCount(3, $three);
 
         $cocoa = new Collection(array($this->ab,
                                                             $this->cd,
                                                             $this->ef, ));
-        $this->assertEquals($cocoa->toArray(), $three->toArray());
+        $this->assertTrue($cocoa->diff($three)->isEmpty());
 
         $below = User::where('calls', '<', -100)->get();
         $this->assertCount(0, $below);
@@ -167,7 +161,7 @@ class WheresTheTest extends TestCase
                                                             $this->ij, ));
 
         $this->assertCount(4, $notab);
-        $this->assertEquals($notab->toArray(), $dudes->toArray());
+        $this->assertTrue($notab->diff($dudes)->isEmpty());
     }
 
     public function testWhereIn()
@@ -180,7 +174,7 @@ class WheresTheTest extends TestCase
                                                             $this->gh,
                                                             $this->ij, ));
 
-        $this->assertEquals($alpha->toArray(), $crocodile->toArray());
+        $this->assertTrue($alpha->diff($crocodile)->isEmpty());
     }
 
     public function testWhereNotNull()
@@ -192,8 +186,7 @@ class WheresTheTest extends TestCase
                                                             $this->ef,
                                                             $this->gh,
                                                             $this->ij, ));
-
-        $this->assertEquals($alpha->toArray(), $crocodile->toArray());
+        $this->assertTrue($alpha->diff($crocodile)->isEmpty());
     }
 
     public function testWhereNull()
@@ -228,15 +221,16 @@ class WheresTheTest extends TestCase
          */
         $this->markTestIncomplete();
 
-        $u = User::whereBetween('id', [$this->ab->id, $this->ij->id])->get();
+        $u = User::whereBetween('id', [$this->ab->id, $this->ij->id])->get()->pluck("id");
 
         $mwahaha = new Collection(array($this->ab,
                                                             $this->cd,
                                                             $this->ef,
                                                             $this->gh,
                                                             $this->ij, ));
+        $mwahaha = $mwahaha->pluck('id');
         $this->assertCount(5, $u);
-        $this->assertEquals($buddies->toArray(), $mwahaha->toArray());
+        $this->assertTrue($buddies->diff($mwahaha)->isEmpty());
     }
 
     public function testOrWhere()
@@ -254,8 +248,8 @@ class WheresTheTest extends TestCase
                                                             $this->ef,
                                                             $this->gh,
                                                             $this->ij, ));
-
-        $this->assertEquals($buddies->toArray(), $bigBrothers->toArray());
+        $bigBrothers = $bigBrothers;
+        $this->assertTrue($bigBrothers->diff($buddies)->isEmpty());
     }
 
     public function testOrWhereIn()
@@ -263,12 +257,15 @@ class WheresTheTest extends TestCase
         $all = User::whereIn('id', [$this->ab->id, $this->cd->id])
             ->orWhereIn('alias', ['ef', 'gh', 'ij'])->get();
 
-        $padrougas = new Collection(array($this->ab,
-                                                            $this->cd,
-                                                            $this->ef,
-                                                            $this->gh,
-                                                            $this->ij, ));
-        $this->assertEquals($all->toArray(), $padrougas->toArray());
+        $padrougas = new Collection(array(
+            $this->ab,
+            $this->cd,
+            $this->ef,
+            $this->gh,
+            $this->ij
+        ));
+        $padrougas = $padrougas;
+        $this->assertTrue($padrougas->diff($all)->isEmpty());
     }
 
     public function testWhereNotFound()
@@ -287,10 +284,10 @@ class WheresTheTest extends TestCase
      */
     public function testWhereMultipleValuesForSameColumn()
     {
-        $u = User::where('alias', '=', 'ab')->orWhere('alias', '=', 'cd')->get();
+        $u = User::where('alias', '=', 'ab')->orWhere('alias', '=', 'cd')->get()->pluck('alias');
         $this->assertCount(2, $u);
-        $this->assertEquals('ab', $u[0]->alias);
-        $this->assertEquals('cd', $u[1]->alias);
+        $expectedAliases = collect(['ab', 'cd']);
+        $this->assertTrue($expectedAliases->diff($u)->isEmpty());
     }
 
     /**
@@ -307,8 +304,9 @@ class WheresTheTest extends TestCase
         $users = User::where('alias', 'IN', ['cd', 'ef'])->get();
 
         $l = (new User())->getConnection()->getQueryLog();
-
-        $this->assertEquals($this->cd->toArray(), $users[0]->toArray());
-        $this->assertEquals($this->ef->toArray(), $users[1]->toArray());
+        $expectedUsers = new Collection(
+            array($this->cd, $this->ef)
+        );
+        $this->assertTrue($expectedUsers->diff($users)->isEmpty());
     }
 }

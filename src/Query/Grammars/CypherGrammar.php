@@ -417,7 +417,7 @@ class CypherGrammar extends Grammar
         // We need to make sure that there exists relations so that we return
         // them as well, also there has to be nothing carried in the query
         // to not conflict with them.
-        if ($this->hasMatchRelations($query) && empty($query->with)) {
+        if (!empty($query->matches) && empty($query->with)) {
             $relations = $this->getMatchRelations($query);
             $identifiers = [];
 

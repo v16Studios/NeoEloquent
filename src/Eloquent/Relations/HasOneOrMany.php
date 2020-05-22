@@ -837,7 +837,7 @@ abstract class HasOneOrMany extends Relation implements RelationInterface
      *
      * @return string
      */
-    public function getForeignKey()
+    public function getForeignKeyName()
     {
         return $this->getForeignKey;
     }
