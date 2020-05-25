@@ -1814,7 +1814,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         // event set individually instead of catching event for all the models.
         $event = "eloquent.{$event}: ".get_class($this);
 
-        $method = $halt ? 'until' : 'fire';
+        $method = $halt ? 'until' : 'dispatch';
 
         return static::$dispatcher->$method($event, $this);
     }
