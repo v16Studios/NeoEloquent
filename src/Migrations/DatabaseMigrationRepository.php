@@ -68,7 +68,7 @@ class DatabaseMigrationRepository implements MigrationRepositoryInterface
      *
      * @return array
      */
-    public function getMigrationBatches();
+    public function getMigrationBatches()
     {
         $query = $this->label()->where('batch', '>=', '1');
         return $query->orderBy('migration', 'asc')->pluck('batch', 'migration')->all();
