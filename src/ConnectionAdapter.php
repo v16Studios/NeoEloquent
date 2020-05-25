@@ -262,7 +262,7 @@ class ConnectionAdapter extends BaseConnection implements ConnectionInterface
 	 *
 	 * @return void
 	 */
-	public function rollBack()
+	public function rollBack($toLevel = NULL)
 	{
 		$this->neoeloquent->rollBack();
 	}
@@ -340,7 +340,7 @@ class ConnectionAdapter extends BaseConnection implements ConnectionInterface
 	 * @param  \Illuminate\Database\QueryException
 	 * @return bool
 	 */
-	protected function causedByLostConnection(Exception $e)
+	protected function causedByLostConnection(Throwable $e)
 	{
         return $this->neoeloquent->causedByLostConnection(new QueryException($e));
 	}
