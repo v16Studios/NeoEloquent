@@ -465,13 +465,17 @@ class Builder extends IlluminateBuilder
      */
     public function simplePaginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
     {
-        $paginator = $this->query->getConnection()->getPaginator();
-        $page = $paginator->getCurrentPage();
-        $perPage = $perPage ?: $this->model->getPerPage();
-        $this->query->skip(($page - 1) * $perPage)->take($perPage + 1);
+        $page = $page ?: Paginator::resolveCurrentPage($pageName);
 
-        return new Paginator($this->get($columns), $perPage, $page, [
-            'path'     => Paginator::resolveCurrentPath(),
+        $perPage = $perPage ?: $this->model->getPerPage();
+
+        // Next we will set the limit and offset for this query so that when we get the
+        // results we get the proper section of results. Then, we'll create the full
+        // paginator instances for these results with the given page and per page.
+        $this->skip(($page - 1) * $perPage)->take($perPage + 1);
+
+        return $this->simplePaginator($this->get($columns), $perPage, $page, [
+            'path' => Paginator::resolveCurrentPath(),
             'pageName' => $pageName,
         ]);
     }
