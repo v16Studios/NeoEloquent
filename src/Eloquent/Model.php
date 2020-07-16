@@ -4,6 +4,7 @@ namespace Vinelab\NeoEloquent\Eloquent;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model as IlluminateModel;
+use Illuminate\Support\Str;
 use Vinelab\NeoEloquent\Eloquent\Builder as EloquentBuilder;
 use Vinelab\NeoEloquent\Eloquent\Relations\BelongsTo;
 use Vinelab\NeoEloquent\Eloquent\Relations\BelongsToMany;
@@ -468,7 +469,7 @@ abstract class Model extends IlluminateModel
         if (is_null($name)) {
             list(, $caller) = debug_backtrace(false);
 
-            $name = snake_case($caller['function']);
+            $name = Str::snake($caller['function']);
         }
 
         list($type, $id) = $this->getMorphs($name, $type, $id);
