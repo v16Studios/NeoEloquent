@@ -176,4 +176,14 @@ class BelongsToMany extends HasOneOrMany
 
         return new EdgeIn($this->query, $this->parent, $model, $this->type, $attributes);
     }
+
+    /**
+     * Get the class being used for pivot models.
+     *
+     * @return string
+     */
+    public function getPivotClass()
+    {
+        return '';
+    }
 }
