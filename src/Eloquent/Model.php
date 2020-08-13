@@ -144,7 +144,7 @@ abstract class Model extends IlluminateModel
     {
         return $this->save($options);
     }
-    
+
     /**
      * @override
      * Define an inverse one-to-one or many relationship.
@@ -487,7 +487,12 @@ abstract class Model extends IlluminateModel
         // there are multiple types in the morph and we can't use single queries.
         if (is_null($class = $this->$type)) {
             return new MorphTo(
-                $this->newQuery(), $this, $id, null, $type, $name
+                $this->newQuery(),
+                $this,
+                $id,
+                null,
+                $type,
+                $name
             );
         }
 
@@ -498,7 +503,12 @@ abstract class Model extends IlluminateModel
             $instance = new $class();
 
             return new MorphTo(
-                with($instance)->newQuery(), $this, $id, $instance->getKeyName(), $type, $name
+                with($instance)->newQuery(),
+                $this,
+                $id,
+                $instance->getKeyName(),
+                $type,
+                $name
             );
         }
     }
