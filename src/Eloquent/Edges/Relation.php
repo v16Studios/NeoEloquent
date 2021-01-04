@@ -212,7 +212,7 @@ abstract class Relation extends Delegate
                 $relationshipLabels = $relatedNode->getLabels();
 
                 foreach ($relationshipLabels as $relationshipLabel) {
-                    if (in_array($relationshipLabel->getName(), (array)$this->related->getLabel())) {
+                    if (in_array($relationshipLabel->getName(), (array) $this->related->getLabel())) {
                         $relationship->delete();
                     }
                 }
