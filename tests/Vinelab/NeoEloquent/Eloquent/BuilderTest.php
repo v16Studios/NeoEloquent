@@ -4,12 +4,13 @@ namespace Vinelab\NeoEloquent\Tests\Eloquent;
 
 use Illuminate\Support\Collection;
 use Mockery as M;
+use PHPUnit\Framework\MockObject\MockBuilder;
 use Vinelab\NeoEloquent\Eloquent\Builder;
 use Vinelab\NeoEloquent\Tests\TestCase;
 
 class EloquentBuilderTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -20,7 +21,7 @@ class EloquentBuilderTest extends TestCase
         $this->builder = new Builder($this->query);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         M::close();
 
@@ -690,7 +691,7 @@ class EloquentBuilderTest extends TestCase
         return $query;
     }
 
-    public function getMockBuilder($classname = null)
+    public function getMockBuilder($classname = null): MockBuilder
     {
         $query = M::mock('Vinelab\NeoEloquent\Query\Builder');
         $query->shouldReceive('from')->andReturn('foo_table');
