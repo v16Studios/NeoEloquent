@@ -462,7 +462,7 @@ class ConnectionTest extends TestCase
 
         $connection = $this->getMockConnection();
         $connection->setClient($client);
-        
+
         $result = $connection->beginTransaction(function ($db) {
             return $db;
         });
