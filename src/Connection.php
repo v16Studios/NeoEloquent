@@ -434,15 +434,16 @@ class Connection extends IlluminateConnection
      * Begin a fluent query against a database table.
      * In neo4j's terminologies this is a node.
      *
-     * @param string $table
+     * @param string      $table
+     * @param string|null $as
      *
      * @return \Vinelab\NeoEloquent\Query\Builder
      */
-    public function table($table)
+    public function table($table, $as = null)
     {
         $query = new Builder($this, $this->getQueryGrammar(), $this->getPostProcessor());
 
-        return $query->from($table);
+        return $query->from($table, $as);
     }
 
     /**
