@@ -212,16 +212,16 @@ class SimpleCRUDTest extends TestCase
                 'fiz' => 'foo',
             ],
             [
-                'fiz' => 'morefoo',
                 'biz' => 'moreboo',
+                'fiz' => 'morefoo',
             ],
             [
-                'fiz' => 'otherfoo',
                 'biz' => 'otherboo',
+                'fiz' => 'otherfoo',
             ],
             [
-                'fiz' => 'somefoo',
                 'biz' => 'someboo',
+                'fiz' => 'somefoo',
             ],
         ];
 
