@@ -29,6 +29,18 @@ Join the [Official Neo4j Slack Group](https://neo4j.com/blog/public-neo4j-users-
 
 Add the package to your `composer.json` and run `composer update`.
 
+### Laravel 8
+
+#### 8.0
+
+```json
+{
+    "require": {
+        "ulobby/neoeloquent": "^8.0"
+    }
+}
+```
+
 ### Laravel 7
 
 #### 7.0
