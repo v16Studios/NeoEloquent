@@ -143,7 +143,8 @@ class Builder extends IlluminateQueryBuilder
         $id = $node->getId();
 
         // set the labels
-        $node->addLabels(array_map([$this, 'makeLabel'], $this->from));
+        $from = is_array($this->from) ? $this->from : array($this->from);
+        $node->addLabels(array_map([$this, 'makeLabel'], $from);
 
         return $id;
     }
