@@ -104,6 +104,7 @@ class Builder extends IlluminateQueryBuilder
      * @param string      $label
      * @param string|null $as
      *
+     * @param null $as
      * @return \Vinelab\NeoEloquent\Query\Builder|static
      */
     public function from($label, $as = null)

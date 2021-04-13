@@ -218,9 +218,9 @@ abstract class HasOneOrMany extends IlluminateHasOneOrMany implements RelationIn
      * Attach an array of models to the parent instance.
      *
      * @param array $models
-     * @param arra  $properties The relationship properties
+     * @param array  $properties The relationship properties
      *
-     * @return array
+     * @return Collection
      */
     public function saveMany($models, array $properties = [])
     {

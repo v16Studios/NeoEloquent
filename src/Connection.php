@@ -379,6 +379,49 @@ class Connection extends IlluminateConnection
         return false;
     }
 
+    public function transaction(Closure $callback, $attempts = 1)
+    {
+        for ($currentAttempt = 1; $currentAttempt <= $attempts; $currentAttempt++) {
+            $this->beginTransaction();
+
+            // We'll simply execute the given callback within a try / catch block and if we
+            // catch any exception we can rollback this transaction so that none of this
+            // gets actually persisted to a database or stored in a permanent fashion.
+            try {
+                $callbackResult = $callback($this);
+            }
+
+                // If we catch an exception we'll rollback this transaction and try again if we
+                // are not out of attempts. If we are out of attempts we will just throw the
+                // exception back out and let the developer handle an uncaught exceptions.
+            catch (Throwable $e) {
+                $this->handleTransactionException(
+                    $e, $currentAttempt, $attempts
+                );
+
+                continue;
+            }
+
+            try {
+                if ($this->transactions == 1) {
+                    $this->transaction->commit();
+                }
+
+                $this->transactions = max(0, $this->transactions - 1);
+            } catch (Throwable $e) {
+                $this->handleCommitTransactionException(
+                    $e, $currentAttempt, $attempts
+                );
+
+                continue;
+            }
+
+            $this->fireConnectionEvent('committed');
+
+            return $callbackResult;
+        }
+    }
+
     /**
      * Start a new database transaction.
      *
@@ -436,6 +479,7 @@ class Connection extends IlluminateConnection
      * @param string      $table
      * @param string|null $as
      *
+     * @param null $as
      * @return \Vinelab\NeoEloquent\Query\Builder
      */
     public function table($table, $as = null)
