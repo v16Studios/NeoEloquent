@@ -10,8 +10,11 @@ use Illuminate\Database\Query\Builder as IlluminateQueryBuilder;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Query\Processors\Processor as IlluminateProcessor;
 use Vinelab\NeoEloquent\Connection;
+use Vinelab\NeoEloquent\DatabaseDriver\Interfaces\ClientInterface;
 use Vinelab\NeoEloquent\Query\Grammars\Grammar;
 
+
+#[\AllowDynamicProperties]
 class Builder extends IlluminateQueryBuilder
 {
     /**
@@ -24,7 +27,7 @@ class Builder extends IlluminateQueryBuilder
     /**
      * The database active client handler.
      *
-     * @var Everyman\Neo4j\Client
+     * @var ClientInterface
      */
     protected $client;
 
@@ -164,8 +167,13 @@ class Builder extends IlluminateQueryBuilder
         $bindings = $this->getBindingsMergedWithValues($values);
 
         $updated = $this->connection->update($cypher, $bindings);
+        $updated = $updated->getResults();
 
-        return (isset($updated[0]) && isset($updated[0][0])) ? $updated[0][0] : 0;
+        if (!isset($updated[0])) {
+            return 0;
+        }
+
+        return reset($updated[0]);
     }
 
     /**
@@ -262,7 +270,7 @@ class Builder extends IlluminateQueryBuilder
         $row = null;
         if ($results->offsetExists(0)) {
             $row = $results->offsetGet(0);
-            $count = $row->offsetGet(0);
+            $count = reset($row);
 
             return $count;
         } else {
@@ -286,7 +294,7 @@ class Builder extends IlluminateQueryBuilder
     {
         // First we check whether the operator is 'IN' so that we call whereIn() on it
         // as a helping hand and centralization strategy, whereIn knows what to do with the IN operator.
-        if (mb_strtolower($operator) == 'in') {
+        if ($operator && mb_strtolower($operator) == 'in') {
             return $this->whereIn($column, $value, $boolean);
         }
 
@@ -448,17 +456,62 @@ class Builder extends IlluminateQueryBuilder
         return $this;
     }
 
+    public function whereIntegerInRaw($column, $values, $boolean = 'and', $not = false)
+    {
+        return $this->whereIn($column, $values, $boolean, $not);
+    }
+
+    /**
+     * Add an "or where in raw" clause for integer values to the query.
+     *
+     * @param string                                        $column
+     * @param \Illuminate\Contracts\Support\Arrayable|array $values
+     *
+     * @return $this
+     */
+    public function orWhereIntegerInRaw($column, $values)
+    {
+        return $this->whereIntegerInRaw($column, $values, 'or');
+    }
+
+    /**
+     * Add a "where not in raw" clause for integer values to the query.
+     *
+     * @param string                                        $column
+     * @param \Illuminate\Contracts\Support\Arrayable|array $values
+     * @param string                                        $boolean
+     *
+     * @return $this
+     */
+    public function whereIntegerNotInRaw($column, $values, $boolean = 'and')
+    {
+        return $this->whereIntegerInRaw($column, $values, $boolean, true);
+    }
+
+    /**
+     * Add an "or where not in raw" clause for integer values to the query.
+     *
+     * @param string                                        $column
+     * @param \Illuminate\Contracts\Support\Arrayable|array $values
+     *
+     * @return $this
+     */
+    public function orWhereIntegerNotInRaw($column, $values)
+    {
+        return $this->whereIntegerNotInRaw($column, $values, 'or');
+    }
+
     /**
      * Add a where between statement to the query.
      *
-     * @param string $column
-     * @param array  $values
-     * @param string $boolean
-     * @param bool   $not
+     * @param string   $column
+     * @param iterable $values
+     * @param string   $boolean
+     * @param bool     $not
      *
      * @return \Illuminate\Database\Query\Builder|static
      */
-    public function whereBetween($column, array $values, $boolean = 'and', $not = false)
+    public function whereBetween($column, iterable $values, $boolean = 'and', $not = false)
     {
         $type = 'between';
 
@@ -819,7 +872,7 @@ class Builder extends IlluminateQueryBuilder
         $this->columns = $previousColumns;
 
         if ($results->valid()) {
-            return $results->current()[0];
+            return reset($results->getResults()[0]);
         }
     }
 
@@ -862,7 +915,7 @@ class Builder extends IlluminateQueryBuilder
      *
      * @param string $label
      *
-     * @return Everyman\Neo4j\Label
+     * @return string
      */
     public function makeLabel($label)
     {
@@ -947,6 +1000,7 @@ class Builder extends IlluminateQueryBuilder
         $cypher = $this->grammar->compileUpdateLabels($this, $labels, $operation);
 
         $updated = $this->connection->update($cypher, $this->getBindings());
+        $updated = $updated->getResults();
 
         return (isset($updated[0]) && isset($updated[0][0])) ? $updated[0][0] : 0;
     }

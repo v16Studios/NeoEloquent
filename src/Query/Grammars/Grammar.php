@@ -26,7 +26,6 @@ class Grammar extends IlluminateGrammar
      */
     public function parameter($value)
     {
-
         // Validate whether the requested field is the
         // node id, in that case id(n) doesn't work as
         // a placeholder so we transform it to the id replacement instead.
@@ -47,7 +46,7 @@ class Grammar extends IlluminateGrammar
             $property = explode('.', $property)[1];
         }
 
-        return '{'.$property.'}';
+        return '$'.$property;
     }
 
     /**

@@ -7,6 +7,7 @@ use Illuminate\Database\Migrations\MigrationRepositoryInterface;
 use Vinelab\NeoEloquent\Eloquent\Model;
 use Vinelab\NeoEloquent\Schema\Builder as SchemaBuilder;
 
+#[\AllowDynamicProperties]
 class DatabaseMigrationRepository implements MigrationRepositoryInterface
 {
     /**
@@ -239,5 +240,21 @@ class DatabaseMigrationRepository implements MigrationRepositoryInterface
             ->orderBy('migration', 'asc')
             ->get()
             ->pluck('batch', 'migration')->all();
+    }
+
+    /**
+     * Get the list of the migrations by batch number.
+     *
+     * @param int $batchNumber
+     *
+     * @return array
+     */
+    public function getMigrationsByBatch($batch)
+    {
+        return $this->model
+            ->where('batch', $batch)
+            ->orderBy('migration', 'desc')
+            ->get()
+            ->all();
     }
 }

@@ -13,9 +13,9 @@ class Stub extends Model
 
 class TestCase extends PHPUnit
 {
-    public function __construct()
+    public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
-        parent::__construct();
+        parent::__construct($name, $data, $dataName);
 
         // load custom configuration file
         $this->dbConfig = require 'config/database.php';
@@ -66,10 +66,17 @@ class TestCase extends PHPUnit
      */
     protected function flushDb()
     {
+        $client = $this->getClient();
+
+        $flushQuery = 'MATCH (n) DETACH DELETE n';
+
+        $client->run($flushQuery);
+    }
+
+    protected function getClient()
+    {
         $connection = (new Stub())->getConnection();
-        $client = $connection->getClient();
-        // Remove all relationships and related nodes
-        $query = new \Everyman\Neo4j\Cypher\Query($client, 'MATCH (n) OPTIONAL MATCH (n) - [r] - (c) DELETE n, r, c');
-        $query->getResultSet();
+
+        return $connection->getClient();
     }
 }
