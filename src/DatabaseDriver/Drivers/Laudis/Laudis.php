@@ -109,6 +109,6 @@ class Laudis extends ClientAbstract implements ClientInterface
 
     public function beginTransaction()
     {
-        // TODO
+        return new Transaction($this->client->beginTransaction());
     }
 }

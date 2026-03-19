@@ -54,8 +54,9 @@ class ConnectionTest extends TestCase
     {
         $c = $this->getConnectionWithConfig('neo4j');
 
-        $this->assertEquals($c->getConfig('port'), 7474);
+        $this->assertEquals($c->getConfig('port'), 7687);
         $this->assertEquals($c->getConfig('host'), 'localhost');
+        $this->assertEquals($c->getConfig('database'), 'neo4j');
     }
 
     public function testDriverName()
@@ -85,8 +86,15 @@ class ConnectionTest extends TestCase
 
         $port = $c->getPort();
 
-        $this->assertEquals(7474, $port);
+        $this->assertEquals(7687, $port);
         $this->assertIsInt($port);
+    }
+
+    public function testGettingDefaultDatabaseName()
+    {
+        $c = $this->getConnectionWithConfig('default');
+
+        $this->assertEquals('neo4j', $c->getDatabaseName());
     }
 
     public function testGettingQueryCypherGrammar()

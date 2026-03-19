@@ -2,7 +2,7 @@
 
 namespace Vinelab\NeoEloquent\DatabaseDriver;
 
-use Vinelab\NeoEloquent\DatabaseDriver\Interfaces\ClientInterface;
+use Vinelab\NeoEloquent\DatabaseDriver\Interfaces\QueryExecutorInterface;
 
 /**
  * Represents a Cypher query string and variables
@@ -14,16 +14,16 @@ use Vinelab\NeoEloquent\DatabaseDriver\Interfaces\ClientInterface;
  */
 class CypherQuery
 {
-    protected $client = null;
+    protected $executor = null;
     protected $template = null;
     protected $vars = [];
 
     protected $result = null;
 
-    public function __construct(ClientInterface $client, $template, $vars = [])
+    public function __construct(QueryExecutorInterface $executor, $template, $vars = [])
     {
-        $this->client = $client;
-        $this->template = $template;
+        $this->executor = $executor;
+        $this->template = $this->normalizeLegacyParameters($template);
         $this->vars = $vars;
     }
 
@@ -53,9 +53,17 @@ class CypherQuery
     public function getResultSet()
     {
         if ($this->result === null) {
-            $this->result = $this->client->executeCypherQuery($this);
+            $this->result = $this->executor->executeCypherQuery($this);
         }
 
         return $this->result;
+    }
+
+    /**
+     * Translate the legacy `{parameter}` syntax to the `$parameter` form expected by modern Neo4j servers.
+     */
+    protected function normalizeLegacyParameters($template)
+    {
+        return preg_replace('/\{([A-Za-z_][A-Za-z0-9_]*)\}/', '\$$1', $template);
     }
 }

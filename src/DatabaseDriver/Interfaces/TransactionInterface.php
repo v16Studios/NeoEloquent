@@ -2,7 +2,7 @@
 
 namespace Vinelab\NeoEloquent\DatabaseDriver\Interfaces;
 
-interface TransactionInterface
+interface TransactionInterface extends QueryExecutorInterface
 {
     public function commit();
 

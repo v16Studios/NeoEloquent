@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Ulobby/NeoEloquent.svg?branch=master)](https://travis-ci.org/Ulobby/NeoEloquent)
+[![Tests](https://github.com/Ulobby/NeoEloquent/actions/workflows/tests.yml/badge.svg)](https://github.com/Ulobby/NeoEloquent/actions/workflows/tests.yml)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4b18de9ea45b4b2c96a8f78a25db6480)](https://www.codacy.com/manual/berteltorp/NeoEloquent?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ulobby/NeoEloquent&amp;utm_campaign=Badge_Grade)
 
 # NeoEloquent
@@ -6,8 +6,8 @@ Neo4j Graph Eloquent Driver for Laravel, this is a fork of [Vinelab/NeoEloquent]
 
 We recommend you use and contribute to the original repository if you are just starting out with NeoEloquent - but you are of course free to use our fork and make PRs if use it anyway.
 
-The versioning scheme for this repository follow Laravel, in so that the major version for this package corresponds to the major of laravel supported.
-Ex NeoEloquent v6 supports Laravel v6, and NeoEloquent v8 supports Laravel v8.
+The versioning scheme for this repository follows Laravel, so the package major version matches the Laravel major it targets.
+This branch currently supports Laravel 10.x, 11.x, 12.x, and 13.x.
 
 At Ulobby we use NeoEloquent in production for a lot of the crud operations in our Laravel based SaaS. We usually end up writing raw cypher for more complex operations, as a consequence of this we currently do not recommend using polymorphic-relationships.
 
@@ -31,55 +31,31 @@ Join the [Official Neo4j Slack Group](https://neo4j.com/blog/public-neo4j-users-
 
 Add the package to your `composer.json` and run `composer update`.
 
-### Laravel 8
+Use the NeoEloquent release line that matches your Laravel major. This branch is prepared for Laravel 10.x through 13.x support.
 
-#### 8.0
+### Neo4j Debian packages
 
-```json
-{
-    "require": {
-        "ulobby/neoeloquent": "^8.0"
-    }
-}
+To install the latest calendar-versioned Neo4j from Neo4j's Debian repository:
+
+```bash
+wget -O - https://debian.neo4j.com/neotechnology.gpg.key | sudo apt-key add -
+echo 'deb https://debian.neo4j.com stable latest' | sudo tee /etc/apt/sources.list.d/neo4j.list
+sudo apt-get update
+sudo apt-get install neo4j
 ```
 
-### Laravel 7
-
-#### 7.0
-
-```json
-{
-    "require": {
-        "ulobby/neoeloquent": "^7.0"
-    }
-}
-```
-
-### Laravel 6
-
-#### 6.0
-
-```json
-{
-    "require": {
-        "ulobby/neoeloquent": "^6.0"
-    }
-}
-```
-
-Add the service provider in `app/config/app.php`:
+Laravel package discovery will register the service provider automatically in modern Laravel applications. If you need to register it manually, add the provider to `config/app.php`:
 
 ```php
-'Vinelab\NeoEloquent\NeoEloquentServiceProvider',
+Vinelab\NeoEloquent\NeoEloquentServiceProvider::class,
 ```
 
-The service provider will register all the required classes for this package and will also alias
-the `Model` class to `NeoEloquent` so you can simply `extend NeoEloquent` in your models.
+The service provider registers the required classes for this package and aliases the `Model` class to `NeoEloquent`, so your models can simply `extend NeoEloquent`.
 
 ## Configuration
 
 ### Connection
-in `app/config/database.php` or in case of an environment-based configuration `app/config/[env]/database.php`
+In `config/database.php`
 make `neo4j` your default connection:
 
 ```php
@@ -92,20 +68,24 @@ Add the connection defaults:
 'connections' => [
     'neo4j' => [
         'driver' => 'neo4j',
+        'scheme' => env('DB_SCHEME', 'bolt'),
+        'database' => env('DB_DATABASE', 'neo4j'),
         'host'   => env('DB_HOST', 'localhost'),
-        'port'   => env('DB_PORT', '7474'),
+        'port'   => env('DB_PORT', '7687'),
         'username' => env('DB_USERNAME', null),
         'password' => env('DB_PASSWORD', null)
     ]
 ]
 ```
 
+Raw Cypher queries may use either the legacy `{parameter}` syntax or the modern `$parameter` syntax. NeoEloquent will normalize legacy placeholders before sending the query to Neo4j.
+
 ### Migration Setup
 
 If you're willing to have migrations:
 
-- create the folder `app/database/labels`
-- modify `composer.json` and add `app/database/labels` to the `classmap` array
+- create the folder `database/labels`
+- modify `composer.json` and add `database/labels` to the `classmap` array
 - run `composer dump-autoload`
 
 
@@ -1115,7 +1095,8 @@ Check out the [createWith()](#createwith) method on how you can achieve this in 
 
 ## Tests
 
-- install a Neo4j instance and run it with the default configuration `localhost:7474`
+- install a Neo4j instance and run it with Bolt enabled on `localhost:7687`
+- when using a current Debian package install, the default database should be `neo4j`
 - make sure the database graph is empty to avoid conflicts
 - after running `composer install` there should be `/vendor/bin/phpunit`
 - run `./vendor/bin/phpunit` after making sure that the Neo4j instance is running

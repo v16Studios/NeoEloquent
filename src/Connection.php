@@ -8,9 +8,11 @@ use Exception;
 use Illuminate\Database\Connection as IlluminateConnection;
 use Illuminate\Database\Schema\Grammars\Grammar as IlluminateSchemaGrammar;
 use Illuminate\Support\Arr;
+use Throwable;
 use Vinelab\NeoEloquent\DatabaseDriver\CypherQuery;
 use Vinelab\NeoEloquent\DatabaseDriver\DatabaseDriver;
 use Vinelab\NeoEloquent\DatabaseDriver\Interfaces\ClientInterface;
+use Vinelab\NeoEloquent\DatabaseDriver\Interfaces\QueryExecutorInterface;
 use Vinelab\NeoEloquent\DatabaseDriver\Interfaces\ResultSetInterface;
 use Vinelab\NeoEloquent\DatabaseDriver\Interfaces\TransactionInterface;
 use Vinelab\NeoEloquent\Query\Builder;
@@ -37,9 +39,10 @@ class Connection extends IlluminateConnection
      * @var array
      */
     protected $defaults = [
-        'scheme'            => 'http',
+        'scheme'            => 'bolt',
         'host'              => 'localhost',
-        'port'              => 7474,
+        'port'              => 7687,
+        'database'          => 'neo4j',
         'username'          => null,
         'password'          => null,
         'ssl'               => false,
@@ -92,11 +95,6 @@ class Connection extends IlluminateConnection
         return $client;
     }
 
-    public function getScheme(array $config)
-    {
-        return Arr::get($config, 'scheme', $this->defaults['scheme']);
-    }
-
     /**
      * Get the currenty active database client.
      *
@@ -139,6 +137,16 @@ class Connection extends IlluminateConnection
     }
 
     /**
+     * Get the connection database name.
+     *
+     * @return string
+     */
+    public function getDatabaseName()
+    {
+        return $this->getConfig('database');
+    }
+
+    /**
      * Get the connection username.
      *
      * @return int|string
@@ -177,7 +185,13 @@ class Connection extends IlluminateConnection
      */
     public function getConfig($option = null)
     {
-        return Arr::get($this->config, $option);
+        $config = array_merge($this->defaults, $this->config);
+
+        if ($option === null) {
+            return $config;
+        }
+
+        return Arr::get($config, $option);
     }
 
     /**
@@ -273,7 +287,19 @@ class Connection extends IlluminateConnection
      */
     public function getCypherQuery($query, array $bindings)
     {
-        return new CypherQuery($this->getClient(), $query, $this->prepareBindings($bindings));
+        return new CypherQuery($this->getQueryExecutor(), $query, $this->prepareBindings($bindings));
+    }
+
+    /**
+     * Resolve the current query executor, preferring the open transaction when present.
+     */
+    protected function getQueryExecutor(): QueryExecutorInterface
+    {
+        if ($this->transactions > 0 && $this->transaction !== null) {
+            return $this->transaction;
+        }
+
+        return $this->getClient();
     }
 
     /**
@@ -455,6 +481,7 @@ class Connection extends IlluminateConnection
     {
         if ($this->transactions == 1) {
             $this->transaction->commit();
+            $this->transaction = null;
         }
 
         $this->transactions--;
@@ -473,6 +500,7 @@ class Connection extends IlluminateConnection
             $this->transactions = 0;
 
             $this->transaction->rollBack();
+            $this->transaction = null;
         } else {
             $this->transactions--;
         }
