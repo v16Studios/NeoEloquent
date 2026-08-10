@@ -199,7 +199,7 @@ class Connection extends IlluminateConnection
      *
      * @return array
      */
-    public function select($query, $bindings = [], $useReadPdo = false)
+    public function select($query, $bindings = [], $useReadPdo = false, array $fetchUsing = [])
     {
         return $this->run($query, $bindings, function (self $me, $query, array $bindings) {
             if ($me->pretending()) {
