@@ -521,7 +521,7 @@ class CypherGrammar extends Grammar
     {
         $values = $this->valufy($where['values']);
 
-        return $this->wrap($where['column']).' IN ['.$values.']';
+        return $this->wrap($where['column']).' IN '.$values;
     }
 
     /**

@@ -140,8 +140,11 @@ class Grammar extends IlluminateGrammar
      */
     public function valufy($values)
     {
+        $arrayValue = true;
+
         // we'll only deal with arrays so let's turn it into one if it isn't
         if (!is_array($values)) {
+            $arrayValue = false;
             $values = [$values];
         }
 
@@ -169,7 +172,7 @@ class Grammar extends IlluminateGrammar
         }, $values);
 
         // stringify them.
-        return implode(', ', $values);
+        return $arrayValue ? '['.implode(',', $values).']' : implode(', ', $values);
     }
 
     /**
