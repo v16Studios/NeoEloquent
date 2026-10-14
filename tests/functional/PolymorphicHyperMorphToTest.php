@@ -373,12 +373,13 @@ class PolymorphicHyperMorphToTest extends TestCase
         $this->assertTrue(in_array($anotherCommentOnPost->id, $edgesIds));
         $this->assertTrue(in_array($commentOnPost->id, $edgesIds));
 
-        $expectedEdgesTypes = ['happy', 'sad'];
+        $expectedEdgesTypes = [$commentOnPost->id => 'happy', $anotherCommentOnPost->id => 'sad'];
+        $this->assertCount(count($expectedEdgesTypes), $edges);
 
-        foreach ($edges as $key => $edge) {
+        foreach ($edges as $edge) {
             $attributes = $edge->toArray();
             $this->assertArrayHasKey('feeling', $attributes);
-            $this->assertEquals($expectedEdgesTypes[$key], $edge->feeling);
+            $this->assertEquals($expectedEdgesTypes[$edge->getRelated()->getKey()], $edge->feeling);
             $edge->delete();
         }
     }

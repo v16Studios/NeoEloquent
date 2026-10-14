@@ -299,12 +299,13 @@ class BelongsToManyRelationTest extends TestCase
         $this->assertTrue(in_array($editor->id, $edgesIds));
         $this->assertTrue(in_array($master->id, $edgesIds));
 
-        $expectedEdgesTypes = ['Editor', 'Admin', 'Master'];
+        $expectedEdgesTypes = [$master->id => 'Master', $admin->id => 'Admin', $editor->id => 'Editor'];
+        $this->assertCount(count($expectedEdgesTypes), $edges);
 
-        foreach ($edges as $key => $edge) {
+        foreach ($edges as $edge) {
             $attributes = $edge->toArray();
             $this->assertArrayHasKey('type', $attributes);
-            $this->assertEquals($expectedEdgesTypes[$key], $edge->type);
+            $this->assertEquals($expectedEdgesTypes[$edge->getRelated()->getKey()], $edge->type);
             $edge->delete();
         }
     }
