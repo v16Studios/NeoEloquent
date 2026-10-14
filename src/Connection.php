@@ -159,6 +159,15 @@ class Connection extends IlluminateConnection
     }
 
     /**
+     * Get the database name to connect to
+     * @return string | null
+     */
+    public function getDatabaseName()
+    {
+        return $this->getConfig('database');
+    }
+
+    /**
      * Get the connection ssl setting.
      *
      * @return bool

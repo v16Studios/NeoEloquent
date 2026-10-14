@@ -29,6 +29,11 @@ abstract class ClientAbstract
             $uri .= ':'.$port;
         }
 
+        $database = $this->getDatabase();
+        if ($database) {
+            $uri .= '?database='.$database;
+        }
+
         return $uri;
     }
 
@@ -80,6 +85,15 @@ abstract class ClientAbstract
     public function getPassword()
     {
         return $this->getConfig('password');
+    }
+
+    /**
+     * Get the database if set
+     * @return null|string
+     */
+    public function getDatabase()
+    {
+        return $this->getConfig('database');
     }
 
     /**
