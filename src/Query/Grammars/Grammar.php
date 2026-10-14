@@ -172,7 +172,7 @@ class Grammar extends IlluminateGrammar
         }, $values);
 
         // stringify them.
-        return $arrayValue ? '['.implode(',', $values).']' : implode(', ', $values);
+        return $arrayValue ? '['.implode(', ', $values).']' : implode(', ', $values);
     }
 
     /**
