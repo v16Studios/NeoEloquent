@@ -2,7 +2,9 @@
 
 namespace Vinelab\NeoEloquent\Query\Grammars;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Arr;
 use Vinelab\NeoEloquent\Exceptions\InvalidCypherGrammarComponentException;
 
 class CypherGrammar extends Grammar
@@ -519,9 +521,13 @@ class CypherGrammar extends Grammar
      */
     protected function whereIn(Builder $query, $where)
     {
-        $values = $this->valufy($where['values']);
+        $values = $where['values'];
 
-        return $this->wrap($where['column']).' IN '.$values;
+        if ($values instanceof Arrayable) {
+            $values = $values->toArray();
+        }
+
+        return $this->wrap($where['column']).' IN '.$this->valufy(Arr::wrap($values));
     }
 
     /**
