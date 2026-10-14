@@ -738,7 +738,7 @@ class QueryingRelationsTest extends TestCase
         $tags = $user->toArray()['tags'];
         $this->assertCount(1, $tags);
 
-        $this->assertNotEmpty($tags[0]['id']);
+        $this->assertIsInt($tags[0]['id']);
         $this->assertEquals('theTag', $tags[0]['title']);
     }
 }
