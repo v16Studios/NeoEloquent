@@ -43,7 +43,10 @@ class NeoEloquentServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['db']->extend('neo4j', function ($config) {
+        $this->app['db']->extend('neo4j', function ($config, $name) {
+            if (empty($config['name'])) {
+                $config['name'] = $name;
+            }
             $conn = new Connection($config);
             $conn->setSchemaGrammar(new CypherGrammar($conn));
 
