@@ -272,7 +272,16 @@ class QueryingRelationsTest extends TestCase
         $this->assertTrue($role->exists);
         $this->assertGreaterThanOrEqual(0, $role->id);
 
-        foreach ($role->permissions as $key => $permission) {
+        // Related models come back in no guaranteed order, so match them by alias.
+        $expectedByAlias = [];
+        foreach ($permissions as $expected) {
+            $expected = $expected instanceof Permission ? $expected->toArray() : $expected;
+            unset($expected['id'], $expected['created_at'], $expected['updated_at']);
+            $expectedByAlias[$expected['alias']] = $expected;
+        }
+        $this->assertCount(count($permissions), $role->permissions);
+
+        foreach ($role->permissions as $permission) {
             $this->assertInstanceOf('Vinelab\NeoEloquent\Tests\Functional\QueryingRelations\Permission', $permission);
             $this->assertGreaterThanOrEqual(0, $permission->id);
             $this->assertNotNull($permission->created_at);
@@ -281,16 +290,7 @@ class QueryingRelationsTest extends TestCase
             unset($attrs['id']);
             unset($attrs['created_at']);
             unset($attrs['updated_at']);
-            if ($permissions[$key] instanceof Permission) {
-                $permission = $permissions[$key];
-                $permission = $permission->toArray();
-                unset($permission['id']);
-                unset($permission['created_at']);
-                unset($permission['updated_at']);
-                $this->assertEquals($permission, $attrs);
-            } else {
-                $this->assertEquals($permissions[$key], $attrs);
-            }
+            $this->assertEquals($expectedByAlias[$attrs['alias']], $attrs);
         }
     }
 
@@ -326,7 +326,10 @@ class QueryingRelationsTest extends TestCase
         $this->assertTrue($post->exists);
         $this->assertGreaterThanOrEqual(0, $post->id);
 
-        foreach ($post->photos as $key => $photo) {
+        $expectedPhotos = array_column($photos, null, 'url');
+        $this->assertCount(count($photos), $post->photos);
+
+        foreach ($post->photos as $photo) {
             $this->assertInstanceOf('Vinelab\NeoEloquent\Tests\Functional\QueryingRelations\Photo', $photo);
             $this->assertGreaterThanOrEqual(0, $photo->id);
             $this->assertNotNull($photo->created_at);
@@ -335,7 +338,7 @@ class QueryingRelationsTest extends TestCase
             unset($attrs['id']);
             unset($attrs['created_at']);
             unset($attrs['updated_at']);
-            $this->assertEquals($photos[$key], $attrs);
+            $this->assertEquals($expectedPhotos[$attrs['url']], $attrs);
         }
 
         $video = $post->videos->first();

@@ -387,7 +387,7 @@ class SimpleCRUDTest extends TestCase
 
         $fetched = Wiz::first();
         $this->assertEquals($now->format($format), $fetched->fiz);
-        $this->assertEquals($now->format($format), $fetched->biz);
+        $this->assertEquals($dt->format($format), $fetched->biz);
 
         $tomorrow = Carbon::now()->addDay();
         $after = Carbon::now()->addDays(2);

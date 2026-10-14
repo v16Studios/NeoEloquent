@@ -70,8 +70,7 @@ class HasManyRelationTest extends TestCase
         $books = $author->books;
 
         $this->assertCount(2, $books->toArray());
-        $this->assertEquals($cok->toArray(), $author->books[0]->toArray());
-        $this->assertEquals($got->toArray(), $author->books[1]->toArray());
+        $this->assertSameModels([$got, $cok], $author->books);
 
         $writtenGot->delete();
         $writtenCok->delete();
@@ -358,12 +357,13 @@ class HasManyRelationTest extends TestCase
         $this->assertTrue(in_array($sos->id, $edgesIds));
         $this->assertTrue(in_array($got->id, $edgesIds));
 
-        $expectedEdgesTypes = ['Storm', 'Clash', 'Game'];
+        $expectedEdgesTypes = [$got->id => 'Game', $cok->id => 'Clash', $sos->id => 'Storm'];
+        $this->assertCount(count($expectedEdgesTypes), $edges);
 
-        foreach ($edges as $key => $edge) {
+        foreach ($edges as $edge) {
             $attributes = $edge->toArray();
             $this->assertArrayHasKey('series', $attributes);
-            $this->assertEquals($expectedEdgesTypes[$key], $edge->series);
+            $this->assertEquals($expectedEdgesTypes[$edge->getRelated()->getKey()], $edge->series);
             $edge->delete();
         }
     }
