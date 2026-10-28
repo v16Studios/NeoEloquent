@@ -9,7 +9,7 @@ use Vinelab\NeoEloquent\DatabaseDriver\Interfaces\RelationInterface;
 class Relation implements RelationInterface
 {
     /**
-     * @var Client
+     * @var Laudis|Client The adapter resolves the active transaction for each call.
      */
     protected $client;
     protected $id;
@@ -138,7 +138,7 @@ class Relation implements RelationInterface
         }
 
         // 2. Update properties.
-        $propertiesNotNull = array_filter($this->properties);
+        $propertiesNotNull = array_filter($this->properties, static fn ($value) => $value !== null);
         if (!empty($propertiesNotNull)) {
             $cypher = $this->compileUpdateProperties($propertiesNotNull);
             $this->runStatement($cypher, $propertiesNotNull);

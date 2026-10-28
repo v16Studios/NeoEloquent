@@ -21,5 +21,8 @@
             <file>./tests/compatibility/CompatibilityTest.php</file>
             <file>./tests/compatibility/GraphCompatibilityTest.php</file>
         </testsuite>
+        <testsuite name="Neo4j transactions">
+            <file>./tests/compatibility/GraphTransactionTest.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>

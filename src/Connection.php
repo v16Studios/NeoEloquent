@@ -8,6 +8,10 @@ use Exception;
 use Illuminate\Database\Connection as IlluminateConnection;
 use Illuminate\Database\Schema\Grammars\Grammar as IlluminateSchemaGrammar;
 use Illuminate\Support\Arr;
+use InvalidArgumentException;
+use Laudis\Neo4j\Exception\Neo4jException;
+use LogicException;
+use Throwable;
 use Vinelab\NeoEloquent\DatabaseDriver\CypherQuery;
 use Vinelab\NeoEloquent\DatabaseDriver\DatabaseDriver;
 use Vinelab\NeoEloquent\DatabaseDriver\Interfaces\ClientInterface;
@@ -30,6 +34,11 @@ class Connection extends IlluminateConnection
      * @var TransactionInterface
      */
     protected $transaction;
+
+    protected bool $transactionCallbackRunning = false;
+    protected bool $retryableBeginFailure = false;
+    protected bool $commitOutcomeUnknown = false;
+    protected array $rollbackCallbacks = [];
 
     /**
      * Default connection configuration parameters.
@@ -116,6 +125,9 @@ class Connection extends IlluminateConnection
      */
     public function setClient(ClientInterface $client)
     {
+        if ($this->transactions > 0 || $this->transactionCallbackRunning) {
+            throw new LogicException('Cannot replace the client during a Neo4j transaction.');
+        }
         $this->neo = $client;
     }
 
@@ -398,53 +410,185 @@ class Connection extends IlluminateConnection
     }
 
     /**
-     * Start a new database transaction.
-     *
-     * @return void
+     * Run a single, non-nested transaction. Only pre-commit transient failures
+     * are retried, and only after a successful rollback. Commit outcomes may
+     * be ambiguous: never replay a callback after attempting commit.
      */
-    public function beginTransaction()
+    public function transaction(Closure $callback, $attempts = 1)
     {
-        $this->transactions++;
-
-        if ($this->transactions == 1) {
-            $this->transaction = $this->neo->beginTransaction();
+        if (!is_int($attempts) || $attempts < 1) {
+            throw new InvalidArgumentException('Transaction attempts must be a positive integer.');
+        }
+        if ($this->transactions > 0 || $this->transactionCallbackRunning) {
+            throw new LogicException('Nested Neo4j transactions are not supported.');
         }
 
-        $this->fireConnectionEvent('beganTransaction');
+        for ($attempt = 1; $attempt <= $attempts; $attempt++) {
+            try {
+                $this->beginTransaction();
+            } catch (Throwable $error) {
+                if ($this->retryableBeginFailure && $attempt < $attempts) {
+                    usleep(min(100000, 10000 * $attempt));
+                    continue;
+                }
+                throw $error;
+            }
+
+            try {
+                $this->transactionCallbackRunning = true;
+                try {
+                    $result = $callback($this);
+                } finally {
+                    $this->transactionCallbackRunning = false;
+                }
+            } catch (Throwable $error) {
+                $rolledBack = false;
+                try {
+                    $this->rollBack();
+                    $rolledBack = true;
+                } catch (Throwable $cleanupError) {
+                    // Preserve the callback's original Throwable, and do not retry
+                    // when cleanup could not be confirmed.
+                }
+                if ($rolledBack && $attempt < $attempts && $this->isRetryableTransactionError($error)) {
+                    usleep(min(100000, 10000 * $attempt));
+                    continue;
+                }
+                throw $error;
+            }
+
+            $this->commit();
+
+            return $result;
+        }
     }
 
-    /**
-     * Commit the active database transaction.
-     *
-     * @return void
-     */
-    public function commit()
+    protected function isRetryableTransactionError(Throwable $error): bool
     {
-        if ($this->transactions == 1) {
-            $this->transaction->commit();
+        do {
+            if ($error instanceof Neo4jException) {
+                return $error->getClassification() === 'TransientError';
+            }
+            $error = $error->getPrevious();
+        } while ($error !== null);
+
+        return false;
+    }
+
+    /** Start one real graph transaction; Neo4j savepoints are not supported. */
+    public function beginTransaction()
+    {
+        $this->retryableBeginFailure = false;
+        if ($this->transactions > 0 || $this->transactionCallbackRunning) {
+            throw new LogicException('Nested Neo4j transactions are not supported.');
+        }
+        foreach ($this->beforeStartingTransaction as $callback) {
+            $callback($this);
         }
 
-        $this->transactions--;
+        try {
+            $transaction = $this->neo->beginTransaction();
+        } catch (Throwable $error) {
+            $this->retryableBeginFailure = $this->isRetryableTransactionError($error);
+            throw $error;
+        }
+        if (!$transaction instanceof TransactionInterface) {
+            throw new LogicException('The Neo4j client did not open a real transaction.');
+        }
+        $this->transaction = $transaction;
+        $this->transactions = 1;
 
+        try {
+            $this->transactionsManager?->begin($this->getName(), 1);
+            $this->fireConnectionEvent('beganTransaction');
+        } catch (Throwable $error) {
+            try {
+                $this->rollBack();
+            } catch (Throwable $cleanupError) {
+            }
+            throw $error;
+        }
+    }
+
+    public function commit()
+    {
+        if ($this->transactionCallbackRunning) {
+            throw new LogicException('Do not manually commit inside a transaction callback.');
+        }
+        if ($this->transactions !== 1 || $this->transaction === null) {
+            throw new LogicException('There is no active Neo4j transaction to commit.');
+        }
+
+        try {
+            $this->fireConnectionEvent('committing');
+            $this->transaction->commit();
+        } catch (Throwable $error) {
+            $this->commitOutcomeUnknown = true;
+            try {
+                $this->rollBack();
+            } catch (Throwable $cleanupError) {
+            } finally {
+                $this->commitOutcomeUnknown = false;
+            }
+            throw $error;
+        }
+
+        $this->transaction = null;
+        $this->transactions = 0;
+        $this->rollbackCallbacks = [];
+        // Callback/event errors after this point must never cause rollback or retry.
+        $this->transactionsManager?->commit($this->getName(), 1, 0);
         $this->fireConnectionEvent('committed');
     }
 
-    /**
-     * Rollback the active database transaction.
-     *
-     * @return void
-     */
     public function rollBack($toLevel = null)
     {
-        if ($this->transactions == 1) {
-            $this->transactions = 0;
-
-            $this->transaction->rollBack();
-        } else {
-            $this->transactions--;
+        if ($this->transactionCallbackRunning) {
+            throw new LogicException('Do not manually roll back inside a transaction callback.');
+        }
+        if ($toLevel !== null && $toLevel !== 0) {
+            throw new InvalidArgumentException('Neo4j only supports rollback of the entire transaction (level 0).');
+        }
+        if ($this->transactions === 0) {
+            return;
         }
 
-        $this->fireConnectionEvent('rollingBack');
+        $error = null;
+        try {
+            $this->transaction->rollBack();
+        } catch (Throwable $failure) {
+            $error = $failure;
+        } finally {
+            $this->transaction = null;
+            $this->transactions = 0;
+        }
+        $callbacks = $this->rollbackCallbacks;
+        $this->rollbackCallbacks = [];
+        try {
+            $this->transactionsManager?->rollback($this->getName(), 0);
+            if ($error === null && !$this->commitOutcomeUnknown) {
+                foreach ($callbacks as $callback) {
+                    $callback();
+                }
+                $this->fireConnectionEvent('rollingBack');
+            }
+        } catch (Throwable $notificationError) {
+            $error = $error ?? $notificationError;
+        }
+        if ($error !== null) {
+            throw $error;
+        }
+    }
+
+    /** Run rollback callbacks only after confirmed rollback and cleared bookkeeping. */
+    public function afterRollBack($callback)
+    {
+        if (!$this->transactionsManager) {
+            throw new \RuntimeException('Transactions Manager has not been set.');
+        }
+        if ($this->transactions > 0) {
+            $this->rollbackCallbacks[] = $callback;
+        }
     }
 
     /**

@@ -1,0 +1,13 @@
+Container nxs-neoeloquent-neo4j-1 Running
+ Container nxs-neoeloquent-neo4j-1 Waiting
+ Container nxs-neoeloquent-neo4j-1 Healthy
+ Container nxs-neoeloquent-tests-run-<id> Creating
+ Container nxs-neoeloquent-tests-run-<id> Created
+{
+    "mode": "broken",
+    "nodes_after_failure": 1,
+    "original_error_preserved": false,
+    "caught_class": "Error",
+    "caught_message": "Call to a member function rollBack() on null",
+    "transaction_level": 0
+}

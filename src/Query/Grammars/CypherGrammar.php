@@ -9,6 +9,11 @@ use Vinelab\NeoEloquent\Exceptions\InvalidCypherGrammarComponentException;
 
 class CypherGrammar extends Grammar
 {
+    public function supportsSavepoints()
+    {
+        return false;
+    }
+
     protected $selectComponents = [
         'matches',
         'from',

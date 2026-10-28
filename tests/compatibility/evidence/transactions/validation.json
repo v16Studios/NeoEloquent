@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-28",
+  "ticket": "V16-34",
+  "source_parent": "e0f8e9c946f2b83a59c50fa117fb8e735681441e",
+  "source_version": "The commit containing this evidence",
+  "upstream_base": "ce76714db4e27614bc1a03322b942b8e342c8297",
+  "php": "8.5.12",
+  "neo4j": "5.26.32 Community",
+  "laudis": "3.7.0",
+  "phpunit": "9.6.38",
+  "matrix": {
+    "13": {
+      "illuminate": "13.39.0",
+      "local_lock_file": "composer.lock",
+      "lock_sha256": "b4250edc8bc1bad434fcc56f1d07fde7496eb2a2c85ada44d440cdae5a7615d9",
+      "package_inventory": "../validation.json#matrix/13"
+    },
+    "12": {
+      "illuminate": "12.70.2",
+      "local_lock_file": "vendor/laravel12/composer.lock",
+      "lock_sha256": "fb1e5760527490464078b16f0251f317d1a78ddb7a7aaa7e1c86f1476f939c93",
+      "package_inventory": "../validation.json#matrix/12"
+    }
+  },
+  "focused_each": {
+    "tests": 21,
+    "assertions": 128,
+    "errors": 0,
+    "failures": 0,
+    "exit_code": 0
+  },
+  "full_each": {
+    "tests": 307,
+    "assertions": 1234,
+    "skipped": 10,
+    "incomplete": 12,
+    "errors": 0,
+    "failures": 0,
+    "deprecation_output": false,
+    "exit_code": 0
+  },
+  "reproduction": {
+    "before": {
+      "source": "e0f8e9c",
+      "nodes_after_failure": 1,
+      "original_error_preserved": false,
+      "caught_class": "Error",
+      "exit_code": 0,
+      "exit_code_meaning": "Expected defective behavior was reproduced"
+    },
+    "after": {
+      "nodes_after_failure": 0,
+      "original_error_preserved": true,
+      "caught_class": "RuntimeException",
+      "transaction_level": 0,
+      "exit_code": 0
+    }
+  },
+  "test_environment": {
+    "disposable_only": true,
+    "host_ports_published": false,
+    "lock_acquisition_timeout": "1s (test only)",
+    "actual_lock_timeout_retry": true,
+    "actual_server_transaction_termination": true,
+    "additional_faults": "Decorators around real unmanaged transactions; begin, commit before/after persistence, rollback before/after request, notification errors"
+  },
+  "checks": {
+    "php_syntax": "passed; all source and compatibility PHP files plus ConnectionTest",
+    "composer_validate": "passed",
+    "whitespace": "passed"
+  },
+  "limits": [
+    "Minimum supported Laudis/PHP matrix remains V16-35 work.",
+    "No nested transactions or savepoints.",
+    "No automatic retry after commit failure.",
+    "Application-level concurrency, idempotency and financial contracts remain V16-42/V16-45 work.",
+    "No application activation or production data used."
+  ]
+}

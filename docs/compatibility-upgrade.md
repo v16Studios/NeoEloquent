@@ -2,7 +2,7 @@
 
 This branch starts at upstream tag `9.9.0`, commit `ce76714db4e27614bc1a03322b942b8e342c8297`. The local branch is `upgrade/neoeloquent-9.9-laravel-13`; `origin` is v16Studios/NeoEloquent and `upstream` is ulobby/NeoEloquent. Package identity remains `ulobby/neoeloquent`, including the existing `vinelab/neoeloquent` replacement and `Vinelab\NeoEloquent` namespace. No application dependencies have been switched to this branch.
 
-**This is a compatibility checkpoint, not a release candidate.** Real transaction support is still absent. V16-34 must cover raw queries, models, node/edge helpers, rollback, nested transactions and retries before V16-35 packaging/CI and the V16-36 review. Do not use passing non-transaction tests as evidence of financial atomicity.
+**This records the V16-33 compatibility checkpoint, not a release candidate.** Transaction support was absent at this checkpoint. Subsequent V16-34 implementation and verification are documented in [transactions.md](transactions.md); V16-35 packaging/CI and V16-36 review remain outstanding. The comparison decisions and test counts below are historical V16-33 evidence.
 
 ## Historical fork decisions
 

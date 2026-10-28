@@ -1,0 +1,134 @@
+Container nxs-neoeloquent-neo4j-1 Running
+ Container nxs-neoeloquent-neo4j-1 Waiting
+ Container nxs-neoeloquent-neo4j-1 Healthy
+ Container nxs-neoeloquent-tests-run-<id> Creating
+ Container nxs-neoeloquent-tests-run-<id> Created
+PHPUnit 9.6.38 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.5.12
+Configuration: /workspace/phpunit.xml
+
+............................................IS.......II.SSSSS..  63 / 307 ( 20%)
+..........II...........II...................................... 126 / 307 ( 41%)
+............................................................... 189 / 307 ( 61%)
+....SSSSIIII................................................... 252 / 307 ( 82%)
+...............I.......................................         307 / 307 (100%)
+
+Time: 00:07.249, Memory: 46.00 MB
+
+There were 12 incomplete tests:
+
+1) Vinelab\NeoEloquent\Tests\Eloquent\EloquentBuilderTest::testChunkExecuteCallbackOverPaginatedRequest
+Getting error: BadMethodCallException: Method Mockery_1_Vinelab_NeoEloquent_Query_Builder::orderBy() does not exist on this mock object
+
+/workspace/tests/Vinelab/NeoEloquent/Eloquent/BuilderTest.php:160
+
+2) Vinelab\NeoEloquent\Tests\Eloquent\EloquentBuilderTest::testNestedWhere
+Getting error: Static method Mockery_1_Vinelab_NeoEloquent_Eloquent_Model::resolveConnection() does not exist on this mock object
+
+/workspace/tests/Vinelab/NeoEloquent/Eloquent/BuilderTest.php:340
+
+3) Vinelab\NeoEloquent\Tests\Eloquent\EloquentBuilderTest::testDeleteOverride
+Getting the error BadMethodCallException: Method Mockery_2_Vinelab_NeoEloquent_Query_Builder::onDelete() does not exist on this mock object
+
+/workspace/tests/Vinelab/NeoEloquent/Eloquent/BuilderTest.php:361
+
+4) Vinelab\NeoEloquent\Tests\Eloquent\Relations\BelongsToTest::testModelsAreProperlyMatchedToParents
+We should be testing mutations
+
+/workspace/tests/Vinelab/NeoEloquent/Eloquent/Relations/BelongsToTest.php:55
+
+5) Vinelab\NeoEloquent\Tests\Eloquent\Relations\BelongsToTest::testMutationsAreProperlySet
+
+/workspace/tests/Vinelab/NeoEloquent/Eloquent/Relations/BelongsToTest.php:74
+
+6) Vinelab\NeoEloquent\Tests\Query\BuilderTest::testNestedWhere
+This test has not been implemented yet.
+
+/workspace/tests/Vinelab/NeoEloquent/Query/BuilderTest.php:208
+
+7) Vinelab\NeoEloquent\Tests\Query\BuilderTest::testSubWhere
+This test has not been implemented yet.
+
+/workspace/tests/Vinelab/NeoEloquent/Query/BuilderTest.php:213
+
+8) Vinelab\NeoEloquent\Tests\Functional\Relations\HyperMorphTo\PolymorphicHyperMorphToTest::testDynamicLoadingMorphedByModel
+This test has not been implemented yet. Avoid using morph for now!
+
+/workspace/tests/functional/PolymorphicHyperMorphToTest.php:528
+
+9) Vinelab\NeoEloquent\Tests\Functional\Relations\HyperMorphTo\PolymorphicHyperMorphToTest::testEagerLoadingMorphedByModel
+This test has not been implemented yet. Avoid using morph for now!
+
+/workspace/tests/functional/PolymorphicHyperMorphToTest.php:562
+
+10) Vinelab\NeoEloquent\Tests\Functional\Relations\HyperMorphTo\PolymorphicHyperMorphToTest::testDynamicLoadingMorphToModel
+This test has not been implemented yet. Avoid using morph for now!
+
+/workspace/tests/functional/PolymorphicHyperMorphToTest.php:598
+
+11) Vinelab\NeoEloquent\Tests\Functional\Relations\HyperMorphTo\PolymorphicHyperMorphToTest::testEagerLoadingMorphToModel
+This test has not been implemented yet. Avoid using morph for now!
+
+/workspace/tests/functional/PolymorphicHyperMorphToTest.php:633
+
+12) Vinelab\NeoEloquent\Tests\Functional\WheresTheTest::testWhereBetween
+
+/workspace/tests/functional/WheresTheTest.php:218
+
+--
+
+There were 10 skipped tests:
+
+1) Vinelab\NeoEloquent\Tests\Eloquent\EloquentBuilderTest::testGetModelsProperlyHydratesModels
+TODO
+
+/workspace/tests/Vinelab/NeoEloquent/Eloquent/BuilderTest.php:180
+
+2) Vinelab\NeoEloquent\Tests\Eloquent\EloquentBuilderTest::testFindingByIdWithProperties
+TODO
+
+/workspace/tests/Vinelab/NeoEloquent/Eloquent/BuilderTest.php:398
+
+3) Vinelab\NeoEloquent\Tests\Eloquent\EloquentBuilderTest::testGettingModels
+TODO
+
+/workspace/tests/Vinelab/NeoEloquent/Eloquent/BuilderTest.php:451
+
+4) Vinelab\NeoEloquent\Tests\Eloquent\EloquentBuilderTest::testGettingModelsWithProperties
+TODO
+
+/workspace/tests/Vinelab/NeoEloquent/Eloquent/BuilderTest.php:500
+
+5) Vinelab\NeoEloquent\Tests\Eloquent\EloquentBuilderTest::testExtractingPropertiesFromNode
+TODO
+
+/workspace/tests/Vinelab/NeoEloquent/Eloquent/BuilderTest.php:536
+
+6) Vinelab\NeoEloquent\Tests\Eloquent\EloquentBuilderTest::testExtractingPropertiesOfChosenColumns
+TODO
+
+/workspace/tests/Vinelab/NeoEloquent/Eloquent/BuilderTest.php:564
+
+7) Vinelab\NeoEloquent\Tests\Functional\Relations\HyperMorphTo\PolymorphicHyperMorphToTest::testDynamicLoadingMorphedModel
+TODO
+
+/workspace/tests/functional/PolymorphicHyperMorphToTest.php:389
+
+8) Vinelab\NeoEloquent\Tests\Functional\Relations\HyperMorphTo\PolymorphicHyperMorphToTest::testEagerLoadingMorphedModel
+TODO
+
+/workspace/tests/functional/PolymorphicHyperMorphToTest.php:425
+
+9) Vinelab\NeoEloquent\Tests\Functional\Relations\HyperMorphTo\PolymorphicHyperMorphToTest::testDynamicLoadingMorphingModels
+TODO
+
+/workspace/tests/functional/PolymorphicHyperMorphToTest.php:467
+
+10) Vinelab\NeoEloquent\Tests\Functional\Relations\HyperMorphTo\PolymorphicHyperMorphToTest::testEagerLoadingMorphingModels
+TODO
+
+/workspace/tests/functional/PolymorphicHyperMorphToTest.php:493
+
+OK, but incomplete, skipped, or risky tests!
+Tests: 307, Assertions: 1234, Skipped: 10, Incomplete: 12.

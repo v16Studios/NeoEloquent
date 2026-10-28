@@ -20,6 +20,6 @@ class QueryException extends Exception
             $message .= ' - Bindings: '.json_encode($bindings);
         }
 
-        parent::__construct($message);
+        parent::__construct($message, 0, $exception);
     }
 }

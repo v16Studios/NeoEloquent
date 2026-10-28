@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="../../vendor/autoload.php" colors="true"
+         convertDeprecationsToExceptions="true" failOnWarning="true">
+    <testsuites>
+        <testsuite name="Neo4j transactions">
+            <file>GraphTransactionTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>

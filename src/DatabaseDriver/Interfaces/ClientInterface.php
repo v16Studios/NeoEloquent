@@ -20,5 +20,11 @@ interface ClientInterface
 
     public function deleteNode(NodeInterface $node);
 
+    /**
+     * All queries and helpers created by this client must use the returned
+     * transaction until it closes, including helpers created before this call.
+     *
+     * @return TransactionInterface
+     */
     public function beginTransaction();
 }

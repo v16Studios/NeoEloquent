@@ -6,10 +6,14 @@ use Laudis\Neo4j\Authentication\Authenticate;
 use Laudis\Neo4j\Client;
 use Laudis\Neo4j\ClientBuilder;
 use Laudis\Neo4j\Contracts\AuthenticateInterface;
+use Laudis\Neo4j\Contracts\UnmanagedTransactionInterface;
 use Laudis\Neo4j\Databags\SessionConfiguration;
 use Laudis\Neo4j\Databags\Statement;
+use Laudis\Neo4j\Databags\SummarizedResult;
 use Laudis\Neo4j\Databags\TransactionConfiguration;
 use Laudis\Neo4j\Formatter\SummarizedResultFormatter;
+use LogicException;
+use Throwable;
 use Vinelab\NeoEloquent\DatabaseDriver\CypherQuery;
 use Vinelab\NeoEloquent\DatabaseDriver\Drivers\ClientAbstract;
 use Vinelab\NeoEloquent\DatabaseDriver\Interfaces\ClientInterface;
@@ -22,33 +26,37 @@ class Laudis extends ClientAbstract implements ClientInterface
      */
     protected $client;
     protected $config;
+    private ?Transaction $transaction = null;
 
     public function __construct($config)
     {
         $this->config = $config;
+        $this->client = $this->createClient();
+    }
+
+    protected function createClient(): Client
+    {
         $formatter = SummarizedResultFormatter::create();
 
         $timeout = (float) ($this->getTimeout() ?? TransactionConfiguration::DEFAULT_TIMEOUT);
         $fetchSize = (int) ($this->getFetchSize() ?? SessionConfiguration::DEFAULT_FETCH_SIZE);
 
-        $client = ClientBuilder::create()
-            ->withDriver('default', $this->buildUriFromConfig($config), $this->getAuth())
+        return ClientBuilder::create()
+            ->withDriver('default', $this->buildUriFromConfig($this->config), $this->getAuth())
             ->withDefaultTransactionConfiguration(TransactionConfiguration::default()->withTimeout($timeout))
             ->withDefaultSessionConfiguration(SessionConfiguration::default()->withFetchSize($fetchSize))
             ->withFormatter($formatter)
             ->build();
-
-        $this->client = $client;
     }
 
     public function makeNode(): Node
     {
-        return new Node($this->client);
+        return new Node($this);
     }
 
     public function makeRelationship(): Relation
     {
-        return new Relation($this->client);
+        return new Relation($this);
     }
 
     public function makeLabel($label)
@@ -61,13 +69,22 @@ class Laudis extends ClientAbstract implements ClientInterface
         $statement = new Statement($cypherQuery->getQuery(), $cypherQuery->getParameters());
 
         return new ResultSet(
-            $this->client->runStatement($statement)
+            $this->runStatement($statement)
         );
     }
 
-    public function run($cypher)
+    public function run($cypher, iterable $parameters = [])
     {
-        return $this->client->run($cypher);
+        return $this->runStatement(new Statement($cypher, $parameters));
+    }
+
+    public function runStatement(Statement $statement): SummarizedResult
+    {
+        // Helpers keep this adapter, so those created before beginTransaction()
+        // resolve the active transaction at execution time too.
+        return $this->transaction !== null
+            ? $this->transaction->runStatement($statement)
+            : $this->client->runStatement($statement);
     }
 
     private function getAuth(): AuthenticateInterface
@@ -109,6 +126,51 @@ class Laudis extends ClientAbstract implements ClientInterface
 
     public function beginTransaction()
     {
-        // TODO
+        if ($this->transaction !== null) {
+            throw new LogicException('Nested Neo4j transactions are not supported.');
+        }
+        try {
+            $nativeTransaction = $this->openTransaction();
+        } catch (Throwable $error) {
+            $this->resetClientAfterFailure();
+            throw $error;
+        }
+        $transaction = new Transaction($nativeTransaction, function (Transaction $closed, bool $failed) {
+            if ($this->transaction === $closed) {
+                $this->transaction = null;
+            }
+            if ($failed) {
+                // Do not reuse transport/pool state after a failed transaction.
+                $this->resetClientAfterFailure();
+            }
+        });
+        try {
+            // Laudis may defer BEGIN. Validate the server/database before reporting
+            // a successful begin or running the application's callback.
+            $transaction->runStatement(new Statement('RETURN 1', []));
+        } catch (Throwable $error) {
+            try {
+                $transaction->rollBack();
+            } catch (Throwable $cleanupError) {
+            }
+            throw $error;
+        }
+
+        return $this->transaction = $transaction;
+    }
+
+    protected function openTransaction(): UnmanagedTransactionInterface
+    {
+        return $this->client->beginTransaction();
+    }
+
+    private function resetClientAfterFailure(): void
+    {
+        try {
+            $this->client->getDriver(null)->closeConnections();
+        } catch (Throwable $cleanupError) {
+            // Keep the original operation error; discard this transport regardless.
+        }
+        $this->client = $this->createClient();
     }
 }

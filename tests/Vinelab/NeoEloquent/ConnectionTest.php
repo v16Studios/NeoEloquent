@@ -6,6 +6,7 @@ use Mockery as M;
 use Vinelab\NeoEloquent\DatabaseDriver\CypherQuery;
 use Vinelab\NeoEloquent\DatabaseDriver\Interfaces\ClientInterface;
 use Vinelab\NeoEloquent\DatabaseDriver\Interfaces\ResultSetInterface;
+use Vinelab\NeoEloquent\DatabaseDriver\Interfaces\TransactionInterface;
 
 class ConnectionTest extends TestCase
 {
@@ -436,59 +437,64 @@ class ConnectionTest extends TestCase
         $connection->setEventDispatcher($events = m::mock('Illuminate\events\Dispatcher'));
         $events->shouldReceive('dispatch')->once()->with(M::type('Illuminate\Database\Events\TransactionBeginning'));
         $connection->beginTransaction();
+        $connection->unsetEventDispatcher();
+        $connection->rollBack();
     }
 
     public function testCommitedFiresEventsIfSet()
     {
-        $connection = $this->getMockConnection(['getName']);
-        $connection->expects($this->once())->method('getName')->will($this->returnValue('name'));
-        $connection->setEventDispatcher($events = m::mock('Illuminate\events\Dispatcher'));
-        $events->shouldReceive('dispatch')->once()->with(M::type('Illuminate\Database\Events\TransactionCommitted'));
+        $connection = $this->getConnectionWithConfig('default');
+        $connection->beginTransaction();
+        $connection->setEventDispatcher($events = M::mock('Illuminate\\events\\Dispatcher'));
+        $events->shouldReceive('dispatch')->once()->with(M::type('Illuminate\\Database\\Events\\TransactionCommitting'));
+        $events->shouldReceive('dispatch')->once()->with(M::type('Illuminate\\Database\\Events\\TransactionCommitted'));
         $connection->commit();
+        $this->assertSame(0, $connection->transactionLevel());
     }
 
     public function testRollBackedFiresEventsIfSet()
     {
-        $connection = $this->getMockConnection(['getName']);
-        $connection->expects($this->once())->method('getName')->will($this->returnValue('name'));
-        $connection->setEventDispatcher($events = m::mock('Illuminate\events\Dispatcher'));
-        $events->shouldReceive('dispatch')->once()->with(M::type('Illuminate\Database\Events\TransactionRolledBack'));
+        $connection = $this->getConnectionWithConfig('default');
+        $connection->beginTransaction();
+        $connection->setEventDispatcher($events = M::mock('Illuminate\\events\\Dispatcher'));
+        $events->shouldReceive('dispatch')->once()->with(M::type('Illuminate\\Database\\Events\\TransactionRolledBack'));
         $connection->rollBack();
+        $this->assertSame(0, $connection->transactionLevel());
     }
 
     public function testTransactionMethodRunsSuccessfully()
     {
-        $this->markTestSkipped('TODO');
         $client = M::mock(ClientInterface::class);
-        $client->shouldReceive('beginTransaction')->once()
-            ->andReturn(M::mock('Everyman\Neo4j\Transaction')->makePartial());
-
+        $transaction = M::mock(TransactionInterface::class);
+        $client->shouldReceive('beginTransaction')->once()->andReturn($transaction);
+        $transaction->shouldReceive('commit')->once();
         $connection = $this->getMockConnection();
         $connection->setClient($client);
-
-        $result = $connection->beginTransaction(function ($db) {
-            return $db;
+        $value = new \stdClass();
+        $result = $connection->transaction(function ($db) use ($connection, $value) {
+            $this->assertSame($connection, $db);
+            return $value;
         });
-        $this->assertNull($result);
+        $this->assertSame($value, $result);
+        $this->assertSame(0, $connection->transactionLevel());
     }
 
     public function testTransactionMethodRollsbackAndThrows()
     {
-        $this->markTestSkipped('TODO');
-        $neo = M::mock(ClientInterface::class);
-        $neo->shouldReceive('beginTransaction')->once()
-            ->andReturn(M::mock('Everyman\Neo4j\Transaction')->makePartial());
-
+        $client = M::mock(ClientInterface::class);
+        $transaction = M::mock(TransactionInterface::class);
+        $client->shouldReceive('beginTransaction')->once()->andReturn($transaction);
+        $transaction->shouldReceive('rollBack')->once();
         $connection = $this->getMockConnection();
-        $connection->setClient($neo);
-
+        $connection->setClient($client);
+        $failure = new \TypeError('original failure');
         try {
-            $connection->transaction(function () {
-                throw new \Exception('foo');
-            });
-        } catch (\Exception $e) {
-            $this->assertEquals('foo', $e->getMessage());
+            $connection->transaction(function () use ($failure) { throw $failure; });
+            $this->fail('Expected original failure.');
+        } catch (\Throwable $caught) {
+            $this->assertSame($failure, $caught);
         }
+        $this->assertSame(0, $connection->transactionLevel());
     }
 
     public function testFromCreatesNewQueryBuilder()

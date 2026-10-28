@@ -1,5 +1,7 @@
 # Reproduce the compatibility checks
 
+Real transaction tests and their lifecycle/retry contract are documented in [transactions.md](../../docs/transactions.md). The Compose graph uses a test-only one-second lock acquisition timeout for its deterministic contention test.
+
 Run from the fork root with Docker/Compose, Composer and PHP 8.5 available. Commands below use `php`; use `php85` locally if the default PHP differs. The library manifest continues to advertise Laravel 12 and 13. The generated manifests and vendor directories stay under ignored `vendor/`.
 
 ```sh

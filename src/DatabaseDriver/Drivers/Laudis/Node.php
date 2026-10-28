@@ -4,12 +4,13 @@ namespace Vinelab\NeoEloquent\DatabaseDriver\Drivers\Laudis;
 
 use Laudis\Neo4j\Client;
 use Laudis\Neo4j\Databags\Statement;
+use Laudis\Neo4j\Types\CypherMap;
 use Vinelab\NeoEloquent\DatabaseDriver\Interfaces\NodeInterface;
 
 class Node implements NodeInterface
 {
     /**
-     * @var Client
+     * @var Laudis|Client The adapter resolves the active transaction for each call.
      */
     protected $client;
     protected $id;
@@ -40,20 +41,7 @@ class Node implements NodeInterface
 
     protected function compileCreateNode(): string
     {
-        $cypher = 'CREATE (n {';
-
-        foreach ($this->properties as $property => $value) {
-            // Avoid null values
-            if ($value === null) {
-                continue;
-            }
-            $cypher .= $property.': $'.$property;
-            $cypher .= ', ';
-        }
-        $cypher = mb_substr($cypher, 0, -2);
-        $cypher .= '}) RETURN id(n)';
-
-        return $cypher;
+        return 'CREATE (n) SET n += $properties RETURN id(n)';
     }
 
     protected function compileGetNode(): string
@@ -73,7 +61,13 @@ class Node implements NodeInterface
 
     protected function runUpdateNode()
     {
-        // TODO
+        $properties = $this->properties;
+        // populateNode() exposes the internal ID as a virtual model attribute.
+        unset($properties['id']);
+        $this->client->runStatement(new Statement(
+            'MATCH (n) WHERE id(n) = $id SET n += $properties RETURN n',
+            ['id' => $this->id, 'properties' => new CypherMap($properties)]
+        ))->preload();
     }
 
     public function populateNode()
@@ -93,7 +87,7 @@ class Node implements NodeInterface
     {
         $cypher = $this->compileCreateNode();
 
-        $statement = new Statement($cypher, $this->properties);
+        $statement = new Statement($cypher, ['properties' => new CypherMap($this->properties)]);
         $this->id = $this->client->runStatement($statement)
             ->first()
             ->first()
