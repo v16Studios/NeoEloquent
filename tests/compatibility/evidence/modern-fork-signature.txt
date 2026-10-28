@@ -1,0 +1,5 @@
+
+Fatal error: Declaration of Vinelab\NeoEloquent\Connection::select($query, $bindings = [], $useReadPdo = false) must be compatible with Illuminate\Database\Connection::select($query, $bindings = [], $useReadPdo = true, array $fetchUsing = []) in /private/tmp/nxs-modern-connection.php on line 216
+Stack trace:
+#0 Command line code(1): require()
+#1 {main}

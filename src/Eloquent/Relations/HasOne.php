@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Vinelab\NeoEloquent\Eloquent\Edges\EdgeOut;
 use Vinelab\NeoEloquent\Eloquent\Model;
 
-#[\AllowDynamicProperties]
 class HasOne extends HasOneOrMany
 {
     /**
@@ -121,7 +120,7 @@ class HasOne extends HasOneOrMany
      *
      * @return \Vinelab\NeoEloquent\Eloquent\Edges\EdgeOut
      */
-    public function getEdge(EloquentModel $model = null, $attributes = [])
+    public function getEdge(?EloquentModel $model = null, $attributes = [])
     {
         $model = (!is_null($model)) ? $model : $this->parent->{$this->relation};
 
@@ -139,7 +138,7 @@ class HasOne extends HasOneOrMany
      *
      * @return \Vinelab\NeoEloquent\Eloquent\Edges\Edge[In,Out, etc.]
      */
-    public function edge(Model $model = null)
+    public function edge(?Model $model = null)
     {
         return $this->getEdge($model)->current();
     }

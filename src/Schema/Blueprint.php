@@ -29,7 +29,7 @@ class Blueprint
      *
      * @return void
      */
-    public function __construct($label, Closure $callback = null)
+    public function __construct($label, ?Closure $callback = null)
     {
         $this->label = $label;
 

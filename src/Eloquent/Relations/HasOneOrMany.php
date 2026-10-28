@@ -21,6 +21,9 @@ abstract class HasOneOrMany extends IlluminateHasOneOrMany implements RelationIn
      */
     protected $relation;
 
+    /** @var string The stored graph relationship type. */
+    protected $type;
+
     /**
      * The relationships finder instance.
      *
@@ -113,7 +116,7 @@ abstract class HasOneOrMany extends IlluminateHasOneOrMany implements RelationIn
      *
      * @return \Vinelab\NeoEloquent\Eloquent\Edges\Edge[In,Out, etc.]
      */
-    abstract public function getEdge(EloquentModel $model = null, $attributes = []);
+    abstract public function getEdge(?EloquentModel $model = null, $attributes = []);
 
     /**
      * Get the edge between the parent model and the given model or
@@ -123,7 +126,7 @@ abstract class HasOneOrMany extends IlluminateHasOneOrMany implements RelationIn
      *
      * @return \Vinelab\NeoEloquent\Eloquent\Edges\Edge[In,Out, etc.]
      */
-    public function edge(Model $model = null)
+    public function edge(?Model $model = null)
     {
         return $this->finder->first($this->parent, $model, $this->type);
     }
@@ -218,9 +221,9 @@ abstract class HasOneOrMany extends IlluminateHasOneOrMany implements RelationIn
      * Attach an array of models to the parent instance.
      *
      * @param array $models
-     * @param arra  $properties The relationship properties
+     * @param array $properties The relationship properties
      *
-     * @return array
+     * @return Collection
      */
     public function saveMany($models, array $properties = [])
     {

@@ -1,0 +1,50 @@
+ Container nxs-neoeloquent-neo4j-1 Running
+ Container nxs-neoeloquent-neo4j-1 Waiting
+ Container nxs-neoeloquent-neo4j-1 Healthy
+ Container nxs-neoeloquent-tests-run-FIXTURE Creating
+ Container nxs-neoeloquent-tests-run-FIXTURE Created
+PHPUnit 9.6.38 by Sebastian Bergmann and contributors.
+
+E
+Deprecated: Vinelab\NeoEloquent\Query\Builder::modelAsNode(): Implicitly marking parameter $labels as nullable is deprecated, the explicit nullable type must be used instead in /workspace/src/Query/Builder.php on line 936
+
+Deprecated: Vinelab\NeoEloquent\Eloquent\Concerns\QueriesRelationships::has(): Implicitly marking parameter $callback as nullable is deprecated, the explicit nullable type must be used instead in /workspace/src/Eloquent/Concerns/QueriesRelationships.php on line 28
+
+Deprecated: Vinelab\NeoEloquent\Eloquent\Relations\BelongsToMany::edge(): Implicitly marking parameter $model as nullable is deprecated, the explicit nullable type must be used instead in /workspace/src/Eloquent/Relations/BelongsToMany.php on line 160
+
+Deprecated: Vinelab\NeoEloquent\Eloquent\Relations\BelongsToMany::getEdge(): Implicitly marking parameter $model as nullable is deprecated, the explicit nullable type must be used instead in /workspace/src/Eloquent/Relations/BelongsToMany.php on line 173
+
+Deprecated: Vinelab\NeoEloquent\Eloquent\Relations\HasOneOrMany::getEdge(): Implicitly marking parameter $model as nullable is deprecated, the explicit nullable type must be used instead in /workspace/src/Eloquent/Relations/HasOneOrMany.php on line 116
+
+Deprecated: Vinelab\NeoEloquent\Eloquent\Relations\HasOneOrMany::edge(): Implicitly marking parameter $model as nullable is deprecated, the explicit nullable type must be used instead in /workspace/src/Eloquent/Relations/HasOneOrMany.php on line 126
+EE                                                                 3 / 3 (100%)
+
+Time: 00:00.101, Memory: 12.00 MB
+
+There were 3 errors:
+
+1) Vinelab\NeoEloquent\Tests\Compatibility\CompatibilityTest::testGraphRelationReportsNoSqlPivotModel
+BadMethodCallException: Call to undefined method Vinelab\NeoEloquent\Eloquent\Relations\BelongsToMany::getPivotClass()
+
+/workspace/vendor/illuminate/support/Traits/ForwardsCalls.php:67
+/workspace/vendor/illuminate/support/Traits/ForwardsCalls.php:36
+/workspace/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/CompatibilityTest.php:90
+
+2) Vinelab\NeoEloquent\Tests\Compatibility\CompatibilityTest::testUnnamedMorphUsesStrHelperAndRelationName
+Error: Call to undefined function Vinelab\NeoEloquent\Eloquent\snake_case()
+
+/workspace/src/Eloquent/Model.php:479
+/workspace/tests/compatibility/CompatibilityTest.php:32
+/workspace/tests/compatibility/CompatibilityTest.php:102
+
+3) Vinelab\NeoEloquent\Tests\Compatibility\GraphCompatibilityTest::testSimplePaginationHonoursExplicitAndResolvedPage
+BadMethodCallException: Method Vinelab\NeoEloquent\Connection::getPaginator does not exist.
+
+/workspace/vendor/illuminate/macroable/Traits/Macroable.php:117
+/workspace/src/Eloquent/Builder.php:354
+/workspace/tests/compatibility/GraphCompatibilityTest.php:62
+
+ERRORS!
+Tests: 3, Assertions: 0, Errors: 3.

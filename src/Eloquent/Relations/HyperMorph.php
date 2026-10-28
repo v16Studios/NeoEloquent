@@ -130,12 +130,12 @@ class HyperMorph extends BelongsToMany
         $this->query->whereIn($this->localKey, $this->getKeys($models));
     }
 
-    public function edge(Model $model = null)
+    public function edge(?Model $model = null)
     {
         return $this->finder->hyperFirst($this->parent, $model, $this->morph, $this->type, $this->morphType);
     }
 
-    public function getEdge(EloquentModel $model = null, $properties = [])
+    public function getEdge(?EloquentModel $model = null, $properties = [])
     {
         $model = (!is_null($model)) ? $model : $this->related;
 

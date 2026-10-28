@@ -25,7 +25,7 @@ trait QueriesRelationships
      *
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
-    public function has($relation, $operator = '>=', $count = 1, $boolean = 'and', \Closure $callback = null)
+    public function has($relation, $operator = '>=', $count = 1, $boolean = 'and', ?\Closure $callback = null)
     {
         if (strpos($relation, '.') !== false) {
             return $this->hasNested($relation, $operator, $count, $boolean, $callback);

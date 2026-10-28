@@ -933,7 +933,7 @@ class Builder extends IlluminateQueryBuilder
      *
      * @return string
      */
-    public function modelAsNode(array $labels = null)
+    public function modelAsNode(?array $labels = null)
     {
         $labels = (!is_null($labels)) ? $labels : $this->from;
 

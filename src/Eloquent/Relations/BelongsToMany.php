@@ -57,6 +57,15 @@ class BelongsToMany extends HasOneOrMany
     }
 
     /**
+     * Graph edges have no SQL pivot model. Metadata consumers (including Nova
+     * adapters) must handle null and use the graph edge API for edge writes.
+     */
+    public function getPivotClass(): ?string
+    {
+        return null;
+    }
+
+    /**
      * Match the eagerly loaded results to their parents.
      *
      * @param array                                    $models
@@ -157,7 +166,7 @@ class BelongsToMany extends HasOneOrMany
      *
      * @return \Vinelab\NeoEloquent\Eloquent\Edges\Edge[In|Out]
      */
-    public function edge(Model $model = null)
+    public function edge(?Model $model = null)
     {
         return $this->finder->first($this->parent, $model, $this->type);
     }
@@ -170,7 +179,7 @@ class BelongsToMany extends HasOneOrMany
      *
      * @return \Vinelab\NeoEloquent\Eloquent\Edges\Edge[In|Out]
      */
-    public function getEdge(EloquentModel $model = null, $attributes = [])
+    public function getEdge(?EloquentModel $model = null, $attributes = [])
     {
         $model = (!is_null($model)) ? $model : $this->related;
 

@@ -37,9 +37,10 @@ class Connection extends IlluminateConnection
      * @var array
      */
     protected $defaults = [
-        'scheme'            => 'http',
+        'scheme'            => 'bolt',
         'host'              => 'localhost',
-        'port'              => 7474,
+        'port'              => 7687,
+        'database'          => 'neo4j',
         'username'          => null,
         'password'          => null,
         'ssl'               => false,
@@ -186,7 +187,7 @@ class Connection extends IlluminateConnection
      */
     public function getConfig($option = null)
     {
-        return Arr::get($this->config, $option);
+        return Arr::get(array_merge($this->defaults, $this->config), $option);
     }
 
     /**

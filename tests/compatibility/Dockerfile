@@ -1,0 +1,2 @@
+FROM php:8.5-cli-bookworm@sha256:104890ada56869090c9cd0ec709fe205834d3e383b46d9995dc16cd6388a9302
+WORKDIR /workspace

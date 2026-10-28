@@ -11,6 +11,8 @@ use Vinelab\NeoEloquent\Tests\TestCase;
 
 class GrammarTest extends TestCase
 {
+    protected $grammar, $processor;
+
     public function setUp(): void
     {
         parent::setUp();

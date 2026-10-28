@@ -13,25 +13,24 @@ abstract class ClientAbstract
      */
     public function buildUriFromConfig(array $config): string
     {
-        $uri = '';
-        $scheme = $this->getScheme($config);
-        if ($scheme) {
-            $uri .= $scheme.'://';
+        $directUrl = Arr::get($config, 'url');
+        if (!empty($directUrl)) {
+            return $directUrl;
         }
 
-        $host = $this->getHost($config);
-        if ($host) {
-            $uri .= '@'.$host;
-        }
+        $scheme = Arr::get($config, 'scheme', 'bolt');
+        $host = Arr::get($config, 'host', 'localhost');
+        $port = Arr::get($config, 'port', 7687);
+        $database = Arr::get($config, 'database');
 
-        $port = $this->getPort($config);
+        $uri = $scheme.'://'.$host;
+
         if ($port) {
             $uri .= ':'.$port;
         }
 
-        $database = $this->getDatabase();
-        if ($database) {
-            $uri .= '?database='.$database;
+        if (!empty($database)) {
+            $uri .= '?database='.rawurlencode($database);
         }
 
         return $uri;

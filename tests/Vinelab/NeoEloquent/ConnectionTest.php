@@ -9,6 +9,8 @@ use Vinelab\NeoEloquent\DatabaseDriver\Interfaces\ResultSetInterface;
 
 class ConnectionTest extends TestCase
 {
+    protected $user;
+
     public function setUp(): void
     {
         parent::setUp();

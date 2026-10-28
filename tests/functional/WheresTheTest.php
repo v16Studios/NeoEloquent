@@ -15,6 +15,8 @@ class User extends Model
 
 class WheresTheTest extends TestCase
 {
+    protected $ab, $cd, $ef, $gh, $ij;
+
     public function tearDown(): void
     {
         M::close();

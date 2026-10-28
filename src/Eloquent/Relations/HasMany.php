@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Vinelab\NeoEloquent\Eloquent\Edges\EdgeOut;
 
-#[\AllowDynamicProperties]
 class HasMany extends HasOneOrMany
 {
     /**
@@ -27,7 +26,7 @@ class HasMany extends HasOneOrMany
      *
      * @return \Vinelab\NeoEloquent\Eloquent\Edges\EdgeOut
      */
-    public function getEdge(EloquentModel $model = null, $attributes = [])
+    public function getEdge(?EloquentModel $model = null, $attributes = [])
     {
         $model = (!is_null($model)) ? $model : $this->parent->{$this->relation};
 

@@ -170,7 +170,7 @@ you can do so by passing additional arguments to default migration command like:
      *
      * @return \Vinelab\NeoEloquent\Schema\Blueprint
      */
-    protected function createBlueprint($label, Closure $callback = null)
+    protected function createBlueprint($label, ?Closure $callback = null)
     {
         if (isset($this->resolver)) {
             return call_user_func($this->resolver, $label, $callback);

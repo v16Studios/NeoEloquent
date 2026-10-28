@@ -47,7 +47,7 @@ abstract class OneRelation extends BelongsTo implements RelationInterface
      *
      * @return \Vinelab\NeoEloquent\Eloquent\Edges\Edge[In,Out, etc.]
      */
-    abstract public function getEdge(Model $model = null, $attributes = []);
+    abstract public function getEdge(?Model $model = null, $attributes = []);
 
     /**
      * Get the direction of the edge for this relationship.
@@ -113,7 +113,7 @@ abstract class OneRelation extends BelongsTo implements RelationInterface
      *
      * @return \Vinelab\NeoEloquent\Eloquent\Edges\Edge[In,Out, etc.]
      */
-    public function edge(Model $model = null)
+    public function edge(?Model $model = null)
     {
         return $this->getEdge($model)->current();
     }
@@ -212,7 +212,7 @@ abstract class OneRelation extends BelongsTo implements RelationInterface
 
     public function getRelationName()
     {
-        return $this->relation;
+        return $this->relationName;
     }
 
     public function getRelationType()

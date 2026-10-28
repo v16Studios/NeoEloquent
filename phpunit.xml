@@ -5,6 +5,7 @@
          colors="true"
          verbose="true"
          convertErrorsToExceptions="true"
+         convertDeprecationsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
@@ -15,6 +16,10 @@
         <testsuite name="NeoEloquent Test Suite">
             <directory suffix=".php">./tests/Vinelab</directory>
             <directory suffix=".php">./tests/functional</directory>
+        </testsuite>
+        <testsuite name="Laravel compatibility">
+            <file>./tests/compatibility/CompatibilityTest.php</file>
+            <file>./tests/compatibility/GraphCompatibilityTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>
