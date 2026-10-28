@@ -4,6 +4,7 @@
 
 composer.phar
 composer.lock
+!tests/compatibility/locks/**/composer.lock
 
 *.sublime-project
 

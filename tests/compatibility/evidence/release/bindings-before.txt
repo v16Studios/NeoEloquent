@@ -1,0 +1,45 @@
+Container nxs-neoeloquent-neo4j-1 Running
+ Container nxs-neoeloquent-neo4j-1 Waiting
+ Container nxs-neoeloquent-neo4j-1 Healthy
+ Container nxs-neoeloquent-tests-run-<id> Creating
+ Container nxs-neoeloquent-tests-run-<id> Created
+PHPUnit 9.6.38 by Sebastian Bergmann and contributors.
+
+E                                                                   1 / 1 (100%)
+
+Time: 00:01.310, Memory: 14.00 MB
+
+There was 1 error:
+
+1) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testCreateWithAndBoundValuesPreservePropertyShapes
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.ParameterMissing" and message "Expected parameter(s): map, empty" - Query: RETURN $map.zero AS zero, $map.enabled AS enabled, size($empty) AS size, $optional AS optional - Bindings: {"map":{"zero":0,"enabled":false},"empty":[],"optional":null}
+
+/workspace/src/Connection.php:638
+/workspace/src/Connection.php:226
+/workspace/tests/compatibility/GraphReleaseTest.php:111
+
+Caused by
+Laudis\Neo4j\Exception\Neo4jException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.ParameterMissing" and message "Expected parameter(s): map, empty"
+
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Exception/Neo4jException.php:50
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:701
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:527
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:328
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:177
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:216
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:291
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:85
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:168
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:136
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:166
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:77
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:87
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:72
+/workspace/src/DatabaseDriver/CypherQuery.php:56
+/workspace/src/Connection.php:236
+/workspace/src/Connection.php:629
+/workspace/src/Connection.php:226
+/workspace/tests/compatibility/GraphReleaseTest.php:111
+
+ERRORS!
+Tests: 1, Assertions: 7, Errors: 1.

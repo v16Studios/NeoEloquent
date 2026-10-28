@@ -3,7 +3,6 @@
 namespace Vinelab\NeoEloquent;
 
 use Closure;
-use DateTime;
 use Exception;
 use Illuminate\Database\Connection as IlluminateConnection;
 use Illuminate\Database\Schema\Grammars\Grammar as IlluminateSchemaGrammar;
@@ -308,55 +307,32 @@ class Connection extends IlluminateConnection
     public function prepareBindings(array $bindings)
     {
         $grammar = $this->getQueryGrammar();
-
         $prepared = [];
 
         foreach ($bindings as $key => $binding) {
-            // The bindings are collected in a little bit different way than
-            // Eloquent, we will need the key name in order to know where to replace
-            // the value using the Neo4j client.
-            $value = $binding;
-
-            // We need to get the array value of the binding
-            // if it were mapped
-            if (is_array($value)) {
-                // There are different ways to handle multiple
-                // bindings vs. single bindings as values.
-                $value = array_values($value);
-            }
-
-            // We need to transform all instances of the DateTime class into an actual
-            // date string. Each query grammar maintains its own date string format
-            // so we'll just ask the grammar for the format to get from the date.
-
-            if ($value instanceof DateTime) {
-                $binding = $value->format($grammar->getDateFormat());
-            }
-
-            $property = is_array($binding) ? key($binding) : $key;
-
-            // We will set the binding key and value, then
-            // we replace the binding property of the id (if found)
-            // with a _nodeId instead since the client
-            // will not accept replacing "id(n)" with a value
-            // which have been previously processed by the grammar
-            // to be _nodeId instead.
-            if (!is_array($binding)) {
-                $binding = [$binding];
-            }
-
-            foreach ($binding as $property => $real) {
-                // We should not pass any numeric key-value items since the Neo4j client expects
-                // a JSON map parameters.
-                if (is_numeric($property)) {
-                    $property = (!is_numeric($key)) ? $key : 'id';
+            if (!is_int($key)) {
+                // Named parameters are values, including maps and empty lists.
+                // Never flatten them into unrelated top-level parameters.
+                $prepared[$key] = $binding instanceof \DateTimeInterface
+                    ? $binding->format($grammar->getDateFormat()) : $binding;
+                if ($key === 'id') {
+                    // Preserve the legacy grammar alias as well as raw Cypher $id.
+                    $alias = $grammar->getIdReplacement($key);
+                    if (!array_key_exists($alias, $bindings)) {
+                        $prepared[$alias] = $prepared[$key];
+                    }
                 }
+                continue;
+            }
 
-                if ($property == 'id') {
+            // Legacy builder/caller shape: [['name' => value], ['id' => value]].
+            foreach (is_array($binding) ? $binding : ['id' => $binding] as $property => $value) {
+                $property = is_int($property) ? 'id' : $property;
+                if ($property === 'id') {
                     $property = $grammar->getIdReplacement($property);
                 }
-
-                $prepared[$property] = $real;
+                $prepared[$property] = $value instanceof \DateTimeInterface
+                    ? $value->format($grammar->getDateFormat()) : $value;
             }
         }
 

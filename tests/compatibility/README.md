@@ -1,5 +1,7 @@
 # Reproduce the compatibility checks
 
+For the current candidate, use the [release guide](../../docs/release-candidate.md) and `PHP_BIN=php85 bash tests/compatibility/verify-release.sh 13` (then `12`). That script restores checked-in dependency locks and verifies both node and relationship ID 0. The commands below describe the earlier compatibility checkpoint and intentionally resolve dependencies when preparing new snapshots; its isolated compatibility suite no longer owns the fresh-ID assertion.
+
 Real transaction tests and their lifecycle/retry contract are documented in [transactions.md](../../docs/transactions.md). The Compose graph uses a test-only one-second lock acquisition timeout for its deterministic contention test.
 
 Run from the fork root with Docker/Compose, Composer and PHP 8.5 available. Commands below use `php`; use `php85` locally if the default PHP differs. The library manifest continues to advertise Laravel 12 and 13. The generated manifests and vendor directories stay under ignored `vendor/`.

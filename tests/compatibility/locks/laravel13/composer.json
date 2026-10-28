@@ -1,0 +1,66 @@
+{
+    "name": "ulobby/neoeloquent",
+    "description": "Neo4j Bolt Eloquent driver; NXS compatibility fork of ulobby/neoeloquent 9.9.0",
+    "keywords": [
+        "laravel",
+        "neo4j",
+        "graph",
+        "database",
+        "neoeloquent"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Abed Halawi",
+            "email": "abed.halawi@vinelab.com"
+        },
+        {
+            "name": "Ulobby",
+            "email": "ulobby@ulobby.eu"
+        }
+    ],
+    "require": {
+        "php": "~8.5.0",
+        "illuminate/support": "^13.39.0",
+        "illuminate/database": "^13.39.0",
+        "illuminate/pagination": "^13.39.0",
+        "illuminate/events": "^13.39.0",
+        "illuminate/console": "^13.39.0",
+        "laudis/neo4j-php-client": "^3.7.0",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.3.3",
+        "mockery/mockery": "^1.4.2",
+        "symfony/var-dumper": "*",
+        "guzzlehttp/guzzle": "^7.0",
+        "rector/rector": "^2.0"
+    },
+    "repositories": [],
+    "autoload": {
+        "psr-4": {
+            "Vinelab\\NeoEloquent\\": "../../src"
+        }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "../../tests/TestCase.php"
+        ]
+    },
+    "replace": {
+        "vinelab/neoeloquent": "1.4.7"
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Vinelab\\NeoEloquent\\NeoEloquentServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}

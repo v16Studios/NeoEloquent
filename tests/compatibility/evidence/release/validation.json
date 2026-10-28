@@ -1,0 +1,50 @@
+{
+  "ticket": "V16-35",
+  "date": "2026-10-28",
+  "candidate_tag": "9.9.1-RC1",
+  "upstream_base": "ce76714db4e27614bc1a03322b942b8e342c8297",
+  "source_parent": "1b8fb98bd39b606dfee5ff4cfe937c664b2e54c8",
+  "php": "8.5.12",
+  "neo4j": "5.26.32 Community",
+  "laudis": "3.7.0",
+  "composer": "2.10.2",
+  "phpunit": "9.6.38",
+  "matrix": {
+    "12": {
+      "illuminate": "12.70.2",
+      "manifest_sha256": "066263e985ffc6650a0ab81fd87480836c87206d8383a8c3f96640bab3dd55f6",
+      "lock_sha256": "e812c6d43aa05e7fbedfc3a41cff3109cca3129f55f31f1b3b07ed44ba3c99d6",
+      "snapshot": "tests/compatibility/locks/laravel12"
+    },
+    "13": {
+      "illuminate": "13.39.0",
+      "manifest_sha256": "76669eb0f6109dacd02becb7b77520a5161c2f47bdacc30d349be6a8a0c2fdab",
+      "lock_sha256": "f214161c23357792847869b4a0277a1794dced28d3ccfc4a46eab54d13e3081c",
+      "snapshot": "tests/compatibility/locks/laravel13"
+    }
+  },
+  "focused_each": {
+    "tests": 38,
+    "assertions": 210,
+    "failures": 0,
+    "errors": 0,
+    "fresh_node_id_zero": true,
+    "fresh_relationship_id_zero": true,
+    "exit_code": 0
+  },
+  "full_each": {
+    "tests": 312,
+    "assertions": 1265,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 10,
+    "incomplete": 12,
+    "deprecation_output": false,
+    "exit_code": 0
+  },
+  "local_ci_equivalent": "tests/compatibility/verify-release.sh run sequentially for 13 and 12",
+  "hosted_ci_run": false,
+  "syntax_files": 75,
+  "workflow_yaml_parse": "passed",
+  "consumer_evidence": "Recorded separately after the candidate is committed and installed"
+}

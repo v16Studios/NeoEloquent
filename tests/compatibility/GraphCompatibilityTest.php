@@ -34,12 +34,9 @@ class GraphCompatibilityTest extends CompatibilityTestCase
         parent::tearDown();
     }
 
-    public function testCrudAndZeroIdOnFreshGraph(): void
+    public function testCrudAndIdentity(): void
     {
         $node = CompatibilityNode::create(['name' => 'first', 'enabled' => true, 'score' => 2]);
-        if (getenv('NEOELOQUENT_EXPECT_FIRST_ID_ZERO') === '1') {
-            $this->assertSame(0, $node->getKey(), 'Run on a fresh disposable store for the ID 0 check.');
-        }
         $id = $node->getKey();
         $this->assertSame('first', CompatibilityNode::findOrFail($id)->name);
         $node->update(['name' => 'updated']);

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="../../vendor/autoload.php" colors="false"
+         convertDeprecationsToExceptions="true" failOnWarning="true">
+    <testsuites>
+        <testsuite name="Release acceptance">
+            <file>GraphReleaseTest.php</file>
+            <file>CompatibilityTest.php</file>
+            <file>GraphCompatibilityTest.php</file>
+            <file>GraphTransactionTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>

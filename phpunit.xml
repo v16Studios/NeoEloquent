@@ -24,5 +24,8 @@
         <testsuite name="Neo4j transactions">
             <file>./tests/compatibility/GraphTransactionTest.php</file>
         </testsuite>
+        <testsuite name="Release acceptance">
+            <file>./tests/compatibility/GraphReleaseTest.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>

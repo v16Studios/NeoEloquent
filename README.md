@@ -2,6 +2,13 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4b18de9ea45b4b2c96a8f78a25db6480)](https://www.codacy.com/manual/berteltorp/NeoEloquent?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ulobby/NeoEloquent&amp;utm_campaign=Badge_Grade)
 
 # NeoEloquent
+
+## NXS fork candidate
+
+This branch contains the **v16Studios 9.9.1-RC1 candidate**, based on Ulobby 9.9.0, for PHP 8.5, Laravel 12.70.2+/13.39.0+ and Neo4j 5.26. Read the [release and installation guide](docs/release-candidate.md), [NXS changelog](CHANGELOG-NXS.md) and [transaction contract](docs/transactions.md). The candidate is local until reviewed/published; it has not been activated in the application. Use Bolt port 7687 for the tested configuration.
+
+The original upstream overview and historical installation examples follow; use the candidate guide above for this branch.
+
 Neo4j Graph Eloquent Driver for Laravel, this is a fork of [Vinelab/NeoEloquent](https://github.com/Vinelab/NeoEloquent) created by [Ulobby](https://www.ulobby.eu).
 
 We recommend you use and contribute to the original repository if you are just starting out with NeoEloquent - but you are of course free to use our fork and make PRs if use it anyway.
