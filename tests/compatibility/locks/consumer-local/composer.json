@@ -1,0 +1,25 @@
+{
+    "name": "nxs/neoeloquent-release-consumer",
+    "description": "Isolated validation consumer; not the production application",
+    "license": "proprietary",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "/Users/simonevans/Work/GitHub/C4D/NeoEloquent",
+            "canonical": true,
+            "only": [
+                "ulobby/neoeloquent"
+            ]
+        }
+    ],
+    "require": {
+        "php": "~8.5.0",
+        "laravel/framework": "13.39.0",
+        "ulobby/neoeloquent": "9.9.1-RC1"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": false
+    }
+}

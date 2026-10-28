@@ -46,5 +46,20 @@
   "hosted_ci_run": false,
   "syntax_files": 75,
   "workflow_yaml_parse": "passed",
-  "consumer_evidence": "Recorded separately after the candidate is committed and installed"
+  "consumer_evidence": "consumer-validation.json",
+  "candidate_commit": "9bd7f99815f953d22fd68cddb31ebe99014e5b52",
+  "binding_regression_before": {
+    "source": "1b8fb98",
+    "tests": 1,
+    "assertions": 7,
+    "expected_errors": 1,
+    "expected_exit_code": 2
+  },
+  "checks": {
+    "php_syntax": "75 files passed",
+    "root_and_matrix_composer": "passed",
+    "shell_syntax": "passed",
+    "workflow_yaml_parse": "passed",
+    "whitespace": "passed"
+  }
 }

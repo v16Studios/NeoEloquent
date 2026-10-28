@@ -1,0 +1,19 @@
+{
+  "candidate_version": "9.9.1-RC1",
+  "candidate_commit": "9bd7f99815f953d22fd68cddb31ebe99014e5b52",
+  "framework": "13.39.0",
+  "source_url": "/Users/simonevans/Work/GitHub/C4D/NeoEloquent",
+  "source_type": "git; independently installed from local VCS, not a path symlink",
+  "remote_publication_verified": false,
+  "manifest_sha256": "a1345e78009b06ca49f78d21e129259e1563588eea2eca4f295419df729dfd14",
+  "lock_sha256": "a27a3fa01851e587ba231f90f68779b4c43d53a16336d7456963bb73ddd8983d",
+  "installed_package_source_check": true,
+  "provider_and_named_connection": "pass",
+  "model_and_edge_commit": "pass",
+  "rollback_and_original_error": "pass",
+  "parameter_shapes": "pass",
+  "platform_requirements": "pass; none ignored",
+  "locked_install": "pass",
+  "composer_validation": "pass with --strict --no-check-all; exact fixture constraints are intentional",
+  "exit_code": 0
+}

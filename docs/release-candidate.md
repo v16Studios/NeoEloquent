@@ -64,6 +64,8 @@ docker compose -f tests/compatibility/compose.yaml down -v
 
 Preparation refuses to overwrite an existing consumer lock. Reinstall it with `composer install`; preserve it before intentionally testing a new candidate. `check-consumer.php` verifies the installed source path/reference, boots the provider in Laravel, resolves the named connection and checks model/edge commit, rollback/original errors and raw parameter shapes. Local-source resolution does not prove remote publication or access. After approved publication, repeat with the GitHub URL and preserve the resulting deployment-ready lock; do not hand-edit the local consumer lock's repository URL.
 
+Recorded consumer result: Laravel **13.39.0** installed **9.9.1-RC1** from commit **`9bd7f99815f953d22fd68cddb31ebe99014e5b52`**, and every check above passed. Full local-consumer manifest/lock are preserved at `tests/compatibility/locks/consumer-local/`; their source URL is intentionally the recorded local checkout, not a deployment URL. Result/validation evidence is under `tests/compatibility/evidence/release/consumer-*`. `composer validate --strict --no-check-all` passes: the option accepts the intentionally exact version constraints while retaining schema/lock validation. Platform checks and a subsequent locked install pass without ignored requirements.
+
 ## Application boundaries
 
 - Label arrays mean **all labels (AND)**, not user-or-company union queries. A fixture matching `App\Models\Entity`'s shape verifies this behavior and preserves IDs. The application integration must review its intended union behavior; no label semantics were changed here.

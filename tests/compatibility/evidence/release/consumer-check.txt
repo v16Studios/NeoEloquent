@@ -1,0 +1,15 @@
+Container nxs-neoeloquent-neo4j-1 Running
+ Container nxs-neoeloquent-neo4j-1 Waiting
+ Container nxs-neoeloquent-neo4j-1 Healthy
+ Container nxs-neoeloquent-tests-run-<id> Creating
+ Container nxs-neoeloquent-tests-run-<id> Created
+{
+    "framework": "13.39.0",
+    "fork_version": "9.9.1-RC1",
+    "fork_reference": "9bd7f99815f953d22fd68cddb31ebe99014e5b52",
+    "installed_package_source": true,
+    "provider_and_named_connection": "pass",
+    "model_and_edge_commit": "pass",
+    "rollback_and_original_error": "pass",
+    "parameter_shapes": "pass"
+}
