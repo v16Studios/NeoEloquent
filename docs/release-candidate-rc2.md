@@ -23,3 +23,7 @@ Coverage includes real numeric node/edge ID zero, single and multiple attachment
 The independent consumer checker also exercises multi-relation creation and rejects missing attachments without partial writes. Prepare a fresh consumer for this exact candidate, run strict validation/platform checks/locked reinstall and `check-consumer.php` against its 40-character source commit before application acceptance. Preserve its manifest/lock and results separately from RC1. The application must pin this exact version from the canonical v16Studios GitHub repository and verify the installed commit; do not patch vendor source.
 
 The [RC1 support boundaries and upstream retirement rules](release-candidate.md) remain applicable. This candidate does not authorize production deployment or certify the later Nova/GraphQL/financial/migration stages.
+
+## Immutable candidate verification
+
+Tag `9.9.1-RC2` resolves to **`21661a2f209e3bc16cff2a62840e0c52f9d28b5f`**. The independent local VCS consumer installed that exact package source and passed provider, connection, commit/rollback, parameter and both new createWith checks. Strict Composer validation, platform requirements and a subsequent locked install pass. Full consumer manifest/lock and output are preserved in `tests/compatibility/evidence/rc2/consumer-local/`. Publication and the consuming application lock are verified separately; this local consumer does not prove remote availability.

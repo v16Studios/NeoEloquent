@@ -26,5 +26,15 @@
     "13": "f214161c23357792847869b4a0277a1794dced28d3ccfc4a46eab54d13e3081c"
   },
   "hosted_ci_run": false,
-  "consumer": "pending exact candidate commit check before application acceptance"
+  "consumer": {
+    "repository": "local VCS checkout",
+    "installed_version": "9.9.1-RC2",
+    "source_reference": "21661a2f209e3bc16cff2a62840e0c52f9d28b5f",
+    "checks": "passed",
+    "strict_validation": "passed",
+    "platform": "passed",
+    "locked_reinstall": "passed",
+    "evidence": "consumer-local/"
+  },
+  "candidate_commit": "21661a2f209e3bc16cff2a62840e0c52f9d28b5f"
 }

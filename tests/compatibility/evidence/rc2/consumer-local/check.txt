@@ -1,0 +1,27 @@
+ Network nxs-neoeloquent_isolated Creating 
+ Network nxs-neoeloquent_isolated Creating 
+ Network nxs-neoeloquent_isolated Created 
+ Network nxs-neoeloquent_isolated Created 
+ Container nxs-neoeloquent-neo4j-1 Creating 
+ Container nxs-neoeloquent-neo4j-1 Created 
+ Container nxs-neoeloquent-neo4j-1 Starting 
+ Container nxs-neoeloquent-neo4j-1 Started 
+ Container nxs-neoeloquent-neo4j-1 Waiting 
+ Container nxs-neoeloquent-neo4j-1 Healthy 
+ Container nxs-neoeloquent-neo4j-1 Running 
+ Container nxs-neoeloquent-neo4j-1 Waiting 
+ Container nxs-neoeloquent-neo4j-1 Healthy 
+ Container nxs-neoeloquent-tests-run-ace8f63cbe15 Creating 
+ Container nxs-neoeloquent-tests-run-ace8f63cbe15 Created 
+{
+    "framework": "13.39.0",
+    "fork_version": "9.9.1-RC2",
+    "fork_reference": "21661a2f209e3bc16cff2a62840e0c52f9d28b5f",
+    "installed_package_source": true,
+    "provider_and_named_connection": "pass",
+    "model_and_edge_commit": "pass",
+    "multi_relation_create_with": "pass",
+    "missing_attachment_no_partial_write": "pass",
+    "rollback_and_original_error": "pass",
+    "parameter_shapes": "pass"
+}
