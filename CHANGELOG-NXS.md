@@ -1,5 +1,15 @@
 # NXS fork changes
 
+## 9.9.1-RC2 — createWith repair
+
+- Emit a separate MERGE for each attachment group; preserve direction and avoid duplicate edges/models when groups contain multiple targets.
+- Match and validate every distinct requested attachment before creating any nodes, within the same Cypher statement. Missing or wrong-label targets raise QueryException without partial writes. This intentionally replaces RC1's partial-write/null-result behavior.
+- Accept empty relation lists and hydrate parent-only results; empty lists no longer create an unintended blank child.
+- Consume auto-commit results inside the adapter and discard failed transport state while preserving the original exception. A failed statement must not contaminate a subsequent explicit transaction.
+- Add real Neo4j regressions for multiple/mixed/empty/missing attachments, constraint failures, outer rollback and post-failure recovery. Keep the published RC1 tag immutable.
+
+See [RC2 acceptance](docs/release-candidate-rc2.md) for evidence and retained limitations.
+
 ## 9.9.1-RC1 — local review candidate
 
 Based on upstream Ulobby 9.9.0 (`ce76714`). Package identity remains `ulobby/neoeloquent`.

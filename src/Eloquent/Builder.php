@@ -140,6 +140,10 @@ class Builder extends IlluminateBuilder
             $grammar = $this->getQuery()->getGrammar();
 
             foreach ($results->getResults() as $result) {
+                // The driver unwraps a single node column (no related nodes).
+                if (isset($result['labels'], $result['properties'])) {
+                    $result = [$grammar->modelAsNode($this->model->getTable()) => $result];
+                }
                 $attributes = $result;
                 // Now that we have the attributes, we first check for mutations
                 // and if exists, we will need to mutate the attributes accordingly.
@@ -157,14 +161,16 @@ class Builder extends IlluminateBuilder
                             $model = $mutationModel->newFromBuilder($values);
                             $model->setConnection($mutationModel->getConnectionName());
 
-                            $models[$cropped][] = $model;
+                            // Several attachment groups produce a row per combination.
+                            // Hydrate each related node once, including numeric ID zero.
+                            $models[$cropped][$model->getKey()] = $model;
                         }
                     }
                 }
             }
         }
 
-        return $models;
+        return array_map('array_values', $models);
     }
 
     /**

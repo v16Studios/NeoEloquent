@@ -13,6 +13,6 @@ class Helpers
      */
     public static function isAssocArray($array)
     {
-        return is_array($array) && array_keys($array) !== range(0, count($array) - 1);
+        return is_array($array) && !array_is_list($array);
     }
 }

@@ -31,6 +31,11 @@ class ConsumerReleaseNode extends Model
     {
         return $this->hasMany(self::class, 'CONSUMER_OWNS');
     }
+
+    public function parents()
+    {
+        return $this->belongsToMany(self::class, 'CONSUMER_OWNS');
+    }
 }
 
 $expected = $argv[1];
@@ -58,6 +63,19 @@ try {
         return $owner->getKey();
     });
     verifyConsumer(ConsumerReleaseNode::findOrFail($id)->children()->count() === 1, 'Installed model/relationship commit failed.');
+    $existing = ConsumerReleaseNode::findOrFail($id);
+    $created = ConsumerReleaseNode::createWith(['name' => 'multi-relation'], [
+        'children' => [$existing, ['name' => 'new-child']], 'parents' => [$existing],
+    ]);
+    verifyConsumer($created->children()->count() === 2 && $created->parents()->count() === 1, 'Installed multi-relation createWith failed.');
+    $before = ConsumerReleaseNode::count();
+    try {
+        ConsumerReleaseNode::createWith(['name' => 'missing-target'], ['children' => [$existing], 'parents' => [PHP_INT_MAX]]);
+        throw new RuntimeException('Missing attachment was silently accepted.');
+    } catch (\Vinelab\NeoEloquent\QueryException $error) {
+        verifyConsumer(str_contains($error->getMessage(), 'attachment'), 'Missing attachment produced an unrelated error.');
+    }
+    verifyConsumer(ConsumerReleaseNode::count() === $before, 'Missing attachment left a partial write.');
     $original = new RuntimeException('Expected consumer rollback');
     try {
         $connection->transaction(function () use ($original) {
@@ -81,6 +99,8 @@ try {
         'installed_package_source' => true,
         'provider_and_named_connection' => 'pass',
         'model_and_edge_commit' => 'pass',
+        'multi_relation_create_with' => 'pass',
+        'missing_attachment_no_partial_write' => 'pass',
         'rollback_and_original_error' => 'pass',
         'parameter_shapes' => 'pass',
     ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n";

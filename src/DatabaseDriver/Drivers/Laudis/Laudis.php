@@ -82,9 +82,22 @@ class Laudis extends ClientAbstract implements ClientInterface
     {
         // Helpers keep this adapter, so those created before beginTransaction()
         // resolve the active transaction at execution time too.
-        return $this->transaction !== null
-            ? $this->transaction->runStatement($statement)
-            : $this->client->runStatement($statement);
+        if ($this->transaction !== null) {
+            return $this->transaction->runStatement($statement);
+        }
+
+        try {
+            $result = $this->client->runStatement($statement);
+            // Auto-commit can fail while pulling records, too. Consume here so
+            // a failed Bolt connection cannot leak into a later transaction.
+            $result->preload();
+            $result->rewind();
+
+            return $result;
+        } catch (Throwable $error) {
+            $this->resetClientAfterFailure();
+            throw $error;
+        }
     }
 
     private function getAuth(): AuthenticateInterface

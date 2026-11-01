@@ -647,7 +647,14 @@ class Builder extends IlluminateQueryBuilder
         $cypher = $this->grammar->compileCreateWith($this, compact('model', 'related'));
 
         // Indicate that we need the result returned as is.
-        return $this->connection->statement($cypher, [], true);
+        $result = $this->connection->statement($cypher, [], true);
+        if ($result->getResults() === []) {
+            throw new \Vinelab\NeoEloquent\QueryException($cypher, [], new \RuntimeException(
+                'createWith could not match every requested attachment; no models were created.'
+            ));
+        }
+
+        return $result;
     }
 
     /**

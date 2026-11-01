@@ -6,6 +6,7 @@ require_once __DIR__.'/CompatibilityTest.php';
 
 use Vinelab\NeoEloquent\Connection;
 use Vinelab\NeoEloquent\Eloquent\Model;
+use Vinelab\NeoEloquent\QueryException;
 
 class ReleaseNode extends Model
 {
@@ -43,6 +44,10 @@ class GraphReleaseTest extends CompatibilityTestCase
     protected function tearDown(): void
     {
         if (getenv('NEOELOQUENT_DISPOSABLE_GRAPH') === '1') {
+            $connection = (new ReleaseNode())->getConnection();
+            if ($connection->transactionLevel()) {
+                $connection->rollBack();
+            }
             (new ReleaseNode())->getConnection()->statement(
                 'MATCH (n) WHERE n:ReleaseFixture OR n:ReleaseUser OR n:ReleaseCompany DETACH DELETE n'
             );
@@ -116,6 +121,120 @@ class GraphReleaseTest extends CompatibilityTestCase
         $this->assertSame(['id' => 7, 'alias' => 9], $owner->getConnection()->select(
             'RETURN $id AS id, $idn AS alias', ['idn' => 9, 'id' => 7]
         )->getResults()[0]);
+    }
+
+    public function testCreateWithMultipleAttachmentGroupsDoesNotDuplicateNodesOrEdges(): void
+    {
+        $children = [ReleaseNode::create(['name' => 'child-a']), ReleaseNode::create(['name' => 'child-b'])];
+        $parents = [ReleaseNode::create(['name' => 'parent-a']), ReleaseNode::create(['name' => 'parent-b'])];
+        $owner = ReleaseNode::createWith(['name' => 'owner'], [
+            'children' => [$children[0], $children[1], $children[0]->getKey()],
+            'parents' => [$parents[0]->getKey(), $parents[1]->getKey()],
+        ]);
+        $this->assertSame(5, ReleaseNode::count());
+        foreach (['children' => $children, 'parents' => $parents] as $relation => $expected) {
+            $ids = array_map(fn ($node) => $node->getKey(), $expected);
+            $this->assertEqualsCanonicalizing($ids, $owner->$relation->modelKeys());
+            $this->assertEqualsCanonicalizing($ids, $owner->$relation()->get()->modelKeys());
+        }
+        $this->assertSame(4, $owner->getConnection()->select('MATCH (:ReleaseFixture)-[r:RELEASE_OWNS]->(:ReleaseFixture) RETURN count(r) AS total')->getResults()[0]['total']);
+    }
+
+    public function testCreateWithMixedNewAndExistingRelationsCommitsTogether(): void
+    {
+        $child = ReleaseNode::create(['name' => 'existing-child']);
+        $parent = ReleaseNode::create(['name' => 'existing-parent']);
+        $owner = ReleaseNode::createWith(['name' => 'owner'], [
+            'children' => [$child, ['name' => 'new-child']],
+            'parents' => [$parent, ['name' => 'new-parent']],
+        ]);
+        $this->assertSame(5, ReleaseNode::count());
+        $this->assertCount(2, $owner->children);
+        $this->assertCount(2, $owner->parents);
+        $this->assertEqualsCanonicalizing(['existing-child', 'new-child'], $owner->children()->get()->pluck('name')->all());
+        $this->assertEqualsCanonicalizing(['existing-parent', 'new-parent'], $owner->parents()->get()->pluck('name')->all());
+    }
+
+    public function testCreateWithEmptyRelationsCreatesOnlyTheParent(): void
+    {
+        $alone = ReleaseNode::createWith(['name' => 'alone'], []);
+        $empty = ReleaseNode::createWith(['name' => 'empty'], ['children' => []]);
+        $this->assertSame('alone', ReleaseNode::findOrFail($alone->getKey())->name);
+        $this->assertCount(0, $empty->children);
+        $this->assertSame(2, ReleaseNode::count());
+    }
+
+    public function testCreateWithMissingAttachmentCannotLeavePartialWrites(): void
+    {
+        $child = ReleaseNode::create(['name' => 'existing-child']);
+        foreach ([
+            ['parents' => [PHP_INT_MAX]],
+            ['children' => [$child, PHP_INT_MAX]],
+            ['children' => [PHP_INT_MAX], 'parents' => [$child]],
+        ] as $attachments) {
+            try {
+                ReleaseNode::createWith(['name' => 'must-not-exist'], array_merge([
+                    'children' => [$child, ['name' => 'must-not-exist-child']],
+                ], $attachments));
+                $this->fail('Every requested attachment must exist.');
+            } catch (QueryException $error) {
+                $this->assertStringContainsString('attachment', $error->getMessage());
+            }
+            $this->assertSame([$child->getKey()], ReleaseNode::all()->modelKeys());
+            $this->assertSame(0, $child->getConnection()->select('MATCH (:ReleaseFixture)-[r]->(:ReleaseFixture) RETURN count(r) AS total')->getResults()[0]['total']);
+        }
+    }
+
+    public function testCreateWithParticipatesInOuterRollbackWithoutNesting(): void
+    {
+        $child = ReleaseNode::create(['name' => 'child']);
+        $parent = ReleaseNode::create(['name' => 'parent']);
+        $connection = $child->getConnection();
+        $failure = new \RuntimeException('fail after createWith');
+        try {
+            $connection->transaction(function () use ($child, $parent, $connection, $failure) {
+                $owner = ReleaseNode::createWith(['name' => 'owner'], [
+                    'children' => [$child, ['name' => 'new-child']], 'parents' => [$parent],
+                ]);
+                $this->assertSame(1, $connection->transactionLevel());
+                $this->assertSame(2, $owner->children()->count());
+                $this->assertSame(1, $owner->parents()->count());
+                throw $failure;
+            });
+            $this->fail('The original failure must escape.');
+        } catch (\RuntimeException $caught) {
+            $this->assertSame($failure, $caught);
+        }
+        $this->assertSame(0, $connection->transactionLevel());
+        $this->assertEqualsCanonicalizing([$child->getKey(), $parent->getKey()], ReleaseNode::all()->modelKeys());
+        $this->assertSame(0, $child->parents()->count());
+        $this->assertSame(0, $parent->children()->count());
+    }
+
+    public function testCreateWithConstraintFailureRollsBackTheWholeStatement(): void
+    {
+        $connection = (new ReleaseNode())->getConnection();
+        $connection->statement('CREATE CONSTRAINT release_fixture_unique_name FOR (n:ReleaseFixture) REQUIRE n.name IS UNIQUE');
+        try {
+            $child = ReleaseNode::create(['name' => 'already-exists']);
+            $parent = ReleaseNode::create(['name' => 'parent']);
+            try {
+                ReleaseNode::createWith(['name' => 'owner'], [
+                    'children' => [$child], 'parents' => [$parent, ['name' => 'already-exists']],
+                ]);
+                $this->fail('A duplicate new node must fail.');
+            } catch (QueryException $error) {
+                $this->assertNotNull($error->getPrevious());
+                $this->assertStringContainsString('already exists', $error->getMessage());
+            }
+            $this->assertEqualsCanonicalizing([$child->getKey(), $parent->getKey()], ReleaseNode::all()->modelKeys());
+            $this->assertSame(0, $child->parents()->count());
+            $this->assertSame(0, $parent->children()->count());
+            // A failed auto-commit statement must not poison the next explicit transaction.
+            $this->assertSame(2, $connection->transaction(fn () => ReleaseNode::count()));
+        } finally {
+            $connection->statement('DROP CONSTRAINT release_fixture_unique_name IF EXISTS');
+        }
     }
 
     public function testArrayLabelsRequireAllLabelsAndPreserveIdentity(): void

@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-01",
+  "ticket": "V16-38",
+  "candidate": "9.9.1-RC2",
+  "parent": "f8d0edf66ee4ee90045b09da8ce4e238f5704a33",
+  "php": "8.5.12",
+  "neo4j": "5.26.32 Community",
+  "laudis": "3.7.0",
+  "focused_each": {
+    "tests": 44,
+    "assertions": 247,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "full_each": {
+    "tests": 318,
+    "assertions": 1302,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 10,
+    "incomplete": 12
+  },
+  "locks": {
+    "12": "e812c6d43aa05e7fbedfc3a41cff3109cca3129f55f31f1b3b07ed44ba3c99d6",
+    "13": "f214161c23357792847869b4a0277a1794dced28d3ccfc4a46eab54d13e3081c"
+  },
+  "hosted_ci_run": false,
+  "consumer": "pending exact candidate commit check before application acceptance"
+}

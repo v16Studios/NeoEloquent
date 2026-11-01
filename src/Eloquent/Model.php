@@ -594,7 +594,7 @@ abstract class Model extends IlluminateModel
             $relation = $created->$method();
             // is this a one-to-one relation ? If so then we add the model directly,
             // otherwise we create a collection of the loaded models.
-            $related = new Collection($result[$method]);
+            $related = new Collection($result[$method] ?? []);
             // fire model events 'created' and 'saved' on related models.
             $related->each(function ($model) use ($options) {
                 $model->finishSave($options);

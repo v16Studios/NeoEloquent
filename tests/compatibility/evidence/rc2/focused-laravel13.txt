@@ -1,0 +1,12 @@
+ Container nxs-neoeloquent-neo4j-1 Running 
+ Container nxs-neoeloquent-neo4j-1 Waiting 
+ Container nxs-neoeloquent-neo4j-1 Healthy 
+ Container nxs-neoeloquent-tests-run-921abc7ce1b8 Creating 
+ Container nxs-neoeloquent-tests-run-921abc7ce1b8 Created 
+PHPUnit 9.6.38 by Sebastian Bergmann and contributors.
+
+............................................                      44 / 44 (100%)
+
+Time: 00:05.654, Memory: 22.00 MB
+
+OK (44 tests, 247 assertions)

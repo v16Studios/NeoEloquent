@@ -677,12 +677,17 @@ class CypherGrammar extends Grammar
                 // $node = $this->modelAsNode($label, $relation['name']);
                 $nodeLabel = $this->prepareLabels($label);
 
-                // An attachment query is a combination of MATCH, WHERE and CREATE where
-                // we MATCH the nodes that we need to attach, set the conditions
-                // on the records that we need to attach with WHERE and then
-                // CREATE these relationships.
-                $attachments['matches'][] = "({$identifier}{$nodeLabel})";
-                $attachments['wheres'][] = "id($identifier) IN [".implode(', ', $attach).']';
+                // Collect each group before CREATE so a missing attachment cannot
+                // leave a parent or newly created related nodes behind. Keep one
+                // row until creation, even when several groups contain many IDs.
+                $list = $identifier.'_nodes';
+                $attachments['groups'][] = [
+                    'identifier' => $identifier,
+                    'list' => $list,
+                    'match' => "({$identifier}{$nodeLabel})",
+                    'where' => "id($identifier) IN [".implode(', ', $attach).']',
+                    'count' => count(array_unique($attach, SORT_REGULAR)),
+                ];
                 $attachments['relations'][] = $this->craftRelation(
                     $parentNode,
                     ':'.$relation['type'],
@@ -693,9 +698,18 @@ class CypherGrammar extends Grammar
                 );
             }
         }
-        // Return the Cypher representation of the query that would look something like:
-        // CREATE (post:`Post` {title: '..', body: '..'})
-        $cypher = 'CREATE '.$entity;
+        $cypher = '';
+        $attachmentLists = [];
+        foreach ($attachments['groups'] ?? [] as $group) {
+            $cypher .= 'OPTIONAL MATCH '.$group['match'].' WHERE '.$group['where'];
+            $projection = array_merge($attachmentLists, [
+                'collect('.$group['identifier'].') AS '.$group['list'],
+            ]);
+            $cypher .= ' WITH '.implode(', ', $projection);
+            $cypher .= ' WHERE size('.$group['list'].') = '.$group['count'].' ';
+            $attachmentLists[] = $group['list'];
+        }
+        $cypher .= 'CREATE '.$entity;
         // Then we add the records that we need to create as such:
         // (post)-[:PHOTO]->(:`Photo` {url: ''}), (post)-[:VIDEO]->(:`Video` {title: '...'})
         if (!empty($relations)) {
@@ -704,21 +718,15 @@ class CypherGrammar extends Grammar
         // Now we add the attaching Cypher
         if (!empty($attachments)) {
             // Bring the parent node along with us to be used in the query further.
-            $cypher .= " WITH $parentNode";
-
-            if (!empty($createdIdsToReturn)) {
-                $cypher .= ', '.implode(', ', $createdIdsToReturn);
+            $cypher .= ' WITH '.implode(', ', array_merge([$parentNode], $createdIdsToReturn, $attachmentLists));
+            foreach ($attachments['groups'] as $group) {
+                $cypher .= ' UNWIND '.$group['list'].' AS '.$group['identifier'];
             }
-
-            // MATCH the related nodes that we are attaching.
-            $cypher .= ' MATCH '.implode(', ', $attachments['matches']);
-            // Set the WHERE conditions for the heart of the query.
-            $cypher .= ' WHERE '.implode(' AND ', $attachments['wheres']);
-            // CREATE the relationships between matched nodes
-            $cypher .= ' MERGE'.implode(', ', $attachments['relations']);
+            // Each MERGE accepts one pattern. Repeated rows must not duplicate edges.
+            $cypher .= ' MERGE '.implode(' MERGE ', $attachments['relations']);
         }
 
-        $cypher .= " RETURN $parentNode, ".implode(', ', array_merge($createdIdsToReturn, $attachedIdsToReturn));
+        $cypher .= ' RETURN '.implode(', ', array_merge([$parentNode], $createdIdsToReturn, $attachedIdsToReturn));
 
         return $cypher;
     }

@@ -1,0 +1,203 @@
+Restored locked vendor/laravel13 dependencies; run composer install there.
+ Network nxs-neoeloquent_isolated Creating 
+ Network nxs-neoeloquent_isolated Creating 
+ Network nxs-neoeloquent_isolated Created 
+ Network nxs-neoeloquent_isolated Created 
+ Container nxs-neoeloquent-neo4j-1 Creating 
+ Container nxs-neoeloquent-neo4j-1 Created 
+ Container nxs-neoeloquent-neo4j-1 Starting 
+ Container nxs-neoeloquent-neo4j-1 Started 
+ Container nxs-neoeloquent-neo4j-1 Waiting 
+ Container nxs-neoeloquent-neo4j-1 Healthy 
+ Container nxs-neoeloquent-neo4j-1 Running 
+ Container nxs-neoeloquent-neo4j-1 Waiting 
+ Container nxs-neoeloquent-neo4j-1 Healthy 
+ Container nxs-neoeloquent-tests-run-bc27f65074e4 Creating 
+ Container nxs-neoeloquent-tests-run-bc27f65074e4 Created 
+PHPUnit 9.6.38 by Sebastian Bergmann and contributors.
+
+...EEEFEF...................................                      44 / 44 (100%)
+
+Time: 00:05.541, Memory: 24.00 MB
+
+There were 4 errors:
+
+1) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testCreateWithMultipleAttachmentGroupsDoesNotDuplicateNodesOrEdges
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input ',': expected a graph pattern, 'FOREACH', 'ORDER BY', 'CALL', 'CREATE', 'LOAD CSV', 'DELETE', 'DETACH', 'FINISH', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'ON', 'OPTIONAL', 'REMOVE', 'RETURN', 'SET', 'SKIP', 'UNION', 'UNWIND', 'USE', 'WITH' or <EOF> (line 1, column 393 (offset: 392))
+"CREATE (releaseFixture:`ReleaseFixture` { name: 'owner'}) WITH releaseFixture MATCH (children_neoeloquent_fcc96e3a383c57f3:`ReleaseFixture`), (parents_neoeloquent_c2000108f4b4feaa:`ReleaseFixture`) WHERE id(children_neoeloquent_fcc96e3a383c57f3) IN [2, 3, 2] AND id(parents_neoeloquent_c2000108f4b4feaa) IN [4, 5] MERGE(releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_fcc96e3a383c57f3), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_c2000108f4b4feaa) RETURN releaseFixture, children_neoeloquent_fcc96e3a383c57f3, parents_neoeloquent_c2000108f4b4feaa"
+                                                                                                                                                                                                                                                                                                                                                                                                         ^" - Query: CREATE (releaseFixture:`ReleaseFixture` { name: 'owner'}) WITH releaseFixture MATCH (children_neoeloquent_fcc96e3a383c57f3:`ReleaseFixture`), (parents_neoeloquent_c2000108f4b4feaa:`ReleaseFixture`) WHERE id(children_neoeloquent_fcc96e3a383c57f3) IN [2, 3, 2] AND id(parents_neoeloquent_c2000108f4b4feaa) IN [4, 5] MERGE(releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_fcc96e3a383c57f3), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_c2000108f4b4feaa) RETURN releaseFixture, children_neoeloquent_fcc96e3a383c57f3, parents_neoeloquent_c2000108f4b4feaa
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:273
+/workspace/src/Query/Builder.php:650
+/workspace/src/Eloquent/Builder.php:618
+/workspace/src/Eloquent/Model.php:583
+/workspace/tests/compatibility/GraphReleaseTest.php:130
+
+Caused by
+Laudis\Neo4j\Exception\Neo4jException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input ',': expected a graph pattern, 'FOREACH', 'ORDER BY', 'CALL', 'CREATE', 'LOAD CSV', 'DELETE', 'DETACH', 'FINISH', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'ON', 'OPTIONAL', 'REMOVE', 'RETURN', 'SET', 'SKIP', 'UNION', 'UNWIND', 'USE', 'WITH' or <EOF> (line 1, column 393 (offset: 392))
+"CREATE (releaseFixture:`ReleaseFixture` { name: 'owner'}) WITH releaseFixture MATCH (children_neoeloquent_fcc96e3a383c57f3:`ReleaseFixture`), (parents_neoeloquent_c2000108f4b4feaa:`ReleaseFixture`) WHERE id(children_neoeloquent_fcc96e3a383c57f3) IN [2, 3, 2] AND id(parents_neoeloquent_c2000108f4b4feaa) IN [4, 5] MERGE(releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_fcc96e3a383c57f3), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_c2000108f4b4feaa) RETURN releaseFixture, children_neoeloquent_fcc96e3a383c57f3, parents_neoeloquent_c2000108f4b4feaa"
+                                                                                                                                                                                                                                                                                                                                                                                                         ^"
+
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Exception/Neo4jException.php:50
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:701
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:527
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:328
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:177
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:216
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:291
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:85
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:168
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:136
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:166
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:77
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:87
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:72
+/workspace/src/DatabaseDriver/CypherQuery.php:56
+/workspace/src/Connection.php:280
+/workspace/src/Connection.php:605
+/workspace/src/Connection.php:273
+/workspace/src/Query/Builder.php:650
+/workspace/src/Eloquent/Builder.php:618
+/workspace/src/Eloquent/Model.php:583
+/workspace/tests/compatibility/GraphReleaseTest.php:130
+
+2) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testCreateWithMixedNewAndExistingRelationsCommitsTogether
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input ',': expected a graph pattern, 'FOREACH', 'ORDER BY', 'CALL', 'CREATE', 'LOAD CSV', 'DELETE', 'DETACH', 'FINISH', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'ON', 'OPTIONAL', 'REMOVE', 'RETURN', 'SET', 'SKIP', 'UNION', 'UNWIND', 'USE', 'WITH' or <EOF> (line 1, column 687 (offset: 686))
+"CREATE (releaseFixture:`ReleaseFixture` { name: 'owner'}), (releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_0ac80c5a10373b50:`ReleaseFixture` { name: 'new-child'}), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_af93f8770c5dd613:`ReleaseFixture` { name: 'new-parent'}) WITH releaseFixture, children_neoeloquent_0ac80c5a10373b50, parents_neoeloquent_af93f8770c5dd613 MATCH (children_neoeloquent_2f8a6db9a39efd3f:`ReleaseFixture`), (parents_neoeloquent_d7182650b4a5ba4b:`ReleaseFixture`) WHERE id(children_neoeloquent_2f8a6db9a39efd3f) IN [6] AND id(parents_neoeloquent_d7182650b4a5ba4b) IN [7] MERGE(releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_2f8a6db9a39efd3f), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_d7182650b4a5ba4b) RETURN releaseFixture, children_neoeloquent_0ac80c5a10373b50, parents_neoeloquent_af93f8770c5dd613, children_neoeloquent_2f8a6db9a39efd3f, parents_neoeloquent_d7182650b4a5ba4b"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^" - Query: CREATE (releaseFixture:`ReleaseFixture` { name: 'owner'}), (releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_0ac80c5a10373b50:`ReleaseFixture` { name: 'new-child'}), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_af93f8770c5dd613:`ReleaseFixture` { name: 'new-parent'}) WITH releaseFixture, children_neoeloquent_0ac80c5a10373b50, parents_neoeloquent_af93f8770c5dd613 MATCH (children_neoeloquent_2f8a6db9a39efd3f:`ReleaseFixture`), (parents_neoeloquent_d7182650b4a5ba4b:`ReleaseFixture`) WHERE id(children_neoeloquent_2f8a6db9a39efd3f) IN [6] AND id(parents_neoeloquent_d7182650b4a5ba4b) IN [7] MERGE(releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_2f8a6db9a39efd3f), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_d7182650b4a5ba4b) RETURN releaseFixture, children_neoeloquent_0ac80c5a10373b50, parents_neoeloquent_af93f8770c5dd613, children_neoeloquent_2f8a6db9a39efd3f, parents_neoeloquent_d7182650b4a5ba4b
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:273
+/workspace/src/Query/Builder.php:650
+/workspace/src/Eloquent/Builder.php:618
+/workspace/src/Eloquent/Model.php:583
+/workspace/tests/compatibility/GraphReleaseTest.php:147
+
+Caused by
+Laudis\Neo4j\Exception\Neo4jException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input ',': expected a graph pattern, 'FOREACH', 'ORDER BY', 'CALL', 'CREATE', 'LOAD CSV', 'DELETE', 'DETACH', 'FINISH', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'ON', 'OPTIONAL', 'REMOVE', 'RETURN', 'SET', 'SKIP', 'UNION', 'UNWIND', 'USE', 'WITH' or <EOF> (line 1, column 687 (offset: 686))
+"CREATE (releaseFixture:`ReleaseFixture` { name: 'owner'}), (releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_0ac80c5a10373b50:`ReleaseFixture` { name: 'new-child'}), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_af93f8770c5dd613:`ReleaseFixture` { name: 'new-parent'}) WITH releaseFixture, children_neoeloquent_0ac80c5a10373b50, parents_neoeloquent_af93f8770c5dd613 MATCH (children_neoeloquent_2f8a6db9a39efd3f:`ReleaseFixture`), (parents_neoeloquent_d7182650b4a5ba4b:`ReleaseFixture`) WHERE id(children_neoeloquent_2f8a6db9a39efd3f) IN [6] AND id(parents_neoeloquent_d7182650b4a5ba4b) IN [7] MERGE(releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_2f8a6db9a39efd3f), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_d7182650b4a5ba4b) RETURN releaseFixture, children_neoeloquent_0ac80c5a10373b50, parents_neoeloquent_af93f8770c5dd613, children_neoeloquent_2f8a6db9a39efd3f, parents_neoeloquent_d7182650b4a5ba4b"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^"
+
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Exception/Neo4jException.php:50
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:701
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:527
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:328
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:177
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:216
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:291
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:85
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:168
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:136
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:166
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:77
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:87
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:72
+/workspace/src/DatabaseDriver/CypherQuery.php:56
+/workspace/src/Connection.php:280
+/workspace/src/Connection.php:605
+/workspace/src/Connection.php:273
+/workspace/src/Query/Builder.php:650
+/workspace/src/Eloquent/Builder.php:618
+/workspace/src/Eloquent/Model.php:583
+/workspace/tests/compatibility/GraphReleaseTest.php:147
+
+3) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testCreateWithEmptyRelationsCreatesOnlyTheParent
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input '': expected an expression (line 1, column 82 (offset: 81))
+"CREATE (releaseFixture:`ReleaseFixture` { name: 'alone'}) RETURN releaseFixture,"
+                                                                                  ^" - Query: CREATE (releaseFixture:`ReleaseFixture` { name: 'alone'}) RETURN releaseFixture, 
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:273
+/workspace/src/Query/Builder.php:650
+/workspace/src/Eloquent/Builder.php:618
+/workspace/src/Eloquent/Model.php:583
+/workspace/tests/compatibility/GraphReleaseTest.php:160
+
+Caused by
+Laudis\Neo4j\Exception\Neo4jException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input '': expected an expression (line 1, column 82 (offset: 81))
+"CREATE (releaseFixture:`ReleaseFixture` { name: 'alone'}) RETURN releaseFixture,"
+                                                                                  ^"
+
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Exception/Neo4jException.php:50
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:701
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:527
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:328
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:177
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:216
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:291
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:85
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:168
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:136
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:166
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:77
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:87
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:72
+/workspace/src/DatabaseDriver/CypherQuery.php:56
+/workspace/src/Connection.php:280
+/workspace/src/Connection.php:605
+/workspace/src/Connection.php:273
+/workspace/src/Query/Builder.php:650
+/workspace/src/Eloquent/Builder.php:618
+/workspace/src/Eloquent/Model.php:583
+/workspace/tests/compatibility/GraphReleaseTest.php:160
+
+4) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testCreateWithParticipatesInOuterRollbackWithoutNesting
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input ',': expected a graph pattern, 'FOREACH', 'ORDER BY', 'CALL', 'CREATE', 'LOAD CSV', 'DELETE', 'DETACH', 'FINISH', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'ON', 'OPTIONAL', 'REMOVE', 'RETURN', 'SET', 'SKIP', 'UNION', 'UNWIND', 'USE', 'WITH' or <EOF> (line 1, column 537 (offset: 536))
+"CREATE (releaseFixture:`ReleaseFixture` { name: 'owner'}), (releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_91b4d8205b7f7c98:`ReleaseFixture` { name: 'new-child'}) WITH releaseFixture, children_neoeloquent_91b4d8205b7f7c98 MATCH (children_neoeloquent_d7915f2c64b2cbbd:`ReleaseFixture`), (parents_neoeloquent_6e2bc1990a84d030:`ReleaseFixture`) WHERE id(children_neoeloquent_d7915f2c64b2cbbd) IN [9] AND id(parents_neoeloquent_6e2bc1990a84d030) IN [10] MERGE(releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_d7915f2c64b2cbbd), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_6e2bc1990a84d030) RETURN releaseFixture, children_neoeloquent_91b4d8205b7f7c98, children_neoeloquent_d7915f2c64b2cbbd, parents_neoeloquent_6e2bc1990a84d030"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ^" - Query: CREATE (releaseFixture:`ReleaseFixture` { name: 'owner'}), (releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_91b4d8205b7f7c98:`ReleaseFixture` { name: 'new-child'}) WITH releaseFixture, children_neoeloquent_91b4d8205b7f7c98 MATCH (children_neoeloquent_d7915f2c64b2cbbd:`ReleaseFixture`), (parents_neoeloquent_6e2bc1990a84d030:`ReleaseFixture`) WHERE id(children_neoeloquent_d7915f2c64b2cbbd) IN [9] AND id(parents_neoeloquent_6e2bc1990a84d030) IN [10] MERGE(releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_d7915f2c64b2cbbd), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_6e2bc1990a84d030) RETURN releaseFixture, children_neoeloquent_91b4d8205b7f7c98, children_neoeloquent_d7915f2c64b2cbbd, parents_neoeloquent_6e2bc1990a84d030
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:273
+/workspace/src/Query/Builder.php:650
+/workspace/src/Eloquent/Builder.php:618
+/workspace/src/Eloquent/Model.php:583
+/workspace/tests/compatibility/GraphReleaseTest.php:192
+/workspace/src/Connection.php:416
+/workspace/tests/compatibility/GraphReleaseTest.php:191
+
+Caused by
+Laudis\Neo4j\Exception\Neo4jException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input ',': expected a graph pattern, 'FOREACH', 'ORDER BY', 'CALL', 'CREATE', 'LOAD CSV', 'DELETE', 'DETACH', 'FINISH', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'ON', 'OPTIONAL', 'REMOVE', 'RETURN', 'SET', 'SKIP', 'UNION', 'UNWIND', 'USE', 'WITH' or <EOF> (line 1, column 537 (offset: 536))
+"CREATE (releaseFixture:`ReleaseFixture` { name: 'owner'}), (releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_91b4d8205b7f7c98:`ReleaseFixture` { name: 'new-child'}) WITH releaseFixture, children_neoeloquent_91b4d8205b7f7c98 MATCH (children_neoeloquent_d7915f2c64b2cbbd:`ReleaseFixture`), (parents_neoeloquent_6e2bc1990a84d030:`ReleaseFixture`) WHERE id(children_neoeloquent_d7915f2c64b2cbbd) IN [9] AND id(parents_neoeloquent_6e2bc1990a84d030) IN [10] MERGE(releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_d7915f2c64b2cbbd), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_6e2bc1990a84d030) RETURN releaseFixture, children_neoeloquent_91b4d8205b7f7c98, children_neoeloquent_d7915f2c64b2cbbd, parents_neoeloquent_6e2bc1990a84d030"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ^"
+
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Exception/Neo4jException.php:50
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:701
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:527
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:328
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:177
+/workspace/src/DatabaseDriver/Drivers/Laudis/Transaction.php:32
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:86
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:72
+/workspace/src/DatabaseDriver/CypherQuery.php:56
+/workspace/src/Connection.php:280
+/workspace/src/Connection.php:605
+/workspace/src/Connection.php:273
+/workspace/src/Query/Builder.php:650
+/workspace/src/Eloquent/Builder.php:618
+/workspace/src/Eloquent/Model.php:583
+/workspace/tests/compatibility/GraphReleaseTest.php:192
+/workspace/src/Connection.php:416
+/workspace/tests/compatibility/GraphReleaseTest.php:191
+
+--
+
+There were 2 failures:
+
+1) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testCreateWithMissingAttachmentCannotLeavePartialWrites
+Failed asserting that 'Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input ',': expected a graph pattern, 'FOREACH', 'ORDER BY', 'CALL', 'CREATE', 'LOAD CSV', 'DELETE', 'DETACH', 'FINISH', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'ON', 'OPTIONAL', 'REMOVE', 'RETURN', 'SET', 'SKIP', 'UNION', 'UNWIND', 'USE', 'WITH' or <EOF> (line 1, column 574 (offset: 573))\n
+"CREATE (releaseFixture:`ReleaseFixture` { name: 'must-not-exist'}), (releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_0ebc899c21619a70:`ReleaseFixture` { name: 'must-not-exist-child'}) WITH releaseFixture, children_neoeloquent_0ebc899c21619a70 MATCH (children_neoeloquent_3881aaacac0b5b02:`ReleaseFixture`), (parents_neoeloquent_d10b949301f1b7de:`ReleaseFixture`) WHERE id(children_neoeloquent_3881aaacac0b5b02) IN [8] AND id(parents_neoeloquent_d10b949301f1b7de) IN [9223372036854775807] MERGE(releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_3881aaacac0b5b02), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_d10b949301f1b7de) RETURN releaseFixture, children_neoeloquent_0ebc899c21619a70, children_neoeloquent_3881aaacac0b5b02, parents_neoeloquent_d10b949301f1b7de"\n
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ^" - Query: CREATE (releaseFixture:`ReleaseFixture` { name: 'must-not-exist'}), (releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_0ebc899c21619a70:`ReleaseFixture` { name: 'must-not-exist-child'}) WITH releaseFixture, children_neoeloquent_0ebc899c21619a70 MATCH (children_neoeloquent_3881aaacac0b5b02:`ReleaseFixture`), (parents_neoeloquent_d10b949301f1b7de:`ReleaseFixture`) WHERE id(children_neoeloquent_3881aaacac0b5b02) IN [8] AND id(parents_neoeloquent_d10b949301f1b7de) IN [9223372036854775807] MERGE(releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_3881aaacac0b5b02), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_d10b949301f1b7de) RETURN releaseFixture, children_neoeloquent_0ebc899c21619a70, children_neoeloquent_3881aaacac0b5b02, parents_neoeloquent_d10b949301f1b7de' contains "attachment".
+
+/workspace/tests/compatibility/GraphReleaseTest.php:177
+
+2) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testCreateWithConstraintFailureRollsBackTheWholeStatement
+Failed asserting that 'Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input ',': expected a graph pattern, 'FOREACH', 'ORDER BY', 'CALL', 'CREATE', 'LOAD CSV', 'DELETE', 'DETACH', 'FINISH', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'ON', 'OPTIONAL', 'REMOVE', 'RETURN', 'SET', 'SKIP', 'UNION', 'UNWIND', 'USE', 'WITH' or <EOF> (line 1, column 541 (offset: 540))\n
+"CREATE (releaseFixture:`ReleaseFixture` { name: 'owner'}), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_d49a8d7bbbaa1560:`ReleaseFixture` { name: 'already-exists'}) WITH releaseFixture, parents_neoeloquent_d49a8d7bbbaa1560 MATCH (children_neoeloquent_ad2894196920091a:`ReleaseFixture`), (parents_neoeloquent_0b42704e6b94cece:`ReleaseFixture`) WHERE id(children_neoeloquent_ad2894196920091a) IN [11] AND id(parents_neoeloquent_0b42704e6b94cece) IN [12] MERGE(releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_ad2894196920091a), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_0b42704e6b94cece) RETURN releaseFixture, parents_neoeloquent_d49a8d7bbbaa1560, children_neoeloquent_ad2894196920091a, parents_neoeloquent_0b42704e6b94cece"\n
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^" - Query: CREATE (releaseFixture:`ReleaseFixture` { name: 'owner'}), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_d49a8d7bbbaa1560:`ReleaseFixture` { name: 'already-exists'}) WITH releaseFixture, parents_neoeloquent_d49a8d7bbbaa1560 MATCH (children_neoeloquent_ad2894196920091a:`ReleaseFixture`), (parents_neoeloquent_0b42704e6b94cece:`ReleaseFixture`) WHERE id(children_neoeloquent_ad2894196920091a) IN [11] AND id(parents_neoeloquent_0b42704e6b94cece) IN [12] MERGE(releaseFixture)-[:RELEASE_OWNS]->(children_neoeloquent_ad2894196920091a), (releaseFixture)<-[:RELEASE_OWNS]-(parents_neoeloquent_0b42704e6b94cece) RETURN releaseFixture, parents_neoeloquent_d49a8d7bbbaa1560, children_neoeloquent_ad2894196920091a, parents_neoeloquent_0b42704e6b94cece' contains "already exists".
+
+/workspace/tests/compatibility/GraphReleaseTest.php:224
+
+ERRORS!
+Tests: 44, Assertions: 213, Errors: 4, Failures: 2.
+
