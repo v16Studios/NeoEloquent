@@ -53,5 +53,16 @@
     "13": "f214161c23357792847869b4a0277a1794dced28d3ccfc4a46eab54d13e3081c"
   },
   "hosted_ci_run": false,
-  "consumer": "pending immutable candidate installation"
+  "consumer": {
+    "repository": "local VCS checkout",
+    "installed_version": "9.9.1-RC3",
+    "source_reference": "af370e3985b29b05ea314317615b0d3fcc11b37d",
+    "checks": "passed",
+    "strict_validation": "passed",
+    "platform": "passed",
+    "locked_reinstall": "passed",
+    "evidence": "consumer-local/",
+    "lock_sha256": "89596826e6020fcbea2317c09dfd3fd4e62a486eb8631178ab4b971add7ad6bc"
+  },
+  "candidate_commit": "af370e3985b29b05ea314317615b0d3fcc11b37d"
 }

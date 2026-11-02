@@ -23,3 +23,7 @@ The independent consumer checker loads the actual installed package, verifies it
 The application must install the exact candidate from the canonical v16Studios GitHub repository, verify the source commit in its lock and installed metadata, and rerun its normal and cached-bootstrap fixtures. Do not patch vendor source.
 
 [RC1 support boundaries](release-candidate.md), [RC2 behavior](release-candidate-rc2.md) and [transaction restrictions](transactions.md) remain applicable. This query repair does not certify Nova relationship writes, audit/request idempotency, concurrent edits, production migration or deployment.
+
+## Immutable candidate verification
+
+Tag `9.9.1-RC3` resolves to **`af370e3985b29b05ea314317615b0d3fcc11b37d`**. The independent local VCS consumer installed that exact package source and passed all checks above. Strict Composer validation, platform checks and locked reinstall pass. Its complete manifest/lock and output are retained in `tests/compatibility/evidence/rc3/consumer-local/`. The consumer resolved Laudis 3.7.1; the unchanged matrix locks use 3.7.0. Remote publication and application integration are verified separately.

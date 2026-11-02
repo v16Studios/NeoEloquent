@@ -1,8 +1,8 @@
- Container nxs-neoeloquent-neo4j-1 Running 
- Container nxs-neoeloquent-neo4j-1 Waiting 
- Container nxs-neoeloquent-neo4j-1 Healthy 
- Container nxs-neoeloquent-tests-run-367d9c69b1ba Creating 
- Container nxs-neoeloquent-tests-run-367d9c69b1ba Created 
+ Container nxs-neoeloquent-neo4j-1 Running
+ Container nxs-neoeloquent-neo4j-1 Waiting
+ Container nxs-neoeloquent-neo4j-1 Healthy
+ Container nxs-neoeloquent-tests-run-367d9c69b1ba Creating
+ Container nxs-neoeloquent-tests-run-367d9c69b1ba Created
 PHPUnit 9.6.38 by Sebastian Bergmann and contributors.
 
 Runtime:       PHP 8.5.12
