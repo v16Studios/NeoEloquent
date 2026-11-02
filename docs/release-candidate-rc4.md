@@ -15,3 +15,7 @@ Regression coverage includes existing/missing rows, numeric ID zero, Unicode, em
 The independent consumer installs the exact immutable candidate and checks existence queries against the installed package alongside the prior transaction/relationship checks. The application must install from the canonical GitHub repository and verify its source reference before normal and cached-bootstrap acceptance. Never patch vendor or move a published tag.
 
 [RC1 support boundaries](release-candidate.md), [RC2](release-candidate-rc2.md), [RC3](release-candidate-rc3.md) and [transaction restrictions](transactions.md) remain applicable. This repair does not certify production migration, deployment or unsupported polymorphic loading.
+
+## Immutable installed candidate
+
+Tag `9.9.1-RC4` resolves to **`d480915e2c5757a057d70204c851e56751e4d639`**. The independent local VCS consumer loads that exact installed source and passes its graph checks, platform validation and locked reinstall. Its complete manifest/lock and output are retained in `tests/compatibility/evidence/rc4/consumer-local/`. Unqualified strict Composer validation reports only the two intentional exact-version pin warnings; `validate --strict --no-check-all` passes. No platform or security checks are excluded. Remote availability and application acceptance are recorded separately.

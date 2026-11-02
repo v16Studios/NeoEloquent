@@ -44,5 +44,15 @@
   "locks": {
     "12": "e812c6d43aa05e7fbedfc3a41cff3109cca3129f55f31f1b3b07ed44ba3c99d6",
     "13": "f214161c23357792847869b4a0277a1794dced28d3ccfc4a46eab54d13e3081c"
+  },
+  "candidate_commit": "d480915e2c5757a057d70204c851e56751e4d639",
+  "consumer": {
+    "checks": "passed",
+    "installed_source": "d480915e2c5757a057d70204c851e56751e4d639",
+    "manifest_and_full_lock": "consumer-local/",
+    "lock_sha256": "23e1846b3b5bb792eb10196dd79d4ff992506d8a38f561973313d2c24caeab9c",
+    "validation": "strict with --no-check-all passes; unqualified strict reports only intentional exact-version pin warnings",
+    "platform": "passed",
+    "locked_reinstall": "passed"
   }
 }
