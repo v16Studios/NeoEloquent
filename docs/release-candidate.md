@@ -1,6 +1,6 @@
 # NXS fork release candidate — V16-35
 
-This document records the historical RC1 acceptance. See [RC2](release-candidate-rc2.md) for the subsequent application-discovered createWith repair. RC1 remains immutable.
+This document records the historical RC1 acceptance. See [RC2](release-candidate-rc2.md) for the subsequent createWith repair and [RC3](release-candidate-rc3.md) for grouped relationship queries. Published candidates remain immutable.
 
 Candidate tag: **`9.9.1-RC1`**, based on upstream **9.9.0** (`ce76714db4e27614bc1a03322b942b8e342c8297`). This is a v16Studios fork version, not an upstream Ulobby release. The package name remains `ulobby/neoeloquent` and the namespace remains `Vinelab\NeoEloquent`. Resolve the full source commit with `git rev-parse '9.9.1-RC1^{commit}'`; the application handoff records it literally. Never move this tag after review; use a new candidate for changed runtime code.
 

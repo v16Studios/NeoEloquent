@@ -341,6 +341,12 @@ class CypherGrammar extends Grammar
         return '';
     }
 
+    protected function whereNested(Builder $query, $where)
+    {
+        $nested = $where['query'];
+        return '('.substr($nested->getGrammar()->compileWheres($nested), 6).')';
+    }
+
     /**
      * Compile whereas after the WITH statement.
      */

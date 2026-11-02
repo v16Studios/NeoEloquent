@@ -58,12 +58,13 @@ class HasMany extends HasOneOrMany
         $this->query->addManyMutation($this->relation, $this->related, 'many');
         $this->query->addManyMutation($parentNode, $this->parent, 'many');
 
-        // Set the parent node's placeholder as the RETURN key.
-        $this->query->getQuery()->from = [$parentNode];
+        // Unqualified user predicates target the related node; parent constraints are explicit.
+        $this->query->getQuery()->from = [$this->relation];
         // Build the MATCH ()-[]->() Cypher clause.
         $this->query->matchOut($this->parent, $this->related, $this->relation, $this->foreignKey, $this->localKey, $this->parent->{$this->localKey});
         // Add WHERE clause over the parent node's matching keys [values...].
-        $this->query->whereIn($this->localKey, $this->getKeys($models, $this->localKey));
+        $parentColumn = $this->localKey === 'id' ? 'id('.$parentNode.')' : $parentNode.'.'.$this->localKey;
+        $this->query->whereIn($parentColumn, $this->getKeys($models, $this->localKey));
     }
 
     /**

@@ -116,12 +116,12 @@ class BelongsToMany extends HasOneOrMany
             $parentNode = $this->getParentNode();
             // Tell the query that we only need the related model returned.
             $this->query->select($this->relation);
-            // Set the parent node's placeholder as the RETURN key.
-            $this->query->getQuery()->from = [$parentNode];
+            // Unqualified user predicates target the related node; parent constraints are explicit.
+            $this->query->getQuery()->from = [$this->relation];
             // Build the MATCH ()-[]->() Cypher clause.
             $this->query->matchIn($this->parent, $this->related, $this->relation, $this->foreignKey, $this->localKey, $this->parent->{$this->localKey});
             // Add WHERE clause over the parent node's matching key = value.
-            $this->query->where($this->localKey, '=', $this->parent->{$this->localKey});
+            $this->query->where($parentNode.'.'.$this->localKey, '=', $this->parent->{$this->localKey});
         }
     }
 
@@ -150,12 +150,13 @@ class BelongsToMany extends HasOneOrMany
         $this->query->addManyMutation($this->relation, $this->related);
         $this->query->addManyMutation($parentNode, $this->parent);
 
-        // Set the parent node's placeholder as the RETURN key.
-        $this->query->getQuery()->from = [$parentNode];
+        // Unqualified user predicates target the related node; parent constraints are explicit.
+        $this->query->getQuery()->from = [$this->relation];
         // Build the MATCH ()-[]->() Cypher clause.
         $this->query->matchIn($this->parent, $this->related, $this->relation, $this->foreignKey, $this->localKey, $this->parent->{$this->localKey});
         // Add WHERE clause over the parent node's matching keys [values...].
-        $this->query->whereIn($this->localKey, $this->getKeys($models));
+        $parentColumn = $this->localKey === 'id' ? 'id('.$parentNode.')' : $parentNode.'.'.$this->localKey;
+        $this->query->whereIn($parentColumn, $this->getKeys($models));
     }
 
     /**

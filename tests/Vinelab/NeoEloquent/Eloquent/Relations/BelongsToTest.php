@@ -95,7 +95,7 @@ class BelongsToTest extends TestCase
         $builder->shouldReceive('addMutation')->once()->with('relation', $related);
         $builder->shouldReceive('addMutation')->once()->with('parent', $parent);
 
-        $builder->shouldReceive('where')->once()->with('id', '=', $id);
+        $builder->shouldReceive('where')->once()->with('parent.id', '=', $id);
 
         $builder->shouldReceive('matchIn')->twice()
             ->with($parent, $related, 'relation', 'RELATIONSHIP', 'id', $id);
@@ -103,7 +103,7 @@ class BelongsToTest extends TestCase
         $relation = new belongsTo($builder, $parent, 'RELATIONSHIP', 'id', 'relation');
 
         $builder->shouldReceive('whereIn')->once()
-            ->with('id', array_map(function ($model) {
+            ->with('id(parent)', array_map(function ($model) {
                 return $model->id;
             }, $models));
 
@@ -134,7 +134,7 @@ class BelongsToTest extends TestCase
             ->with($parent, $related, 'relation', 'RELATIONSHIP', 'id', $id);
 
         $builder->shouldReceive('where')->once()
-            ->with('id', '=', $id);
+            ->with('parent.id', '=', $id);
 
         return new belongsTo($builder, $parent, 'RELATIONSHIP', 'id', 'relation');
     }

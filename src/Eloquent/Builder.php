@@ -14,6 +14,23 @@ class Builder extends IlluminateBuilder
 {
     use Concerns\QueriesRelationships;
 
+    public function where($column, $operator = null, $value = null, $boolean = 'and')
+    {
+        if ($column instanceof \Closure && is_null($operator)) {
+            $nested = $this->model->newQueryWithoutRelationships();
+            // A relation uses its relationship name as the node alias, not the
+            // model's label. Grouped predicates must stay in that same scope.
+            $nested->getQuery()->from = $this->query->from;
+            $nested->getQuery()->setBindings($this->query->getRawBindings()['where'], 'where');
+            $column($nested);
+            $this->eagerLoad = array_merge($this->eagerLoad, $nested->getEagerLoads());
+            $this->withoutGlobalScopes($nested->removedScopes());
+            $this->query->addNestedWhereQuery($nested->getQuery(), $boolean);
+            return $this;
+        }
+        return parent::where(...func_get_args());
+    }
+
     /**
      * The loaded models that should be transformed back
      * to Models. Sometimes we might ask for more than

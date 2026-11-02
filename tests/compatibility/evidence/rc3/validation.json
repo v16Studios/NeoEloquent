@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-02",
+  "ticket": "V16-40",
+  "candidate": "9.9.1-RC3",
+  "parent": "23f0b3b98ef87c67684cf8d3b837a29457bf3539",
+  "php": "8.5.12",
+  "neo4j": "5.26.32 Community",
+  "laudis": "3.7.0",
+  "matrix": {
+    "12": {
+      "focused": {
+        "tests": 48,
+        "assertions": 263,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "full": {
+        "tests": 322,
+        "assertions": 1318,
+        "failures": 0,
+        "errors": 0,
+        "junit_skipped_including_incomplete": 22,
+        "skipped": 10,
+        "incomplete": 12
+      }
+    },
+    "13": {
+      "focused": {
+        "tests": 48,
+        "assertions": 263,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "full": {
+        "tests": 322,
+        "assertions": 1318,
+        "failures": 0,
+        "errors": 0,
+        "junit_skipped_including_incomplete": 22,
+        "skipped": 10,
+        "incomplete": 12
+      }
+    }
+  },
+  "full_exclusions_each": {
+    "skipped": 10,
+    "incomplete": 12
+  },
+  "locks": {
+    "12": "e812c6d43aa05e7fbedfc3a41cff3109cca3129f55f31f1b3b07ed44ba3c99d6",
+    "13": "f214161c23357792847869b4a0277a1794dced28d3ccfc4a46eab54d13e3081c"
+  },
+  "hosted_ci_run": false,
+  "consumer": "pending immutable candidate installation"
+}

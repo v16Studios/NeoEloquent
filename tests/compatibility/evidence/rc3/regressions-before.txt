@@ -1,0 +1,79 @@
+ Container nxs-neoeloquent-neo4j-1 Running 
+ Container nxs-neoeloquent-neo4j-1 Waiting 
+ Container nxs-neoeloquent-neo4j-1 Healthy 
+ Container nxs-neoeloquent-tests-run-9f0b9da9a2fb Creating 
+ Container nxs-neoeloquent-tests-run-9f0b9da9a2fb Created 
+PHPUnit 9.6.38 by Sebastian Bergmann and contributors.
+
+FFE                                                                 3 / 3 (100%)
+
+Time: 00:02.073, Memory: 14.00 MB
+
+There was 1 error:
+
+1) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testInterleavedBuildersAndClonesKeepTheirCompilerContext
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Variable `releaseUser` not defined (line 1, column 182 (offset: 181))
+"MATCH (releaseFixture:`ReleaseFixture`), (releaseFixture)-[`rel_release_owns_children`:`RELEASE_OWNS`]->(children:`ReleaseFixture`) WHERE id(releaseFixture) = $idreleaseFixture and releaseUser.name = $childrenname RETURN children"
+                                                                                                                                                                                      ^" - Query: MATCH (releaseFixture:`ReleaseFixture`), (releaseFixture)-[`rel_release_owns_children`:`RELEASE_OWNS`]->(children:`ReleaseFixture`) WHERE id(releaseFixture) = $idreleaseFixture and releaseUser.name = $childrenname RETURN children - Bindings: {"idchildren":10,"idreleaseFixture":10,"childrenname":"child"}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:225
+/workspace/src/Query/Builder.php:683
+/workspace/src/Query/Builder.php:1029
+/workspace/src/Eloquent/Builder.php:84
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:933
+/workspace/tests/compatibility/GraphReleaseTest.php:309
+
+Caused by
+Laudis\Neo4j\Exception\Neo4jException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Variable `releaseUser` not defined (line 1, column 182 (offset: 181))
+"MATCH (releaseFixture:`ReleaseFixture`), (releaseFixture)-[`rel_release_owns_children`:`RELEASE_OWNS`]->(children:`ReleaseFixture`) WHERE id(releaseFixture) = $idreleaseFixture and releaseUser.name = $childrenname RETURN children"
+                                                                                                                                                                                      ^"
+
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Exception/Neo4jException.php:50
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:701
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:527
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:328
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:177
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:216
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:291
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:85
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:168
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:136
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:166
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:77
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:90
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:72
+/workspace/src/DatabaseDriver/CypherQuery.php:56
+/workspace/src/Connection.php:235
+/workspace/src/Connection.php:605
+/workspace/src/Connection.php:225
+/workspace/src/Query/Builder.php:683
+/workspace/src/Query/Builder.php:1029
+/workspace/src/Eloquent/Builder.php:84
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:933
+/workspace/tests/compatibility/GraphReleaseTest.php:309
+
+--
+
+There were 2 failures:
+
+1) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testNestedRelationPredicatesPreserveAliasesAndParentScope
+Failed asserting that 0 is identical to 2.
+
+/workspace/tests/compatibility/GraphReleaseTest.php:279
+
+2) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testNestedBindingsDoNotOverwriteSiblingOrOuterPredicates
+Failed asserting that two arrays are identical.
+--- Expected
++++ Actual
+@@ @@
+-Array &0 (
+-    0 => 2
+-)
++Array &0 ()
+
+/workspace/tests/compatibility/GraphReleaseTest.php:293
+
+ERRORS!
+Tests: 3, Assertions: 3, Errors: 1, Failures: 2.
+

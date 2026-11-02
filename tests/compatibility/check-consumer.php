@@ -68,6 +68,22 @@ try {
         'children' => [$existing, ['name' => 'new-child']], 'parents' => [$existing],
     ]);
     verifyConsumer($created->children()->count() === 2 && $created->parents()->count() === 1, 'Installed multi-relation createWith failed.');
+    $grouped = $created->children()->where(function ($query) use ($existing) {
+        $query->where('name', 'new-child')->orWhere('id', $existing->getKey());
+    })->orderBy('name');
+    verifyConsumer($grouped->toBase()->getCountForPagination() === 2, 'Grouped relationship pagination lost its alias or parent constraint.');
+    verifyConsumer($grouped->get()->pluck('name')->all() === ['new-child', 'owner'], 'Grouped relationship results differ from the count.');
+    verifyConsumer($created->parents()->where(fn ($query) => $query->where('name', 'owner'))->count() === 1, 'Incoming relationship predicate targeted the wrong node.');
+    $filtered = $created->children()->where('name', '<>', 'absent')
+        ->where(fn ($query) => $query->where('name', '<>', 'owner'))
+        ->where(fn ($query) => $query->where('name', '<>', 'another-absent'));
+    $copy = clone $filtered;
+    ConsumerReleaseNode::where('name', 'unrelated')->toSql();
+    verifyConsumer($filtered->get()->pluck('name')->all() === ['new-child'], 'Nested or sibling parameters overwrote a predicate.');
+    verifyConsumer($copy->get()->pluck('name')->all() === ['new-child'], 'Cloned/interleaved builder lost its compiler context.');
+    verifyConsumer($created->children()->where('id', $existing->getKey())
+        ->where(fn ($query) => $query->whereIn('id', [$existing->getKey(), $created->getKey()]))
+        ->get()->modelKeys() === [$existing->getKey()], 'Nested ID list replaced a scalar ID binding.');
     $before = ConsumerReleaseNode::count();
     try {
         ConsumerReleaseNode::createWith(['name' => 'missing-target'], ['children' => [$existing], 'parents' => [PHP_INT_MAX]]);
@@ -100,6 +116,8 @@ try {
         'provider_and_named_connection' => 'pass',
         'model_and_edge_commit' => 'pass',
         'multi_relation_create_with' => 'pass',
+        'grouped_relationship_search_and_count' => 'pass',
+        'nested_bindings_and_interleaved_clones' => 'pass',
         'missing_attachment_no_partial_write' => 'pass',
         'rollback_and_original_error' => 'pass',
         'parameter_shapes' => 'pass',

@@ -19,6 +19,16 @@ class ReleaseNode extends Model
         return $this->hasMany(self::class, 'RELEASE_OWNS');
     }
 
+    public function singleChild()
+    {
+        return $this->hasOne(self::class, 'RELEASE_OWNS');
+    }
+
+    public function singleParent()
+    {
+        return $this->belongsTo(self::class, 'RELEASE_OWNS');
+    }
+
     public function parents()
     {
         return $this->belongsToMany(self::class, 'RELEASE_OWNS');
@@ -261,5 +271,81 @@ class GraphReleaseTest extends CompatibilityTestCase
         $this->assertSame(1, $connection->transactionLevel());
         $connection->rollBack();
         $this->assertNull(ReleaseNode::find($node->getKey()));
+    }
+
+    public function testNestedRelationPredicatesPreserveAliasesAndParentScope(): void
+    {
+        $owner = ReleaseNode::create(['name' => 'owner']);
+        $other = ReleaseNode::create(['name' => 'other']);
+        $first = ReleaseNode::create(['name' => 'first', 'rank' => 1]);
+        $second = ReleaseNode::create(['name' => 'second', 'rank' => 2]);
+        $excluded = ReleaseNode::create(['name' => 'first', 'rank' => 3]);
+        $owner->children()->save($first);
+        $owner->children()->save($second);
+        $other->children()->save($excluded);
+        $query = $owner->children()->where(function ($q) use ($second) {
+            $q->where('name', 'first')->orWhere(function ($q) use ($second) {
+                $q->where('id', $second->getKey())->where('rank', 2);
+            });
+        })->orderBy('rank');
+        $this->assertSame(2, $query->toBase()->getCountForPagination());
+        $this->assertSame([$first->getKey(), $second->getKey()], $query->get()->modelKeys());
+        $this->assertSame([$owner->getKey()], $first->parents()->where(fn ($q) => $q->where('name', 'owner'))->get()->modelKeys());
+        $this->assertSame([], $other->children()->where(fn ($q) => $q->where('id', $second->getKey()))->get()->modelKeys());
+    }
+
+    public function testNestedBindingsDoNotOverwriteSiblingOrOuterPredicates(): void
+    {
+        $owner = ReleaseNode::create(['name' => 'owner']);
+        foreach ([1, 2, 3, 4] as $rank) {
+            $owner->children()->save(new ReleaseNode(['rank' => $rank]));
+        }
+        $query = $owner->children()->where('rank', '>', 1)
+            ->where(fn ($q) => $q->where('rank', '<', 4))
+            ->where(fn ($q) => $q->where('rank', '<>', 3))
+            ->where('rank', '>', 0);
+        $this->assertSame([2], $query->get()->pluck('rank')->all());
+        $this->assertSame(1, $query->toBase()->getCountForPagination());
+        $this->assertSame([2], $query->get()->pluck('rank')->all());
+        $kept = $query->firstOrFail();
+        $this->assertSame([$kept->getKey()], $owner->children()
+            ->where('id', $kept->getKey())
+            ->where(fn ($q) => $q->whereIn('id', [$kept->getKey(), $owner->getKey()]))
+            ->get()->modelKeys());
+    }
+
+    public function testInterleavedBuildersAndClonesKeepTheirCompilerContext(): void
+    {
+        $owner = ReleaseNode::create(['name' => 'owner']);
+        $child = ReleaseNode::create(['name' => 'child']);
+        $owner->children()->save($child);
+        $query = $owner->children()->getQuery();
+        $copy = clone $query;
+        $copy->where('name', 'child');
+        // Construct and compile an unrelated label query before using either clone.
+        ReleaseEntity::where('name', 'unrelated')->toSql();
+        $this->assertSame([$child->getKey()], $query->whereIn('id', [$child->getKey()])->get()->modelKeys());
+        $this->assertSame([$child->getKey()], $copy->get()->modelKeys());
+    }
+
+    public function testSingleAndEagerRelationPredicatesTargetRelatedNodes(): void
+    {
+        $owner = ReleaseNode::create(['name' => 'owner']);
+        $child = ReleaseNode::create(['name' => 'child']);
+        $owner->children()->save($child);
+        $this->assertSame($child->getKey(), $owner->singleChild()->where(fn ($q) => $q->where('name', 'child'))->firstOrFail()->getKey());
+        $this->assertSame($owner->getKey(), $child->singleParent()->where(fn ($q) => $q->where('name', 'owner'))->firstOrFail()->getKey());
+        $loaded = ReleaseNode::whereKey($owner->getKey())->with([
+            'children' => fn ($q) => $q->where(fn ($q) => $q->where('name', 'child')),
+            'singleChild' => fn ($q) => $q->where(fn ($q) => $q->where('name', 'child')),
+        ])->firstOrFail();
+        $this->assertSame([$child->getKey()], $loaded->children->modelKeys());
+        $this->assertSame($child->getKey(), $loaded->singleChild->getKey());
+        $loadedChild = ReleaseNode::whereKey($child->getKey())->with([
+            'parents' => fn ($q) => $q->where(fn ($q) => $q->where('name', 'owner')),
+            'singleParent' => fn ($q) => $q->where(fn ($q) => $q->where('name', 'owner')),
+        ])->firstOrFail();
+        $this->assertSame([$owner->getKey()], $loadedChild->parents->modelKeys());
+        $this->assertSame($owner->getKey(), $loadedChild->singleParent->getKey());
     }
 }

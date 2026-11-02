@@ -26,6 +26,7 @@ class BuilderTest extends TestCase
         $this->connection->shouldReceive('getClient')->once()->andReturn($this->neoClient);
 
         $this->builder = new Builder($this->connection, $this->grammar, $this->processor);
+        $this->grammar = $this->builder->getGrammar();
     }
 
     public function tearDown(): void

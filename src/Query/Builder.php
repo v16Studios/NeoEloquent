@@ -92,13 +92,28 @@ class Builder extends IlluminateQueryBuilder
      */
     public function __construct(Connection $connection, Grammar $grammar, IlluminateProcessor $processor)
     {
-        $this->grammar = $grammar;
+        // The grammar stores its query context; sharing it lets another builder
+        // silently replace the aliases used by this query.
+        $this->grammar = clone $grammar;
         $this->grammar->setQuery($this);
         $this->processor = $processor;
 
         $this->connection = $connection;
 
         $this->client = $connection->getClient();
+    }
+
+    public function __clone()
+    {
+        $this->grammar = clone $this->grammar;
+        $this->grammar->setQuery($this);
+    }
+
+    public function forNestedWhere()
+    {
+        // Reserve surrounding named parameters; nested predicates may use the
+        // same property with a different value without overwriting it.
+        return parent::forNestedWhere()->setBindings($this->bindings['where'], 'where');
     }
 
     /**
@@ -400,7 +415,12 @@ class Builder extends IlluminateQueryBuilder
         // we prefix when we do have a prefix ($this->from) and when the column isn't an id (id(abc..)).
         $prefix = (!preg_match('/id([a-zA-Z0-9]?)/', $column) && !empty($this->from)) ? mb_strtolower($prefix) : '';
 
-        return $prefix.$binding;
+        $candidate = $prefix.$binding;
+        $suffix = max(1, $count ?? 0);
+        while (array_key_exists($this->wrap($candidate), $this->getBindings())) {
+            $candidate = $prefix.$column.'_'.(++$suffix);
+        }
+        return $candidate;
     }
 
     /**
@@ -440,15 +460,14 @@ class Builder extends IlluminateQueryBuilder
             return $this->whereInSub($column, $values, $boolean, $not);
         }
 
-        $property = $column;
-
         if ($column == 'id') {
             $column = 'id('.$this->modelAsNode().')';
         }
 
-        $this->wheres[] = compact('type', 'column', 'values', 'boolean');
+        $binding = $this->prepareBindingColumn($column);
+        $this->wheres[] = compact('type', 'column', 'values', 'boolean', 'binding');
 
-        $property = $this->wrap($property);
+        $property = $this->wrap($binding);
 
         $this->addBinding([$property => $values], 'where');
 

@@ -1,5 +1,15 @@
 # NXS fork changes
 
+## 9.9.1-RC3 — grouped relationship queries
+
+- Keep nested Eloquent predicates in the enclosing relationship's node alias and preserve OR grouping and parent constraints.
+- Give each query builder and clone its own compiler context, so creating or compiling another query cannot change its aliases.
+- Reserve enclosing named parameters and avoid collisions across nested/sibling/outer predicates, including scalar IDs combined with ID lists.
+- Target the related node for unqualified direct/eager HasMany, HasOne, BelongsToMany and BelongsTo predicates; qualify the separate parent identity constraint.
+- Add real graph search/count, binding, clone, incoming/outgoing and eager-loading regressions plus independent installed-consumer checks. RC1 and RC2 remain immutable.
+
+See [RC3 acceptance](docs/release-candidate-rc3.md) for validation and retained support boundaries.
+
 ## 9.9.1-RC2 — createWith repair
 
 - Emit a separate MERGE for each attachment group; preserve direction and avoid duplicate edges/models when groups contain multiple targets.
