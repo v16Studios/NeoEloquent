@@ -34,6 +34,49 @@ class GraphCompatibilityTest extends CompatibilityTestCase
         parent::tearDown();
     }
 
+    public function testExistsPreservesPredicatesLimitsProjectionAndBuilderState(): void
+    {
+        $one = CompatibilityNode::create(['name' => 'exists α', 'rank' => 1]);
+        CompatibilityNode::create(['name' => 'other', 'rank' => 2]);
+        $query = CompatibilityNode::where('name', 'exists α')->getQuery();
+        $bindings = $query->getBindings();
+        $this->assertTrue($query->exists());
+        $this->assertFalse($query->doesntExist());
+        $this->assertNull($query->columns);
+        $this->assertSame($bindings, $query->getBindings());
+        $this->assertFalse(CompatibilityNode::where('name', 'absent')->exists());
+        $this->assertTrue(CompatibilityNode::where('name', 'absent')->doesntExist());
+        $this->assertTrue(CompatibilityNode::whereKey($one->getKey())->exists());
+        $this->assertFalse(CompatibilityNode::whereIn('id', [])->exists());
+        $this->assertFalse(CompatibilityNode::limit(0)->exists());
+        $this->assertTrue(CompatibilityNode::orderBy('rank')->skip(1)->limit(1)->exists());
+        $this->assertFalse(CompatibilityNode::orderBy('rank')->skip(2)->exists());
+        $this->assertTrue(CompatibilityNode::select('name')->distinct()->exists());
+        $this->assertSame('exists α', CompatibilityNode::where('name', 'exists α')->first()->name);
+        $this->assertSame('fallback', CompatibilityNode::where('name', 'absent')->existsOr(fn () => 'fallback'));
+        $query->beforeQuery(fn ($builder) => $builder->where('rank', 99));
+        $this->assertFalse($query->exists());
+        $this->assertCount(0, $query->beforeQueryCallbacks);
+    }
+
+    public function testExistsHonoursRelationshipScopeSoftDeletesAndNestedBindings(): void
+    {
+        $owner = CompatibilityNode::create(['name' => 'owner']);
+        $child = CompatibilityNode::create(['name' => 'child']);
+        $other = CompatibilityNode::create(['name' => 'other']);
+        $owner->children()->save($child);
+        $this->assertTrue($owner->children()->where('name', 'child')->exists());
+        $this->assertFalse($other->children()->where('name', 'child')->exists());
+        $this->assertTrue($child->parents()->where('name', 'owner')->exists());
+        $this->assertTrue(CompatibilityNode::where('name', 'owner')->where(fn ($q) => $q->where('name', 'child')->orWhere('name', 'owner'))->exists());
+        $this->assertFalse(CompatibilityNode::where('name', 'owner')->where(fn ($q) => $q->where('name', 'child')->orWhere('name', 'other'))->exists());
+        $soft = SoftCompatibilityNode::create(['name' => 'soft exists']);
+        $this->assertTrue(SoftCompatibilityNode::whereKey($soft->getKey())->exists());
+        $soft->delete();
+        $this->assertFalse(SoftCompatibilityNode::whereKey($soft->getKey())->exists());
+        $this->assertTrue(SoftCompatibilityNode::withTrashed()->whereKey($soft->getKey())->exists());
+    }
+
     public function testCrudAndIdentity(): void
     {
         $node = CompatibilityNode::create(['name' => 'first', 'enabled' => true, 'score' => 2]);

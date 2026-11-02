@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-02",
+  "ticket": "V16-40",
+  "candidate": "9.9.1-RC4",
+  "parent": "00e929a4efcfa3e20cc21c97ae48ebb120ecdbff",
+  "php": "8.5.12",
+  "neo4j": "5.26.32 Community",
+  "matrix": {
+    "12": {
+      "focused": {
+        "tests": 50,
+        "assertions": 288,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "full": {
+        "tests": 324,
+        "assertions": 1342,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 10,
+        "incomplete": 12
+      }
+    },
+    "13": {
+      "focused": {
+        "tests": 50,
+        "assertions": 288,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "full": {
+        "tests": 324,
+        "assertions": 1342,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 10,
+        "incomplete": 12
+      }
+    }
+  },
+  "locks": {
+    "12": "e812c6d43aa05e7fbedfc3a41cff3109cca3129f55f31f1b3b07ed44ba3c99d6",
+    "13": "f214161c23357792847869b4a0277a1794dced28d3ccfc4a46eab54d13e3081c"
+  }
+}

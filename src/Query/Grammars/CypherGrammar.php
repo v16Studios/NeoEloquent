@@ -14,6 +14,15 @@ class CypherGrammar extends Grammar
         return false;
     }
 
+    /** Preserve the complete read query, including projection, SKIP and LIMIT. */
+    public function compileExists(Builder $query)
+    {
+        // compileSelect may populate columns. Keep the caller reusable and use
+        // the clone's own grammar/alias context, as with ordinary query clones.
+        $query = clone $query;
+        return 'RETURN EXISTS { '.$query->getGrammar()->compileSelect($query).' } AS exists';
+    }
+
     protected $selectComponents = [
         'matches',
         'from',

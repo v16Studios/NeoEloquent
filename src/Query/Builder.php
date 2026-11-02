@@ -109,6 +109,15 @@ class Builder extends IlluminateQueryBuilder
         $this->grammar->setQuery($this);
     }
 
+    public function exists()
+    {
+        $this->applyBeforeQueryCallbacks();
+        $rows = $this->connection->select(
+            $this->grammar->compileExists($this), $this->getBindings(), ! $this->useWritePdo
+        )->getResults();
+        return (bool) ($rows[0]['exists'] ?? false);
+    }
+
     public function forNestedWhere()
     {
         // Reserve surrounding named parameters; nested predicates may use the

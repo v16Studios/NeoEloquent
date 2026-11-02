@@ -72,6 +72,7 @@ class GraphReleaseTest extends CompatibilityTestCase
         $edge = $owner->children()->attach($child, ['quantity' => 2, 'enabled' => true]);
         if (getenv('NEOELOQUENT_EXPECT_FIRST_ID_ZERO') === '1') {
             $this->assertSame(0, $owner->getKey());
+            $this->assertTrue(ReleaseNode::whereKey(0)->exists());
             $this->assertSame(0, $edge->getKey());
         }
         $id = $edge->getKey();

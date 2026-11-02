@@ -81,6 +81,11 @@ try {
     ConsumerReleaseNode::where('name', 'unrelated')->toSql();
     verifyConsumer($filtered->get()->pluck('name')->all() === ['new-child'], 'Nested or sibling parameters overwrote a predicate.');
     verifyConsumer($copy->get()->pluck('name')->all() === ['new-child'], 'Cloned/interleaved builder lost its compiler context.');
+    verifyConsumer($filtered->exists() && !$filtered->doesntExist(), 'Installed existence query lost nested relationship predicates.');
+    verifyConsumer(!$created->children()->where('name', 'absent')->exists(), 'Missing related row incorrectly exists.');
+    verifyConsumer(ConsumerReleaseNode::whereKey($id)->exists(), 'Installed existence query lost the node identity.');
+    verifyConsumer(!ConsumerReleaseNode::limit(0)->exists(), 'Installed existence query ignored LIMIT.');
+    verifyConsumer(!ConsumerReleaseNode::skip(ConsumerReleaseNode::count())->exists(), 'Installed existence query ignored SKIP.');
     verifyConsumer($created->children()->where('id', $existing->getKey())
         ->where(fn ($query) => $query->whereIn('id', [$existing->getKey(), $created->getKey()]))
         ->get()->modelKeys() === [$existing->getKey()], 'Nested ID list replaced a scalar ID binding.');
@@ -118,6 +123,7 @@ try {
         'multi_relation_create_with' => 'pass',
         'grouped_relationship_search_and_count' => 'pass',
         'nested_bindings_and_interleaved_clones' => 'pass',
+        'existence_predicates_identity_limits_and_relations' => 'pass',
         'missing_attachment_no_partial_write' => 'pass',
         'rollback_and_original_error' => 'pass',
         'parameter_shapes' => 'pass',
