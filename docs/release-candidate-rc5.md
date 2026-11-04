@@ -17,3 +17,9 @@ Regressions verify empty count/exists/get/first for unsaved HasMany, HasOne, Bel
 Evidence: `tests/compatibility/evidence/rc5/`. The repaired-fixture baseline has six failures with no errors (59 tests / 310 assertions); the initial fixture log is retained separately because two tests used an incorrectly cased alias before correction. No production data was used. Independent installed-consumer verification and remote publication are recorded below after completion.
 
 [RC1 support boundaries](release-candidate.md), [RC2](release-candidate-rc2.md), [RC3](release-candidate-rc3.md), [RC4](release-candidate-rc4.md) and [transaction restrictions](transactions.md) remain applicable. This candidate does not certify application-wide acceptance or production migration/deployment.
+
+## Immutable installed candidate
+
+Tag `9.9.1-RC5` resolves to **`b64c8304b7c7866d629bc726799182a01a5d1964`**. The independent local VCS consumer installs that exact source (not a path/symlink package) with Laravel 13.39.0 and passes all graph checks, platform validation, strict manifest/lock validation and locked reinstall. Only the fork changed from the prior consumer lock; its Laudis version remains 3.7.1, while matrix/application locks use 3.7.0. Complete consumer manifest/lock/results are retained in `tests/compatibility/evidence/rc5/consumer-local/`. Intentional exact version pins use `validate --strict --no-check-all`; no platform or security checks are excluded.
+
+Bulk relationship mutation support is tracked separately in [V16-62](https://linear.app/v16studios/issue/V16-62). Remote publication and NXS acceptance are verified separately after this local installed-candidate checkpoint.
