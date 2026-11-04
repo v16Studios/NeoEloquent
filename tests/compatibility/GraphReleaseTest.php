@@ -78,6 +78,16 @@ class GraphReleaseTest extends CompatibilityTestCase
             $this->assertSame(0, $edge->getKey());
         }
         $id = $edge->getKey();
+        $connection = $owner->getConnection();
+        $connection->beginTransaction();
+        $this->assertSame(1, $owner->children()->update(['name' => 'child-updated']));
+        $this->assertSame(1, $child->parents()->where('id', $owner->getKey())->update(['name' => 'owner-updated']));
+        $child->parents()->where('id', $owner->getKey())->delete();
+        $this->assertNull($owner->fresh());
+        $this->assertSame('child-updated', $child->fresh()->name);
+        $connection->rollBack();
+        $this->assertSame('owner', $owner->fresh()->name);
+        $this->assertSame('child', $child->fresh()->name);
         $this->assertTrue($edge->exists());
         $this->assertSame([$child->getKey()], $owner->children()->get()->modelKeys());
         $hydrated = $owner->children()->edge($child);
@@ -127,21 +137,103 @@ class GraphReleaseTest extends CompatibilityTestCase
         $child = ReleaseNode::create(['name' => 'child']);
         $edge = $owner->children()->attach($child, ['quantity' => 0]);
         $unsaved = new ReleaseNode();
-        try {
-            $unsaved->{$method}()->update(['name' => 'must-not-update']);
-        } catch (QueryException $error) {
-            // Bulk relationship writes may be rejected; either path must leave persisted data intact.
-        }
+        $this->assertSame(0, $unsaved->{$method}()->update(['name' => 'must-not-update']));
         $this->assertSame('owner', $owner->fresh()->name);
         $this->assertSame('child', $child->fresh()->name);
-        try {
-            $unsaved->{$method}()->delete();
-        } catch (QueryException $error) {
-            // This safety check does not certify support for bulk relationship deletion.
-        }
+        $unsaved->{$method}()->delete();
         $this->assertSame(2, ReleaseNode::count());
         $this->assertSame($edge->getKey(), $owner->children()->edge($child)->getKey());
         $this->assertSame(0, $owner->children()->edge($child)->quantity);
+    }
+
+    /** @dataProvider unsavedRelations */
+    public function testBulkRelationshipMutationsRetainDirectionPredicatesAndRollback(string $method): void
+    {
+        $parent = ReleaseNode::create(['name' => 'parent']);
+        $target = ReleaseNode::create(['name' => 'target', 'rank' => 1]);
+        $excluded = ReleaseNode::create(['name' => 'excluded', 'rank' => 2]);
+        $other = ReleaseNode::create(['name' => 'other']);
+        $reversed = ReleaseNode::create(['name' => 'target', 'rank' => 1]);
+        $incoming = in_array($method, ['parents', 'singleParent'], true);
+        foreach ([$target, $excluded] as $node) {
+            ($incoming ? $node : $parent)->children()->attach($incoming ? $parent : $node);
+        }
+        ($incoming ? $parent : $reversed)->children()->attach($incoming ? $reversed : $parent);
+        $other->children()->attach($target, ['quantity' => 7]);
+        $other->children()->attach($excluded, ['quantity' => 8]);
+        $query = $parent->{$method}()->where('name', '<>', 'excluded')->where(function ($query) use ($target, $method) {
+            $query->where($method.'.id', $target->getKey())->orWhere('name', 'absent');
+        });
+        $copy = clone $query;
+        ReleaseNode::where('name', 'interleaved')->toSql();
+        $connection = $parent->getConnection();
+        $connection->beginTransaction();
+        $this->assertSame(1, $query->update(['name' => 'updated', 'enabled' => false, 'rank' => 0]));
+        $this->assertSame('updated', $target->fresh()->name);
+        $this->assertFalse($target->fresh()->enabled);
+        $this->assertSame(0, $target->fresh()->rank);
+        $copy->delete();
+        $this->assertNull($target->fresh());
+        $this->assertSame('parent', $parent->fresh()->name);
+        $this->assertSame('excluded', $excluded->fresh()->name);
+        $this->assertSame('target', $reversed->fresh()->name);
+        $this->assertSame('other', $other->fresh()->name);
+        $this->assertSame(8, $other->children()->edge($excluded)->quantity);
+        $connection->rollBack();
+        $this->assertSame('target', $target->fresh()->name);
+        $this->assertSame(1, $target->fresh()->rank);
+        $this->assertSame(7, $other->children()->edge($target)->quantity);
+        $this->assertSame(5, ReleaseNode::count());
+    }
+
+    public function testBulkMutationsDeduplicateTargetsBeforeOrderingAndPagination(): void
+    {
+        $owner = ReleaseNode::create(['name' => 'owner']);
+        $children = [];
+        foreach ([1, 2, 3] as $rank) {
+            $children[] = $child = ReleaseNode::create(['name' => 'child', 'rank' => $rank]);
+            $owner->children()->attach($child);
+        }
+        $owner->getConnection()->statement('MATCH (p), (c) WHERE id(p) = $p AND id(c) = $c CREATE (p)-[:RELEASE_OWNS]->(c)',
+            ['p' => $owner->getKey(), 'c' => $children[0]->getKey()]);
+        $this->assertSame(3, $owner->children()->update(['enabled' => false]));
+        $this->assertSame(0, $owner->children()->limit(0)->update(['enabled' => true]));
+        $owner->children()->limit(0)->delete();
+        $this->assertSame(4, ReleaseNode::count());
+        $page = $owner->children()->orderBy('rank')->skip(1)->take(1);
+        $this->assertSame(1, (clone $page)->update(['name' => 'selected']));
+        $this->assertSame(['child', 'selected', 'child'], array_map(fn ($node) => $node->fresh()->name, $children));
+        $page->delete();
+        $this->assertNull($children[1]->fresh());
+        $this->assertNotNull($children[0]->fresh());
+        $this->assertNotNull($children[2]->fresh());
+        $this->assertSame(3, $owner->children()->count()); // Duplicate edge remains; only the selected node was deleted.
+    }
+
+    public static function unsupportedMutationComponents(): array
+    {
+        return array_map(fn ($component) => [$component], ['aggregate', 'groups', 'havings', 'joins', 'unions', 'with', 'withWheres']);
+    }
+
+    /** @dataProvider unsupportedMutationComponents */
+    public function testBulkMutationsRejectUnsupportedReadShapesBeforeWriting(string $component): void
+    {
+        $owner = ReleaseNode::create(['name' => 'owner']);
+        $child = ReleaseNode::create(['name' => 'child']);
+        $edge = $owner->children()->attach($child);
+        foreach (['update', 'delete'] as $operation) {
+            $query = $owner->children()->getQuery()->toBase();
+            $query->{$component} = ['unsupported'];
+            try {
+                $operation === 'update' ? $query->update(['name' => 'must-not-update']) : $query->delete();
+                $this->fail('Unsupported mutation component was ignored: '.$component);
+            } catch (\LogicException $error) {
+                $this->assertStringContainsString('do not support '.$component, $error->getMessage());
+            }
+        }
+        $this->assertSame('owner', $owner->fresh()->name);
+        $this->assertSame('child', $child->fresh()->name);
+        $this->assertSame($edge->getKey(), $owner->children()->edge($child)->getKey());
     }
 
     public function testNullIdentityPredicatesRetainPropertiesAliasesAndBooleanGroups(): void

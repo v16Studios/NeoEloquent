@@ -1,5 +1,14 @@
 # NXS fork changes
 
+## 9.9.1-RC6 — bulk relationship mutations
+
+- Retain relationship MATCH patterns and all direct predicates when updating or deleting related nodes.
+- Deduplicate target nodes before ordering/SKIP/LIMIT; return distinct-node update counts and use DETACH DELETE for selected nodes and their incident edges.
+- Reject unsupported aggregate/group/join/union/WITH mutation shapes before execution rather than discarding their restrictions.
+- Verify saved/unsaved incoming/outgoing relations, real ID zero, filtered/cloned queries, duplicate edges, pagination, actual affected graph state and rollback.
+
+See [RC6 acceptance](docs/release-candidate-rc6.md) for supported behavior, deletion semantics and validation. RC1–RC5 remain immutable.
+
 ## 9.9.1-RC5 — null internal identities
 
 - Compile qualified `alias.id` null/not-null predicates against the internal node ID, matching bare `id` and explicit `id(alias)` semantics. Unsaved default-key relations no longer return persisted records.

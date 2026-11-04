@@ -1,0 +1,406 @@
+ Container nxs-neoeloquent-neo4j-1 Running 
+ Container nxs-neoeloquent-neo4j-1 Waiting 
+ Container nxs-neoeloquent-neo4j-1 Healthy 
+ Container nxs-neoeloquent-tests-run-de09bb6f9d1f Creating 
+ Container nxs-neoeloquent-tests-run-de09bb6f9d1f Created 
+PHPUnit 9.6.38 by Sebastian Bergmann and contributors.
+
+.....EEEEEEEEE..................................................  64 / 64 (100%)
+
+Time: 00:07.955, Memory: 26.00 MB
+
+There were 9 errors:
+
+1) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testUnsavedRelationshipMutationsLeaveExistingNodesUntouched with data set #0 ('children')
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) is null SET children.name = $name_update RETURN count(children)"
+  ^" - Query:  WHERE id(releaseFixture) is null SET children.name = $name_update RETURN count(children) - Bindings: {"idchildren":null,"name_update":"must-not-update"}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:130
+
+Caused by
+Laudis\Neo4j\Exception\Neo4jException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) is null SET children.name = $name_update RETURN count(children)"
+  ^"
+
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Exception/Neo4jException.php:50
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:701
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:527
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:328
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:177
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:216
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:291
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:85
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:168
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:136
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:166
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:77
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:90
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:72
+/workspace/src/DatabaseDriver/CypherQuery.php:56
+/workspace/src/Connection.php:259
+/workspace/src/Connection.php:605
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:130
+
+2) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testUnsavedRelationshipMutationsLeaveExistingNodesUntouched with data set #1 ('singleChild')
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) is null SET singleChild.name = $name_update RETURN count(singleChild)"
+  ^" - Query:  WHERE id(releaseFixture) is null SET singleChild.name = $name_update RETURN count(singleChild) - Bindings: {"idsingleChild":null,"name_update":"must-not-update"}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:130
+
+Caused by
+Laudis\Neo4j\Exception\Neo4jException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) is null SET singleChild.name = $name_update RETURN count(singleChild)"
+  ^"
+
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Exception/Neo4jException.php:50
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:701
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:527
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:328
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:177
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:216
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:291
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:85
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:168
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:136
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:166
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:77
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:90
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:72
+/workspace/src/DatabaseDriver/CypherQuery.php:56
+/workspace/src/Connection.php:259
+/workspace/src/Connection.php:605
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:130
+
+3) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testUnsavedRelationshipMutationsLeaveExistingNodesUntouched with data set #2 ('singleParent')
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) is null SET singleParent.name = $name_update RETURN count(singleParent)"
+  ^" - Query:  WHERE id(releaseFixture) is null SET singleParent.name = $name_update RETURN count(singleParent) - Bindings: {"idsingleParent":null,"name_update":"must-not-update"}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:130
+
+Caused by
+Laudis\Neo4j\Exception\Neo4jException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) is null SET singleParent.name = $name_update RETURN count(singleParent)"
+  ^"
+
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Exception/Neo4jException.php:50
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:701
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:527
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:328
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:177
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:216
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:291
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:85
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:168
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:136
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:166
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:77
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:90
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:72
+/workspace/src/DatabaseDriver/CypherQuery.php:56
+/workspace/src/Connection.php:259
+/workspace/src/Connection.php:605
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:130
+
+4) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testUnsavedRelationshipMutationsLeaveExistingNodesUntouched with data set #3 ('parents')
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) is null SET parents.name = $name_update RETURN count(parents)"
+  ^" - Query:  WHERE id(releaseFixture) is null SET parents.name = $name_update RETURN count(parents) - Bindings: {"idparents":null,"name_update":"must-not-update"}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:130
+
+Caused by
+Laudis\Neo4j\Exception\Neo4jException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) is null SET parents.name = $name_update RETURN count(parents)"
+  ^"
+
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Exception/Neo4jException.php:50
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:701
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:527
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:328
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:177
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:216
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:291
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:85
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:168
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:136
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:166
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:77
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:90
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:72
+/workspace/src/DatabaseDriver/CypherQuery.php:56
+/workspace/src/Connection.php:259
+/workspace/src/Connection.php:605
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:130
+
+5) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testBulkRelationshipMutationsRetainDirectionPredicatesAndRollback with data set #0 ('children')
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) = $idreleaseFixture and children.name <> $childrenname and (id(children) = $idchildren or children.name = $childrenname_2) SET children.name = $name_update, children.enabled = $enabled_update, children.rank = $rank_update RETURN count(children)"
+  ^" - Query:  WHERE id(releaseFixture) = $idreleaseFixture and children.name <> $childrenname and (id(children) = $idchildren or children.name = $childrenname_2) SET children.name = $name_update, children.enabled = $enabled_update, children.rank = $rank_update RETURN count(children) - Bindings: {"idchildren":15,"idreleaseFixture":14,"childrenname":"excluded","childrenname_2":"absent","name_update":"updated","enabled_update":false,"rank_update":0}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:161
+
+Caused by
+Laudis\Neo4j\Exception\Neo4jException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) = $idreleaseFixture and children.name <> $childrenname and (id(children) = $idchildren or children.name = $childrenname_2) SET children.name = $name_update, children.enabled = $enabled_update, children.rank = $rank_update RETURN count(children)"
+  ^"
+
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Exception/Neo4jException.php:50
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:701
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:527
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:328
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:177
+/workspace/src/DatabaseDriver/Drivers/Laudis/Transaction.php:32
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:86
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:72
+/workspace/src/DatabaseDriver/CypherQuery.php:56
+/workspace/src/Connection.php:259
+/workspace/src/Connection.php:605
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:161
+
+6) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testBulkRelationshipMutationsRetainDirectionPredicatesAndRollback with data set #1 ('singleChild')
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) = $idreleaseFixture and singleChild.name <> $singlechildname and (id(singleChild) = $idsingleChild or singleChild.name = $singlechildname_2) SET singleChild.name = $name_update, singleChild.enabled = $enabled_update, singleChild.rank = $rank_update RETURN count(singleChild)"
+  ^" - Query:  WHERE id(releaseFixture) = $idreleaseFixture and singleChild.name <> $singlechildname and (id(singleChild) = $idsingleChild or singleChild.name = $singlechildname_2) SET singleChild.name = $name_update, singleChild.enabled = $enabled_update, singleChild.rank = $rank_update RETURN count(singleChild) - Bindings: {"idsingleChild":20,"idreleaseFixture":19,"singlechildname":"excluded","singlechildname_2":"absent","name_update":"updated","enabled_update":false,"rank_update":0}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:161
+
+Caused by
+Laudis\Neo4j\Exception\Neo4jException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) = $idreleaseFixture and singleChild.name <> $singlechildname and (id(singleChild) = $idsingleChild or singleChild.name = $singlechildname_2) SET singleChild.name = $name_update, singleChild.enabled = $enabled_update, singleChild.rank = $rank_update RETURN count(singleChild)"
+  ^"
+
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Exception/Neo4jException.php:50
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:701
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:527
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:328
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:177
+/workspace/src/DatabaseDriver/Drivers/Laudis/Transaction.php:32
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:86
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:72
+/workspace/src/DatabaseDriver/CypherQuery.php:56
+/workspace/src/Connection.php:259
+/workspace/src/Connection.php:605
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:161
+
+7) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testBulkRelationshipMutationsRetainDirectionPredicatesAndRollback with data set #2 ('singleParent')
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) = $idreleaseFixture and singleParent.name <> $singleparentname and (id(singleParent) = $idsingleParent or singleParent.name = $singleparentname_2) SET singleParent.name = $name_update, singleParent.enabled = $enabled_update, singleParent.rank = $rank_update RETURN count(singleParent)"
+  ^" - Query:  WHERE id(releaseFixture) = $idreleaseFixture and singleParent.name <> $singleparentname and (id(singleParent) = $idsingleParent or singleParent.name = $singleparentname_2) SET singleParent.name = $name_update, singleParent.enabled = $enabled_update, singleParent.rank = $rank_update RETURN count(singleParent) - Bindings: {"idsingleParent":5,"idreleaseFixture":4,"singleparentname":"excluded","singleparentname_2":"absent","name_update":"updated","enabled_update":false,"rank_update":0}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:161
+
+Caused by
+Laudis\Neo4j\Exception\Neo4jException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) = $idreleaseFixture and singleParent.name <> $singleparentname and (id(singleParent) = $idsingleParent or singleParent.name = $singleparentname_2) SET singleParent.name = $name_update, singleParent.enabled = $enabled_update, singleParent.rank = $rank_update RETURN count(singleParent)"
+  ^"
+
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Exception/Neo4jException.php:50
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:701
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:527
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:328
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:177
+/workspace/src/DatabaseDriver/Drivers/Laudis/Transaction.php:32
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:86
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:72
+/workspace/src/DatabaseDriver/CypherQuery.php:56
+/workspace/src/Connection.php:259
+/workspace/src/Connection.php:605
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:161
+
+8) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testBulkRelationshipMutationsRetainDirectionPredicatesAndRollback with data set #3 ('parents')
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) = $idreleaseFixture and parents.name <> $parentsname and (id(parents) = $idparents or parents.name = $parentsname_2) SET parents.name = $name_update, parents.enabled = $enabled_update, parents.rank = $rank_update RETURN count(parents)"
+  ^" - Query:  WHERE id(releaseFixture) = $idreleaseFixture and parents.name <> $parentsname and (id(parents) = $idparents or parents.name = $parentsname_2) SET parents.name = $name_update, parents.enabled = $enabled_update, parents.rank = $rank_update RETURN count(parents) - Bindings: {"idparents":8,"idreleaseFixture":7,"parentsname":"excluded","parentsname_2":"absent","name_update":"updated","enabled_update":false,"rank_update":0}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:161
+
+Caused by
+Laudis\Neo4j\Exception\Neo4jException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) = $idreleaseFixture and parents.name <> $parentsname and (id(parents) = $idparents or parents.name = $parentsname_2) SET parents.name = $name_update, parents.enabled = $enabled_update, parents.rank = $rank_update RETURN count(parents)"
+  ^"
+
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Exception/Neo4jException.php:50
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:701
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:527
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:328
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:177
+/workspace/src/DatabaseDriver/Drivers/Laudis/Transaction.php:32
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:86
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:72
+/workspace/src/DatabaseDriver/CypherQuery.php:56
+/workspace/src/Connection.php:259
+/workspace/src/Connection.php:605
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:161
+
+9) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testBulkMutationsDeduplicateTargetsBeforeOrderingAndPagination
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) = $idreleaseFixture SET children.enabled = $enabled_update RETURN count(children)"
+  ^" - Query:  WHERE id(releaseFixture) = $idreleaseFixture SET children.enabled = $enabled_update RETURN count(children) - Bindings: {"idchildren":10,"idreleaseFixture":10,"enabled_update":false}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:189
+
+Caused by
+Laudis\Neo4j\Exception\Neo4jException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) = $idreleaseFixture SET children.enabled = $enabled_update RETURN count(children)"
+  ^"
+
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Exception/Neo4jException.php:50
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:701
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:527
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltConnection.php:328
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:177
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/BoltUnmanagedTransaction.php:216
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:291
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Bolt/Session.php:85
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:168
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:136
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:166
+/workspace/vendor/laravel13/vendor/laudis/neo4j-php-client/src/Client.php:77
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:90
+/workspace/src/DatabaseDriver/Drivers/Laudis/Laudis.php:72
+/workspace/src/DatabaseDriver/CypherQuery.php:56
+/workspace/src/Connection.php:259
+/workspace/src/Connection.php:605
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:189
+
+ERRORS!
+Tests: 64, Assertions: 345, Errors: 9.
+

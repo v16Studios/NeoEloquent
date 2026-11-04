@@ -517,18 +517,9 @@ class CypherGrammar extends Grammar
         // Of course, update queries may also be constrained by where clauses so we'll
         // need to compile the where clauses and attach it to the query so only the
         // intended records are updated by the Cypher statements we generate to run.
-        $where = $this->compileWheres($query);
+        $targets = $this->compileMutationTargets($query);
 
-        // We always need the MATCH clause in our Cypher which
-        // is the responsibility of compiling the From component.
-        $match = $this->compileComponents($query, ['from']);
-        $match = $match['from'];
-
-        // When updating we need to return the count of the affected nodes
-        // so we trick the Columns compiler into returning that for us.
-        $return = $this->compileColumns($query, ['count('.$query->modelAsNode().')']);
-
-        return "$match $where SET $columns $return";
+        return "$targets SET $columns RETURN count(".$query->modelAsNode().')';
     }
 
     /**
@@ -559,14 +550,26 @@ class CypherGrammar extends Grammar
      */
     public function compileDelete(Builder $query)
     {
-        // We always need the MATCH clause in our Cypher which
-        // is the responsibility of compiling the From component.
-        $match = $this->compileComponents($query, ['from']);
-        $match = $match['from'];
+        return $this->compileMutationTargets($query).' DETACH DELETE '.$query->modelAsNode();
+    }
 
-        $where = is_array($query->wheres) ? $this->compileWheres($query) : '';
+    /** Select nodes once, retaining relation patterns, predicates and pagination. */
+    protected function compileMutationTargets(Builder $query): string
+    {
+        // These read-query shapes do not have a defined node-mutation contract.
+        // Never silently discard their restrictions and broaden a write.
+        foreach (['aggregate', 'groups', 'havings', 'joins', 'unions', 'with', 'withWheres'] as $component) {
+            if (!empty($query->$component)) {
+                throw new \LogicException('NeoEloquent bulk mutations do not support '.$component.'.');
+            }
+        }
 
-        return "$match $where OPTIONAL $match-[r]-()  $where DELETE  ".$query->modelAsNode().',r';
+        $match = $this->concatenate($this->compileComponents($query, ['matches', 'from', 'wheres']));
+        $page = $this->concatenate($this->compileComponents($query, ['orders', 'offset', 'limit']));
+
+        // Multiple edges may reach one node. Collapse them before SKIP/LIMIT,
+        // then mutate only the target alias (never the relationship's parent).
+        return trim($match.' WITH DISTINCT '.$query->modelAsNode().' '.$page);
     }
 
     public function compileWith(Builder $query, $with)

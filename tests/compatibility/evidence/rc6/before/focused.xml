@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="" tests="64" assertions="345" errors="9" warnings="0" failures="0" skipped="0" time="7.929267">
+    <testsuite name="Release acceptance" tests="64" assertions="345" errors="9" warnings="0" failures="0" skipped="0" time="7.929267">
+      <testsuite name="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" tests="29" assertions="144" errors="9" warnings="0" failures="0" skipped="0" time="5.098324">
+        <testcase name="testZeroIdsSurviveRelationshipHydrationUpdateAndDetach" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="68" assertions="16" time="1.050228"/>
+        <testsuite name="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testUnsavedRelationshipReadsAreEmpty" tests="4" assertions="36" errors="0" warnings="0" failures="0" skipped="0" time="0.761827">
+          <testcase name="testUnsavedRelationshipReadsAreEmpty with data set #0" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="105" assertions="9" time="0.281129"/>
+          <testcase name="testUnsavedRelationshipReadsAreEmpty with data set #1" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="105" assertions="9" time="0.167627"/>
+          <testcase name="testUnsavedRelationshipReadsAreEmpty with data set #2" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="105" assertions="9" time="0.167508"/>
+          <testcase name="testUnsavedRelationshipReadsAreEmpty with data set #3" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="105" assertions="9" time="0.145563"/>
+        </testsuite>
+        <testsuite name="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testUnsavedRelationshipMutationsLeaveExistingNodesUntouched" tests="4" assertions="0" errors="4" warnings="0" failures="0" skipped="0" time="0.207430">
+          <testcase name="testUnsavedRelationshipMutationsLeaveExistingNodesUntouched with data set #0" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="124" assertions="0" time="0.078892">
+            <error type="Vinelab\NeoEloquent\QueryException">Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testUnsavedRelationshipMutationsLeaveExistingNodesUntouched with data set #0 ('children')
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) is null SET children.name = $name_update RETURN count(children)"
+  ^" - Query:  WHERE id(releaseFixture) is null SET children.name = $name_update RETURN count(children) - Bindings: {"idchildren":null,"name_update":"must-not-update"}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:130</error>
+          </testcase>
+          <testcase name="testUnsavedRelationshipMutationsLeaveExistingNodesUntouched with data set #1" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="124" assertions="0" time="0.042322">
+            <error type="Vinelab\NeoEloquent\QueryException">Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testUnsavedRelationshipMutationsLeaveExistingNodesUntouched with data set #1 ('singleChild')
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) is null SET singleChild.name = $name_update RETURN count(singleChild)"
+  ^" - Query:  WHERE id(releaseFixture) is null SET singleChild.name = $name_update RETURN count(singleChild) - Bindings: {"idsingleChild":null,"name_update":"must-not-update"}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:130</error>
+          </testcase>
+          <testcase name="testUnsavedRelationshipMutationsLeaveExistingNodesUntouched with data set #2" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="124" assertions="0" time="0.044918">
+            <error type="Vinelab\NeoEloquent\QueryException">Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testUnsavedRelationshipMutationsLeaveExistingNodesUntouched with data set #2 ('singleParent')
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) is null SET singleParent.name = $name_update RETURN count(singleParent)"
+  ^" - Query:  WHERE id(releaseFixture) is null SET singleParent.name = $name_update RETURN count(singleParent) - Bindings: {"idsingleParent":null,"name_update":"must-not-update"}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:130</error>
+          </testcase>
+          <testcase name="testUnsavedRelationshipMutationsLeaveExistingNodesUntouched with data set #3" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="124" assertions="0" time="0.041298">
+            <error type="Vinelab\NeoEloquent\QueryException">Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testUnsavedRelationshipMutationsLeaveExistingNodesUntouched with data set #3 ('parents')
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) is null SET parents.name = $name_update RETURN count(parents)"
+  ^" - Query:  WHERE id(releaseFixture) is null SET parents.name = $name_update RETURN count(parents) - Bindings: {"idparents":null,"name_update":"must-not-update"}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:130</error>
+          </testcase>
+        </testsuite>
+        <testsuite name="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testBulkRelationshipMutationsRetainDirectionPredicatesAndRollback" tests="4" assertions="0" errors="4" warnings="0" failures="0" skipped="0" time="0.467161">
+          <testcase name="testBulkRelationshipMutationsRetainDirectionPredicatesAndRollback with data set #0" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="140" assertions="0" time="0.123413">
+            <error type="Vinelab\NeoEloquent\QueryException">Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testBulkRelationshipMutationsRetainDirectionPredicatesAndRollback with data set #0 ('children')
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) = $idreleaseFixture and children.name &lt;&gt; $childrenname and (id(children) = $idchildren or children.name = $childrenname_2) SET children.name = $name_update, children.enabled = $enabled_update, children.rank = $rank_update RETURN count(children)"
+  ^" - Query:  WHERE id(releaseFixture) = $idreleaseFixture and children.name &lt;&gt; $childrenname and (id(children) = $idchildren or children.name = $childrenname_2) SET children.name = $name_update, children.enabled = $enabled_update, children.rank = $rank_update RETURN count(children) - Bindings: {"idchildren":15,"idreleaseFixture":14,"childrenname":"excluded","childrenname_2":"absent","name_update":"updated","enabled_update":false,"rank_update":0}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:161</error>
+          </testcase>
+          <testcase name="testBulkRelationshipMutationsRetainDirectionPredicatesAndRollback with data set #1" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="140" assertions="0" time="0.117226">
+            <error type="Vinelab\NeoEloquent\QueryException">Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testBulkRelationshipMutationsRetainDirectionPredicatesAndRollback with data set #1 ('singleChild')
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) = $idreleaseFixture and singleChild.name &lt;&gt; $singlechildname and (id(singleChild) = $idsingleChild or singleChild.name = $singlechildname_2) SET singleChild.name = $name_update, singleChild.enabled = $enabled_update, singleChild.rank = $rank_update RETURN count(singleChild)"
+  ^" - Query:  WHERE id(releaseFixture) = $idreleaseFixture and singleChild.name &lt;&gt; $singlechildname and (id(singleChild) = $idsingleChild or singleChild.name = $singlechildname_2) SET singleChild.name = $name_update, singleChild.enabled = $enabled_update, singleChild.rank = $rank_update RETURN count(singleChild) - Bindings: {"idsingleChild":20,"idreleaseFixture":19,"singlechildname":"excluded","singlechildname_2":"absent","name_update":"updated","enabled_update":false,"rank_update":0}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:161</error>
+          </testcase>
+          <testcase name="testBulkRelationshipMutationsRetainDirectionPredicatesAndRollback with data set #2" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="140" assertions="0" time="0.110161">
+            <error type="Vinelab\NeoEloquent\QueryException">Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testBulkRelationshipMutationsRetainDirectionPredicatesAndRollback with data set #2 ('singleParent')
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) = $idreleaseFixture and singleParent.name &lt;&gt; $singleparentname and (id(singleParent) = $idsingleParent or singleParent.name = $singleparentname_2) SET singleParent.name = $name_update, singleParent.enabled = $enabled_update, singleParent.rank = $rank_update RETURN count(singleParent)"
+  ^" - Query:  WHERE id(releaseFixture) = $idreleaseFixture and singleParent.name &lt;&gt; $singleparentname and (id(singleParent) = $idsingleParent or singleParent.name = $singleparentname_2) SET singleParent.name = $name_update, singleParent.enabled = $enabled_update, singleParent.rank = $rank_update RETURN count(singleParent) - Bindings: {"idsingleParent":5,"idreleaseFixture":4,"singleparentname":"excluded","singleparentname_2":"absent","name_update":"updated","enabled_update":false,"rank_update":0}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:161</error>
+          </testcase>
+          <testcase name="testBulkRelationshipMutationsRetainDirectionPredicatesAndRollback with data set #3" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="140" assertions="0" time="0.116361">
+            <error type="Vinelab\NeoEloquent\QueryException">Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testBulkRelationshipMutationsRetainDirectionPredicatesAndRollback with data set #3 ('parents')
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) = $idreleaseFixture and parents.name &lt;&gt; $parentsname and (id(parents) = $idparents or parents.name = $parentsname_2) SET parents.name = $name_update, parents.enabled = $enabled_update, parents.rank = $rank_update RETURN count(parents)"
+  ^" - Query:  WHERE id(releaseFixture) = $idreleaseFixture and parents.name &lt;&gt; $parentsname and (id(parents) = $idparents or parents.name = $parentsname_2) SET parents.name = $name_update, parents.enabled = $enabled_update, parents.rank = $rank_update RETURN count(parents) - Bindings: {"idparents":8,"idreleaseFixture":7,"parentsname":"excluded","parentsname_2":"absent","name_update":"updated","enabled_update":false,"rank_update":0}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:161</error>
+          </testcase>
+        </testsuite>
+        <testcase name="testBulkMutationsDeduplicateTargetsBeforeOrderingAndPagination" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="179" assertions="0" time="0.102659">
+          <error type="Vinelab\NeoEloquent\QueryException">Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testBulkMutationsDeduplicateTargetsBeforeOrderingAndPagination
+Vinelab\NeoEloquent\QueryException: Neo4j errors detected. First one with code "Neo.ClientError.Statement.SyntaxError" and message "Invalid input 'WHERE': expected 'FOREACH', 'ALTER', 'ORDER BY', 'CALL', 'USING PERIODIC COMMIT', 'CREATE', 'LOAD CSV', 'START DATABASE', 'STOP DATABASE', 'DEALLOCATE', 'DELETE', 'DENY', 'DETACH', 'DROP', 'DRYRUN', 'FINISH', 'GRANT', 'INSERT', 'LIMIT', 'MATCH', 'MERGE', 'NODETACH', 'OFFSET', 'OPTIONAL', 'REALLOCATE', 'REMOVE', 'RENAME', 'RETURN', 'REVOKE', 'ENABLE SERVER', 'SET', 'SHOW', 'SKIP', 'TERMINATE', 'UNWIND', 'USE' or 'WITH' (line 1, column 2 (offset: 1))
+" WHERE id(releaseFixture) = $idreleaseFixture SET children.enabled = $enabled_update RETURN count(children)"
+  ^" - Query:  WHERE id(releaseFixture) = $idreleaseFixture SET children.enabled = $enabled_update RETURN count(children) - Bindings: {"idchildren":10,"idreleaseFixture":10,"enabled_update":false}
+
+/workspace/src/Connection.php:614
+/workspace/src/Connection.php:249
+/workspace/vendor/laravel13/vendor/illuminate/database/Connection.php:573
+/workspace/src/Query/Builder.php:192
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Builder.php:1327
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:23
+/workspace/vendor/laravel13/vendor/illuminate/support/Traits/ForwardsCalls.php:52
+/workspace/vendor/laravel13/vendor/illuminate/database/Eloquent/Relations/Relation.php:635
+/workspace/tests/compatibility/GraphReleaseTest.php:189</error>
+        </testcase>
+        <testcase name="testNullIdentityPredicatesRetainPropertiesAliasesAndBooleanGroups" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="203" assertions="19" time="0.261995"/>
+        <testcase name="testExplicitDatabaseAndUrlOverrideSelectTheServerDatabase" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="225" assertions="4" time="0.474739"/>
+        <testcase name="testCreateWithAndBoundValuesPreservePropertyShapes" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="240" assertions="9" time="0.138849"/>
+        <testcase name="testCreateWithMultipleAttachmentGroupsDoesNotDuplicateNodesOrEdges" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="265" assertions="6" time="0.124407"/>
+        <testcase name="testCreateWithMixedNewAndExistingRelationsCommitsTogether" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="282" assertions="5" time="0.079980"/>
+        <testcase name="testCreateWithEmptyRelationsCreatesOnlyTheParent" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="297" assertions="3" time="0.028847"/>
+        <testcase name="testCreateWithMissingAttachmentCannotLeavePartialWrites" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="306" assertions="9" time="0.193406"/>
+        <testcase name="testCreateWithParticipatesInOuterRollbackWithoutNesting" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="327" assertions="8" time="0.147329"/>
+        <testcase name="testCreateWithConstraintFailureRollsBackTheWholeStatement" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="353" assertions="6" time="0.213119"/>
+        <testcase name="testArrayLabelsRequireAllLabelsAndPreserveIdentity" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="379" assertions="4" time="0.163527"/>
+        <testcase name="testForkSaveOrFailParticipatesWithoutStartingANestedTransaction" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="394" assertions="3" time="0.031046"/>
+        <testcase name="testNestedRelationPredicatesPreserveAliasesAndParentScope" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="405" assertions="4" time="0.198755"/>
+        <testcase name="testNestedBindingsDoNotOverwriteSiblingOrOuterPredicates" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="426" assertions="4" time="0.188402"/>
+        <testcase name="testInterleavedBuildersAndClonesKeepTheirCompilerContext" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="446" assertions="2" time="0.072939"/>
+        <testcase name="testSingleAndEagerRelationPredicatesTargetRelatedNodes" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphReleaseTest" file="/workspace/tests/compatibility/GraphReleaseTest.php" line="460" assertions="6" time="0.191680"/>
+      </testsuite>
+      <testsuite name="Vinelab\NeoEloquent\Tests\Compatibility\CompatibilityTest" file="/workspace/tests/compatibility/CompatibilityTest.php" tests="7" assertions="24" errors="0" warnings="0" failures="0" skipped="0" time="0.004028">
+        <testcase name="testConnectionDefaultsAndExplicitUriConfiguration" class="Vinelab\NeoEloquent\Tests\Compatibility\CompatibilityTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.CompatibilityTest" file="/workspace/tests/compatibility/CompatibilityTest.php" line="54" assertions="8" time="0.000083"/>
+        <testcase name="testSelectAcceptsLaravel13FetchArguments" class="Vinelab\NeoEloquent\Tests\Compatibility\CompatibilityTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.CompatibilityTest" file="/workspace/tests/compatibility/CompatibilityTest.php" line="70" assertions="3" time="0.000034"/>
+        <testcase name="testZeroIdIsHydratedAsAnExistingModel" class="Vinelab\NeoEloquent\Tests\Compatibility\CompatibilityTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.CompatibilityTest" file="/workspace/tests/compatibility/CompatibilityTest.php" line="78" assertions="4" time="0.000536"/>
+        <testcase name="testGraphRelationReportsNoSqlPivotModel" class="Vinelab\NeoEloquent\Tests\Compatibility\CompatibilityTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.CompatibilityTest" file="/workspace/tests/compatibility/CompatibilityTest.php" line="87" assertions="1" time="0.000080"/>
+        <testcase name="testRelationConstructionDoesNotCreateDynamicProperties" class="Vinelab\NeoEloquent\Tests\Compatibility\CompatibilityTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.CompatibilityTest" file="/workspace/tests/compatibility/CompatibilityTest.php" line="93" assertions="2" time="0.000109"/>
+        <testcase name="testUnnamedMorphUsesStrHelperAndRelationName" class="Vinelab\NeoEloquent\Tests\Compatibility\CompatibilityTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.CompatibilityTest" file="/workspace/tests/compatibility/CompatibilityTest.php" line="100" assertions="3" time="0.002156"/>
+        <testcase name="testExplicitGraphMorphRetainsItsHistoricalArgumentMeaning" class="Vinelab\NeoEloquent\Tests\Compatibility\CompatibilityTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.CompatibilityTest" file="/workspace/tests/compatibility/CompatibilityTest.php" line="108" assertions="3" time="0.001029"/>
+      </testsuite>
+      <testsuite name="Vinelab\NeoEloquent\Tests\Compatibility\GraphCompatibilityTest" file="/workspace/tests/compatibility/GraphCompatibilityTest.php" tests="7" assertions="49" errors="0" warnings="0" failures="0" skipped="0" time="0.794130">
+        <testcase name="testExistsPreservesPredicatesLimitsProjectionAndBuilderState" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphCompatibilityTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphCompatibilityTest" file="/workspace/tests/compatibility/GraphCompatibilityTest.php" line="37" assertions="16" time="0.246620"/>
+        <testcase name="testExistsHonoursRelationshipScopeSoftDeletesAndNestedBindings" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphCompatibilityTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphCompatibilityTest" file="/workspace/tests/compatibility/GraphCompatibilityTest.php" line="62" assertions="8" time="0.204939"/>
+        <testcase name="testCrudAndIdentity" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphCompatibilityTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphCompatibilityTest" file="/workspace/tests/compatibility/GraphCompatibilityTest.php" line="80" assertions="5" time="0.068874"/>
+        <testcase name="testSimplePaginationHonoursExplicitAndResolvedPage" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphCompatibilityTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphCompatibilityTest" file="/workspace/tests/compatibility/GraphCompatibilityTest.php" line="92" assertions="8" time="0.107861"/>
+        <testcase name="testNamespacedRelationshipAliasPreservesTypeAndDirection" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphCompatibilityTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphCompatibilityTest" file="/workspace/tests/compatibility/GraphCompatibilityTest.php" line="115" assertions="6" time="0.083434"/>
+        <testcase name="testSoftDeletesAndArrayableWhereInRemainSupported" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphCompatibilityTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphCompatibilityTest" file="/workspace/tests/compatibility/GraphCompatibilityTest.php" line="131" assertions="5" time="0.070940"/>
+        <testcase name="testSelectWithLaravel13ArgumentsReturnsBoundValue" class="Vinelab\NeoEloquent\Tests\Compatibility\GraphCompatibilityTest" classname="Vinelab.NeoEloquent.Tests.Compatibility.GraphCompatibilityTest" file="/workspace/tests/compatibility/GraphCompatibilityTest.php" line="143" assertions="1" time="0.011463"/>
+      </testsuite>
+      <testsuite name="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" tests="21" assertions="128" errors="0" warnings="0" failures="0" skipped="0" time="2.032786">
+        <testcase name="testMixedWritesRollbackAndPreserveTheOriginalThrowable" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="90" assertions="8" time="0.144705"/>
+        <testcase name="testMixedWritesCommitOnceAndReturnTheCallbackValue" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="121" assertions="5" time="0.037036"/>
+        <testcase name="testNestedTransactionsAreRejectedBeforeTheInnerCallback" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="136" assertions="3" time="0.011405"/>
+        <testcase name="testManualLifecycleAndPreparedHelpersUseTheCurrentTransaction" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="152" assertions="4" time="0.024465"/>
+        <testcase name="testAfterCommitCallbacksAreReleasedOnlyAfterPersistence" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="168" assertions="3" time="0.023045"/>
+        <testcase name="testTransientFailureRetriesWholeCallbackWithoutDuplicateNodesEdgesOrBalances" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="190" assertions="6" time="0.063575"/>
+        <testcase name="testRetryLimitAndNonTransientFailures" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="211" assertions="8" time="0.033426"/>
+        <testcase name="testFailedBeginDoesNotRunCallbackOrLeaveTransactionState" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="231" assertions="5" time="0.016939"/>
+        <testcase name="testTransientBeginFailureRetriesBeforeRunningCallback" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="249" assertions="3" time="0.023822"/>
+        <testcase name="testCommitFailureBeforeOrAfterPersistenceNeverReplaysCallback" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="264" assertions="12" time="0.045414"/>
+        <testcase name="testTerminatedServerTransactionFailsCommitAndRecovers" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="297" assertions="5" time="0.102379"/>
+        <testcase name="testRollbackFailureIsExposedAndPreventsRetry" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="317" assertions="7" time="0.025402"/>
+        <testcase name="testCaughtQueryFailurePoisonsTransactionAndNeverFallsBackToAutocommit" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="350" assertions="5" time="0.017079"/>
+        <testcase name="testManualClosureAndClientReplacementAreRejectedInsideCallback" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="377" assertions="5" time="0.009586"/>
+        <testcase name="testPostCommitCallbackFailureDoesNotReplayCommittedWrites" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="393" assertions="5" time="0.016941"/>
+        <testcase name="testCachedNodeAndRelationshipHelpersUpdateDeleteAndRollback" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="413" assertions="15" time="0.171083"/>
+        <testcase name="testAttachDetachAndModelDeletionRollBackTogether" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="455" assertions="6" time="0.113855"/>
+        <testcase name="testUnsupportedSavepointsAndInvalidAttemptCountsFailBeforeWrites" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="481" assertions="6" time="0.006073"/>
+        <testcase name="testServerLockTimeoutRetriesFromFreshStateWithoutDuplicateWrites" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="503" assertions="6" time="1.112300"/>
+        <testcase name="testRollbackTransportFailureDiscardsTheConnectionAndDoesNotRetry" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="539" assertions="5" time="0.018627"/>
+        <testcase name="testRollbackCallbacksRunAfterCleanupAndCannotLeakIntoAnotherTransaction" class="Vinelab\NeoEloquent\Tests\Transactions\GraphTransactionTest" classname="Vinelab.NeoEloquent.Tests.Transactions.GraphTransactionTest" file="/workspace/tests/compatibility/GraphTransactionTest.php" line="562" assertions="6" time="0.015629"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

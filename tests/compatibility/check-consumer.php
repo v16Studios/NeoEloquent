@@ -84,6 +84,8 @@ try {
         verifyConsumer($unsaved->{$method}()->count() === 0, 'Unsaved '.$method.' count leaked existing records.');
         verifyConsumer(!$unsaved->{$method}()->exists(), 'Unsaved '.$method.' existence leaked existing records.');
         verifyConsumer($unsaved->{$method}()->get()->isEmpty(), 'Unsaved '.$method.' read leaked existing records.');
+        verifyConsumer($unsaved->{$method}()->update(['name' => 'must-not-update']) === 0, 'Unsaved '.$method.' update was not empty.');
+        $unsaved->{$method}()->delete();
     }
     verifyConsumer(!ConsumerReleaseNode::whereNull('consumerReleaseFixture.id')->exists(), 'Qualified null ID matched a persisted node.');
     verifyConsumer(ConsumerReleaseNode::whereKey($id)->whereNotNull(['consumerReleaseFixture.id', 'name'])->exists(), 'Qualified not-null ID lost a persisted node.');
@@ -94,6 +96,34 @@ try {
     $existing->update(['code' => '001']);
     $keyed = new ConsumerReleaseNode(['code' => '001']);
     verifyConsumer($keyed->childrenByCode()->get()->pluck('name')->all() === ['child'], 'Custom string relationship key was treated as an internal ID.');
+    $child = $existing->children()->first();
+    foreach (['children', 'singleChild', 'parents', 'singleParent'] as $method) {
+        $incoming = in_array($method, ['parents', 'singleParent'], true);
+        $parent = $incoming ? $child : $existing;
+        $target = $incoming ? $existing : $child;
+        $connection->beginTransaction();
+        try {
+            $relation = $parent->{$method}()->where('id', $target->getKey());
+            verifyConsumer((clone $relation)->update(['name' => 'changed']) === 1, 'Installed relationship update lost target/direction.');
+            verifyConsumer($target->fresh()->name === 'changed', 'Installed relationship update missed target.');
+            $relation->delete();
+            verifyConsumer($target->fresh() === null && $parent->fresh() !== null, 'Installed relationship deletion targeted the wrong node.');
+        } finally {
+            $connection->rollBack();
+        }
+        verifyConsumer($existing->fresh()->name === 'owner' && $child->fresh()->name === 'child', 'Bulk mutation rollback did not restore nodes.');
+        verifyConsumer($existing->children()->edge($child)->quantity === 0, 'Bulk mutation rollback did not restore the edge.');
+    }
+    $connection->beginTransaction();
+    try {
+        verifyConsumer($keyed->childrenByCode()->update(['name' => 'keyed']) === 1, 'Custom-key mutation lost its parent predicate.');
+        verifyConsumer($child->fresh()->name === 'keyed', 'Custom-key mutation did not update its target.');
+        verifyConsumer($existing->children()->limit(0)->update(['name' => 'must-not-update']) === 0, 'Mutation ignored LIMIT zero.');
+        $existing->children()->limit(0)->delete();
+        verifyConsumer($child->fresh() !== null, 'Delete ignored LIMIT zero.');
+    } finally {
+        $connection->rollBack();
+    }
     $created = ConsumerReleaseNode::createWith(['name' => 'multi-relation'], [
         'children' => [$existing, ['name' => 'new-child']], 'parents' => [$existing],
     ]);
@@ -152,6 +182,7 @@ try {
         'model_and_edge_commit' => 'pass',
         'unsaved_relations_and_null_identity_predicates' => 'pass',
         'null_identity_mutation_safety_and_custom_string_keys' => 'pass',
+        'bulk_relation_mutations_direction_filters_limits_custom_keys_and_rollback' => 'pass',
         'multi_relation_create_with' => 'pass',
         'grouped_relationship_search_and_count' => 'pass',
         'nested_bindings_and_interleaved_clones' => 'pass',
