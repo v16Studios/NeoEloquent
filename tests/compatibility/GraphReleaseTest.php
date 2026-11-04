@@ -73,6 +73,8 @@ class GraphReleaseTest extends CompatibilityTestCase
         if (getenv('NEOELOQUENT_EXPECT_FIRST_ID_ZERO') === '1') {
             $this->assertSame(0, $owner->getKey());
             $this->assertTrue(ReleaseNode::whereKey(0)->exists());
+            $this->assertTrue(ReleaseNode::whereKey(0)->whereNotNull('releaseFixture.id')->exists());
+            $this->assertFalse(ReleaseNode::whereKey(0)->whereNull('releaseFixture.id')->exists());
             $this->assertSame(0, $edge->getKey());
         }
         $id = $edge->getKey();
@@ -92,6 +94,76 @@ class GraphReleaseTest extends CompatibilityTestCase
         $this->assertCount(0, $owner->children()->get());
         $this->assertNotNull(ReleaseNode::find($owner->getKey()));
         $this->assertNotNull(ReleaseNode::find($child->getKey()));
+    }
+
+    public static function unsavedRelations(): array
+    {
+        return [['children'], ['singleChild'], ['singleParent'], ['parents']];
+    }
+
+    /** @dataProvider unsavedRelations */
+    public function testUnsavedRelationshipReadsAreEmpty(string $method): void
+    {
+        $owner = ReleaseNode::create(['name' => 'owner']);
+        $child = ReleaseNode::create(['name' => 'child']);
+        $owner->children()->attach($child);
+        $unsaved = new ReleaseNode();
+        $this->assertNull($unsaved->getKey());
+        $this->assertSame(0, $unsaved->{$method}()->count());
+        $this->assertFalse($unsaved->{$method}()->exists());
+        $this->assertTrue($unsaved->{$method}()->doesntExist());
+        $this->assertSame([], $unsaved->{$method}()->get()->modelKeys());
+        $this->assertNull($unsaved->{$method}()->first());
+        $this->assertSame([$child->getKey()], $owner->children()->get()->modelKeys());
+        $this->assertSame([$owner->getKey()], $child->parents()->get()->modelKeys());
+        $loaded = ReleaseNode::with('children')->findOrFail($owner->getKey());
+        $this->assertSame([$child->getKey()], $loaded->children->modelKeys());
+    }
+
+    /** @dataProvider unsavedRelations */
+    public function testUnsavedRelationshipMutationsLeaveExistingNodesUntouched(string $method): void
+    {
+        $owner = ReleaseNode::create(['name' => 'owner']);
+        $child = ReleaseNode::create(['name' => 'child']);
+        $edge = $owner->children()->attach($child, ['quantity' => 0]);
+        $unsaved = new ReleaseNode();
+        try {
+            $unsaved->{$method}()->update(['name' => 'must-not-update']);
+        } catch (QueryException $error) {
+            // Bulk relationship writes may be rejected; either path must leave persisted data intact.
+        }
+        $this->assertSame('owner', $owner->fresh()->name);
+        $this->assertSame('child', $child->fresh()->name);
+        try {
+            $unsaved->{$method}()->delete();
+        } catch (QueryException $error) {
+            // This safety check does not certify support for bulk relationship deletion.
+        }
+        $this->assertSame(2, ReleaseNode::count());
+        $this->assertSame($edge->getKey(), $owner->children()->edge($child)->getKey());
+        $this->assertSame(0, $owner->children()->edge($child)->quantity);
+    }
+
+    public function testNullIdentityPredicatesRetainPropertiesAliasesAndBooleanGroups(): void
+    {
+        $missing = ReleaseNode::create(['name' => 'missing']);
+        $present = ReleaseNode::create(['name' => 'present', 'code' => '001', 'optional' => false]);
+        foreach (['id', 'releaseFixture.id', 'id(releaseFixture)'] as $column) {
+            $this->assertSame(0, ReleaseNode::whereNull($column)->count());
+            $this->assertSame(2, ReleaseNode::whereNotNull($column)->count());
+            $this->assertSame(0, ReleaseNode::where($column, '=', null)->count());
+            $this->assertSame(2, ReleaseNode::where($column, '<>', null)->count());
+        }
+        $this->assertSame([$missing->getKey()], ReleaseNode::whereNull('releaseFixture.code')->get()->modelKeys());
+        $this->assertSame([$present->getKey()], ReleaseNode::where('releaseFixture.code', '001')->get()->modelKeys());
+        $this->assertSame([$present->getKey()], ReleaseNode::whereNotNull(['releaseFixture.id', 'optional'])->get()->modelKeys());
+        $this->assertSame([$missing->getKey()], ReleaseNode::whereNull(['code', 'optional'])->get()->modelKeys());
+        $this->assertSame([$present->getKey()], ReleaseNode::where(function ($query) {
+            $query->whereNull('releaseFixture.id')->orWhereNotNull('optional');
+        })->get()->modelKeys());
+        $missing->children()->attach($present);
+        $this->assertSame([$present->getKey()], $missing->children()->whereNotNull('children.id')->get()->modelKeys());
+        $this->assertSame([], $missing->children()->whereNull('children.id')->get()->modelKeys());
     }
 
     public function testExplicitDatabaseAndUrlOverrideSelectTheServerDatabase(): void

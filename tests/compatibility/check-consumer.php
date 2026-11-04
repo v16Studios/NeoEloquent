@@ -36,6 +36,21 @@ class ConsumerReleaseNode extends Model
     {
         return $this->belongsToMany(self::class, 'CONSUMER_OWNS');
     }
+
+    public function singleChild()
+    {
+        return $this->hasOne(self::class, 'CONSUMER_OWNS');
+    }
+
+    public function singleParent()
+    {
+        return $this->belongsTo(self::class, 'CONSUMER_OWNS');
+    }
+
+    public function childrenByCode()
+    {
+        return $this->hasMany(self::class, 'CONSUMER_OWNS', 'code');
+    }
 }
 
 $expected = $argv[1];
@@ -64,6 +79,21 @@ try {
     });
     verifyConsumer(ConsumerReleaseNode::findOrFail($id)->children()->count() === 1, 'Installed model/relationship commit failed.');
     $existing = ConsumerReleaseNode::findOrFail($id);
+    foreach (['children', 'parents', 'singleChild', 'singleParent'] as $method) {
+        $unsaved = new ConsumerReleaseNode();
+        verifyConsumer($unsaved->{$method}()->count() === 0, 'Unsaved '.$method.' count leaked existing records.');
+        verifyConsumer(!$unsaved->{$method}()->exists(), 'Unsaved '.$method.' existence leaked existing records.');
+        verifyConsumer($unsaved->{$method}()->get()->isEmpty(), 'Unsaved '.$method.' read leaked existing records.');
+    }
+    verifyConsumer(!ConsumerReleaseNode::whereNull('consumerReleaseFixture.id')->exists(), 'Qualified null ID matched a persisted node.');
+    verifyConsumer(ConsumerReleaseNode::whereKey($id)->whereNotNull(['consumerReleaseFixture.id', 'name'])->exists(), 'Qualified not-null ID lost a persisted node.');
+    verifyConsumer(ConsumerReleaseNode::whereNull('optional')->count() === 2, 'Nullable property semantics changed.');
+    ConsumerReleaseNode::whereNull('consumerReleaseFixture.id')->update(['name' => 'must-not-update']);
+    ConsumerReleaseNode::whereNull('consumerReleaseFixture.id')->delete();
+    verifyConsumer($existing->fresh()->name === 'owner' && ConsumerReleaseNode::count() === 2, 'Null identity mutation changed persisted data.');
+    $existing->update(['code' => '001']);
+    $keyed = new ConsumerReleaseNode(['code' => '001']);
+    verifyConsumer($keyed->childrenByCode()->get()->pluck('name')->all() === ['child'], 'Custom string relationship key was treated as an internal ID.');
     $created = ConsumerReleaseNode::createWith(['name' => 'multi-relation'], [
         'children' => [$existing, ['name' => 'new-child']], 'parents' => [$existing],
     ]);
@@ -120,6 +150,8 @@ try {
         'installed_package_source' => true,
         'provider_and_named_connection' => 'pass',
         'model_and_edge_commit' => 'pass',
+        'unsaved_relations_and_null_identity_predicates' => 'pass',
+        'null_identity_mutation_safety_and_custom_string_keys' => 'pass',
         'multi_relation_create_with' => 'pass',
         'grouped_relationship_search_and_count' => 'pass',
         'nested_bindings_and_interleaved_clones' => 'pass',

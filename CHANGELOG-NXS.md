@@ -1,5 +1,13 @@
 # NXS fork changes
 
+## 9.9.1-RC5 — null internal identities
+
+- Compile qualified `alias.id` null/not-null predicates against the internal node ID, matching bare `id` and explicit `id(alias)` semantics. Unsaved default-key relations no longer return persisted records.
+- Accept arrays of null-predicate columns, preserving ordinary nullable properties, boolean groups and related aliases. Null is never coerced to node zero.
+- Retain read, eager-load, ID-zero and mutation-safety regressions plus independent consumer checks for custom string relationship keys.
+
+See [RC5 acceptance](docs/release-candidate-rc5.md). RC1–RC4 remain immutable; application dynamic-owner creation needs an explicit typed target.
+
 ## 9.9.1-RC3 — grouped relationship queries
 
 - Keep nested Eloquent predicates in the enclosing relationship's node alias and preserve OR grouping and parent constraints.

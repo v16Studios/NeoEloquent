@@ -558,7 +558,7 @@ class Builder extends IlluminateQueryBuilder
     /**
      * Add a "where null" clause to the query.
      *
-     * @param string $column
+     * @param string|array $column
      * @param string $boolean
      * @param bool   $not
      *
@@ -568,13 +568,18 @@ class Builder extends IlluminateQueryBuilder
     {
         $type = $not ? 'NotNull' : 'Null';
 
-        if ($column == 'id') {
-            $column = 'id('.$this->modelAsNode().')';
+        foreach (is_array($column) ? $column : [$column] as $column) {
+            if ($column == 'id') {
+                $column = 'id('.$this->modelAsNode().')';
+            } elseif (preg_match('/^([^.]+)\.id$/', $column, $matches)) {
+                // where() delegates null values here before its basic ID conversion.
+                // A relation's parent alias must reference the internal node ID too.
+                $column = 'id('.$matches[1].')';
+            }
+
+            $binding = $this->prepareBindingColumn($column);
+            $this->wheres[] = compact('type', 'column', 'boolean', 'binding');
         }
-
-        $binding = $this->prepareBindingColumn($column);
-
-        $this->wheres[] = compact('type', 'column', 'boolean', 'binding');
 
         return $this;
     }

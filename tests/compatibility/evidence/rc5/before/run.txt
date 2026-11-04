@@ -1,0 +1,57 @@
+Restored locked vendor/laravel13 dependencies; run composer install there.
+ Network nxs-neoeloquent_isolated Creating 
+ Network nxs-neoeloquent_isolated Creating 
+ Network nxs-neoeloquent_isolated Created 
+ Network nxs-neoeloquent_isolated Created 
+ Container nxs-neoeloquent-neo4j-1 Creating 
+ Container nxs-neoeloquent-neo4j-1 Created 
+ Container nxs-neoeloquent-neo4j-1 Starting 
+ Container nxs-neoeloquent-neo4j-1 Started 
+ Container nxs-neoeloquent-neo4j-1 Waiting 
+ Container nxs-neoeloquent-neo4j-1 Healthy 
+ Container nxs-neoeloquent-neo4j-1 Running 
+ Container nxs-neoeloquent-neo4j-1 Waiting 
+ Container nxs-neoeloquent-neo4j-1 Healthy 
+ Container nxs-neoeloquent-tests-run-0241bc5f4f3a Creating 
+ Container nxs-neoeloquent-tests-run-0241bc5f4f3a Created 
+PHPUnit 9.6.38 by Sebastian Bergmann and contributors.
+
+FFFFF....F.................................................       59 / 59 (100%)
+
+Time: 00:14.976, Memory: 26.00 MB
+
+There were 6 failures:
+
+1) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testZeroIdsSurviveRelationshipHydrationUpdateAndDetach
+Failed asserting that false is true.
+
+/workspace/tests/compatibility/GraphReleaseTest.php:76
+
+2) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testUnsavedRelationshipReadsAreEmpty with data set #0 ('children')
+Failed asserting that 1 is identical to 0.
+
+/workspace/tests/compatibility/GraphReleaseTest.php:112
+
+3) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testUnsavedRelationshipReadsAreEmpty with data set #1 ('singleChild')
+Failed asserting that 1 is identical to 0.
+
+/workspace/tests/compatibility/GraphReleaseTest.php:112
+
+4) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testUnsavedRelationshipReadsAreEmpty with data set #2 ('singleParent')
+Failed asserting that 1 is identical to 0.
+
+/workspace/tests/compatibility/GraphReleaseTest.php:112
+
+5) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testUnsavedRelationshipReadsAreEmpty with data set #3 ('parents')
+Failed asserting that 1 is identical to 0.
+
+/workspace/tests/compatibility/GraphReleaseTest.php:112
+
+6) Vinelab\NeoEloquent\Tests\Compatibility\GraphReleaseTest::testNullIdentityPredicatesRetainPropertiesAliasesAndBooleanGroups
+Failed asserting that 2 is identical to 0.
+
+/workspace/tests/compatibility/GraphReleaseTest.php:152
+
+FAILURES!
+Tests: 59, Assertions: 310, Failures: 6.
+
